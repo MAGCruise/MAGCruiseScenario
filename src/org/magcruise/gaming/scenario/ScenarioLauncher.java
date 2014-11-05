@@ -2,6 +2,8 @@ package org.magcruise.gaming.scenario;
 
 import java.io.File;
 
+import org.magcruise.gaming.ui.swing.LocalGUILauncher;
+
 public class ScenarioLauncher {
 
 	public static void main(String[] args) {

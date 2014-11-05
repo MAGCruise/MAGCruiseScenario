@@ -17,14 +17,6 @@ public class CompanyPlayer extends Player {
 		super(playerName, playerType);
 	}
 
-	@Override
-	public void finalizeRound() {
-		props.set(new SimpleSymbol("demand"), demand);
-		props.set(new SimpleSymbol("reservation"), reservation);
-		props.set(new SimpleSymbol("trades"), trades);
-		super.finalizeRound();
-	}
-
 	public void init(CompanySetting c) {
 		this.type = c.type;
 		this.area = c.area;
@@ -39,4 +31,13 @@ public class CompanyPlayer extends Player {
 		this.trades.add(new Trade(counterpart.name, price, amount));
 		this.demand -= amount;
 	}
+
+	@Override
+	public void finalizeRound() {
+		props.set(new SimpleSymbol("demand"), demand);
+		props.set(new SimpleSymbol("reservation"), reservation);
+		props.set(new SimpleSymbol("trades"), trades);
+		super.finalizeRound();
+	}
+
 }

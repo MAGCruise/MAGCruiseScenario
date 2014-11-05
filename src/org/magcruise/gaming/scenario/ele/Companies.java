@@ -7,7 +7,14 @@ import org.magcruise.gaming.model.Context;
 import org.magcruise.gaming.model.Player;
 
 public class Companies {
-	List<CompanyPlayer> companies = new ArrayList<>();
+	private List<CompanyPlayer> companies = new ArrayList<>();
+
+	public Companies(Context ctx) {
+		for (Player p : ctx.players.values()) {
+			companies.add((CompanyPlayer) p);
+		}
+		align();
+	}
 
 	public void align() {
 		List<CompanyPlayer> tmp = new ArrayList<CompanyPlayer>();
@@ -17,16 +24,6 @@ public class Companies {
 			}
 		}
 		companies.removeAll(tmp);
-	}
-
-	public Companies(Context ctx) {
-		for (Player p : ctx.players.values()) {
-			CompanyPlayer cp = (CompanyPlayer) p;
-			if (cp.demand == 0) {
-				continue;
-			}
-			companies.add(cp);
-		}
 	}
 
 	public List<CompanyPlayer> getSellers() {

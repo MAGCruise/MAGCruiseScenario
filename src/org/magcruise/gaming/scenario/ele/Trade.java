@@ -6,9 +6,9 @@ import java.io.Serializable;
 
 public class Trade implements Serializable {
 
-	Symbol partner;
-	int price;
-	int amount;
+	private Symbol partner;
+	private int price;
+	private int amount;
 
 	public Trade(Symbol partner, int price, int amount) {
 		this.partner = partner;

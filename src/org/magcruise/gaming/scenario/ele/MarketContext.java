@@ -2,22 +2,26 @@ package org.magcruise.gaming.scenario.ele;
 
 import java.util.List;
 
-import org.apache.log4j.Logger;
 import org.magcruise.gaming.model.Context;
+import org.magcruise.gaming.model.Players;
+import org.magcruise.gaming.model.Properties;
 
-public class Market {
-	private Logger log = Logger.getLogger(this.getClass().getName());
+public class MarketContext extends Context {
 
-	public void init(Context ctx) {
-		List<CompanySetting> settings = CompanySettings.readSettings(ctx);
+	public MarketContext(Properties props, Players players) {
+		super(props, players);
+	}
+
+	public void init() {
+		List<CompanySetting> settings = CompanySettings.readSettings(this);
 		for (CompanySetting setting : settings) {
-			CompanyPlayer p = (CompanyPlayer) ctx.players.get(setting.name);
-			p.init(setting);
+			CompanyPlayer player = (CompanyPlayer) players.get(setting.name);
+			player.init(setting);
 		}
 	}
 
-	public void auction(Context ctx) {
-		Companies unsatisfieds = new Companies(ctx);
+	public void auction() {
+		Companies unsatisfieds = new Companies(this);
 		Constraints constraints = new Constraints();
 		pair(unsatisfieds, constraints);
 	}

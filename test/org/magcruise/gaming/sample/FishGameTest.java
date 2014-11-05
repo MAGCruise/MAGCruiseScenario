@@ -4,7 +4,7 @@ import java.io.File;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.magcruise.gaming.scenario.LocalGUILauncher;
+import org.magcruise.gaming.ui.swing.LocalGUILauncher;
 
 public class FishGameTest {
 
