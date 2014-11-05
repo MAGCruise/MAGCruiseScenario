@@ -8,8 +8,8 @@ import org.magcruise.gaming.model.Properties;
 
 public class MarketContext extends Context {
 
-	public MarketContext(Properties props, Players players) {
-		super(props, players);
+	public MarketContext(Properties props, Players players, String scenarioHome) {
+		super(props, players, scenarioHome);
 	}
 
 	public void init() {
