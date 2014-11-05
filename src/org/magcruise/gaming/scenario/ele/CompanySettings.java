@@ -23,7 +23,7 @@ public class CompanySettings {
 
 			companies = manager.load(CompanySetting.class).from(
 					new File(ctx.getScenarioHome() + File.separator
-							+ "scenarios/ele/companies.csv"));
+							+ "scenario/ele/companies.csv"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
