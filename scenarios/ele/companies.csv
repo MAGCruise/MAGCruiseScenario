@@ -1,0 +1,11 @@
+name,area,type,demand,reservation
+A,A,seller,100,5
+B,A,seller,40,7
+C,A,buyer,60,14
+D,A,buyer,20,13
+E,B,seller,20,9
+F,B,seller,50,11
+G,B,buyer,40,15
+H,B,buyer,10,10
+X,B,seller,60,8
+Y,B,buyer,30,13
