@@ -3,14 +3,17 @@
 (define *answer-orig-texts* ::list #!null)
 (define *question-orig-texts* ::list #!null)
 
-(define-namespace bridger)
-(define-namespace evaluator)
+(define-alias Bridger org.magcruise.gaming.scenario.ymc.incentive.Bridger)
+(define-alias Evaluator org.magcruise.gaming.scenario.ymc.incentive.Evaluator)
+
+(define-namespace bridger "bridger")
+(define-namespace evaluator "evaluator")
 
 (define evaluate-val 0)
 
 (define (def:game-scenario)
-  (def:player 'Bridger 'human)
-  (def:player 'Evaluator 'human)
+  (def:ext-player 'Bridger 'human Bridger)
+  (def:ext-player 'Evaluator 'human Evaluator)
 
   (def:round
   (def:stage 'init
@@ -22,72 +25,67 @@
   (def:rounds 2
   (def:restage 'game)))
 
-(define (bridger:init ctx ::Context self ::Player)
+(define (bridger:init ctx ::Context self ::Bridger)
   (ui:show-message self:name *instruction-message*))
 
 
-(define (bridger:edit ctx ::Context self ::Player)
+(define (bridger:edit ctx ::Context self ::Bridger)
+  (define answer-orig-text (*answer-orig-texts*:get ctx:roundnum))
+  (define question-orig-text (*question-orig-texts*:get ctx:roundnum))
+  (define prev-revised-text answer-orig-text)
+
   (ui:show-message self:name
     (to-string "原文<strong>" ctx:roundnum "</strong>の修正をはじめて下さい．"))
-
-  (define (translation src_lang target_lang src_text)
-    (langrid:TranslationWithTemporalDictionary-translate 
-      "TranslationCombinedWithBilingualDictionaryWithLongestMatchSearch" src_lang target_lang src_text
-      (ArrayUtil:array Translation)
-      target_lang
-      '("TranslationPL" "KyotoUJServer")
-      '("BilingualDictionaryWithLongestMatchSearchPL" "http://robin.ai.soc.i.kyoto-u.ac.jp/ymccommunitydictionary/services/YMCCommunityDictionary")))
-
-    (define answer-orig-text (*answer-orig-texts*:get ctx:roundnum))
-    (define question-orig-text (*question-orig-texts*:get ctx:roundnum))
-    (define prev-revised-text answer-orig-text)
-
-
+  (bridger:edit-aux ctx self question-orig-text answer-orig-text answer-orig-text))
+  
+(define (bridger:edit-aux ctx ::Context self ::Bridger question-orig-text answer-orig-text prev-revised-text)
   (ui:request-input self:name
-    (make Form (to-string  "<br>質問文"
-            (number->string ctx:roundnum)
-            "<br><blockquote>" question-orig-text "</blockquote>"
-            "<br>原文"
-            (number->string ctx:roundnum)
+    (make Form (to-string  "<br>質問文" ctx:roundnum "<br><blockquote>" question-orig-text "</blockquote>"
+            "<br>原文" ctx:roundnum
             "<br><blockquote>" answer-orig-text "</blockquote>")
       (make TextInput "<p><strong>上の文章を翻訳しやすい日本語文に修正して下さい．</strong></p>修正した日本語文" 'revised-sentence prev-revised-text))
     (lambda (revised-sentence)
-    (self:set 'revised-sentence revised-sentence)))
-  (let* ((translated-sentence (translation "ja" "en" (self:get 'revised-sentence)))
-       (back-translated-sentence (translation "en" "ja" translated-sentence)))
-    (ui:request-input self:name
-      (make Form 
-        (to-string 
-          "質問文" (number->string ctx:roundnum) 
-          "は以下です．<br><blockquote>" question-orig-text "</blockquote>"
-          "原文" (number->string ctx:roundnum) 
-          "は以下です．<br><blockquote>" answer-orig-text "</blockquote>"
-          "修正した文章は以下です．<br><blockquote>" (self:get 'revised-sentence) "</blockquote>"
-          "翻訳(日→英)の結果は以下です．<br><blockquote>" translated-sentence "</blockquote>"
-          "折り返し翻訳(日→英→日)の結果は以下です．<br><blockquote>" back-translated-sentence "</blockquote>")
-        (make RadioInput 
-            "<strong>これで日本語の修正を終えますか？</strong>"
-            'again-or-finish "AGAIN" (list "再修正" "修正完了") (list "AGAIN" "FINISH")))
-      (lambda (again-or-finish)
-      (self:set 'again-or-finish again-or-finish)))
-    (ui:show-message self:name
-      (to-string "<br><strong>・質問文" ctx:roundnum "</strong><br>　" question-orig-text 
-           "<br><strong>・原文" ctx:roundnum "</strong><br>　" answer-orig-text 
-           "<br><strong>・修正した文</strong><br>" (self:get 'revised-sentence)
-           "<br><strong>・翻訳(日→英)の結果</strong><br>　" translated-sentence
-           "<br><strong>・折り返し翻訳(日→英→日)の結果</strong><br>　" back-translated-sentence)))
+    (set! self:revisedSentence revised-sentence)))
+  (define translated-sentence (translation "ja" "en" self:revisedSentence))
+  (define back-translated-sentence (translation "en" "ja" translated-sentence))
+  (ui:request-input self:name
+    (make Form 
+      (to-string 
+        "質問文" ctx:roundnum "は以下です．<br><blockquote>" question-orig-text "</blockquote>"
+        "原文" ctx:roundnum "は以下です．<br><blockquote>" answer-orig-text "</blockquote>"
+        "修正した文章は以下です．<br><blockquote>" self:revisedSentence "</blockquote>"
+        "翻訳(日→英)の結果は以下です．<br><blockquote>" translated-sentence "</blockquote>"
+        "折り返し翻訳(日→英→日)の結果は以下です．<br><blockquote>" back-translated-sentence "</blockquote>")
+      (make RadioInput 
+          "<strong>これで日本語の修正を終えますか？</strong>"
+          'again-or-finish "AGAIN" (list "再修正" "修正完了") (list "AGAIN" "FINISH")))
+    (lambda (again-or-finish)
+    (set! self:againOrFinish again-or-finish)))
+  (ui:show-message self:name
+    (to-string "<br><strong>・質問文" ctx:roundnum "</strong><br>　" question-orig-text 
+         "<br><strong>・原文" ctx:roundnum "</strong><br>　" answer-orig-text 
+         "<br><strong>・修正した文</strong><br>" self:revisedSentence
+         "<br><strong>・翻訳(日→英)の結果</strong><br>　" translated-sentence
+         "<br><strong>・折り返し翻訳(日→英→日)の結果</strong><br>　" back-translated-sentence))
 
-  (if (equal? (self:get 'again-or-finish) "FINISH")
+  (if (equal? self:againOrFinish "FINISH")
     (cond
        ((equal? (*thanks-message-timings*:get ctx:roundnum) #f) (ui:show-message self:name *thanks-message*))
        ((equal? (*failure-message-timings*:get ctx:roundnum) #t) (ui:show-message self:name *failure-message*)))
-    (bridger-behavior self ctx 
-      question-orig-text answer-orig-text (self:get 'revised-sentence))))
+    (bridger:edit-aux ctx self question-orig-text answer-orig-text self:revisedSentence)))
 
 
-(define (evaluator:evaluate ctx ::Context self ::Player)
+(define (evaluator:evaluate ctx ::Context self ::Evaluator)
   #t
 )
+
+(define (translation src_lang target_lang src_text)
+  (langrid:TranslationWithTemporalDictionary-translate 
+    "TranslationCombinedWithBilingualDictionaryWithLongestMatchSearch" src_lang target_lang src_text
+    (ArrayUtil:array Translation)
+    target_lang
+    '("TranslationPL" "KyotoUJServer")
+    '("BilingualDictionaryWithLongestMatchSearchPL" "http://robin.ai.soc.i.kyoto-u.ac.jp/ymccommunitydictionary/services/YMCCommunityDictionary")))
 
 (define *thanks-message* "<div class=\"notification_of_exp\"><strong>あなたの修正により，ベトナムの児童に正しく情報が伝わりました．ありがとうございました．</strong></div>")
 (define *failure-message* "<div class=\"notification_of_exp\"><strong>あなたが日本語文を修正してくれましたが，翻訳は改善されませんでした．</strong></div>")
