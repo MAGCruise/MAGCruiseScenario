@@ -17,11 +17,12 @@ public class ScenarioLauncher {
 		// String scenario = "misc/gui-test.scm";
 		// String scenario = "misc/langrid-invoker-test.scm";
 		// String scenario = "croquette/croquette-game.scm";
-		String scenario = "ele/ele.scm";
+		// String scenario = "ele/ele.scm";
+		String scenario = "ymc-gaming-2014-11/ymc.scm";
 
-		LocalGUILauncher launcher = new LocalGUILauncher(new File("../MAGCruiseCore"),
-				scenario);
-		launcher.setTestMode(true);
+		LocalGUILauncher launcher = new LocalGUILauncher(new File(
+				"../MAGCruiseCore"), scenario);
+		launcher.setTestMode(false);
 
 		launcher.run();
 	}
