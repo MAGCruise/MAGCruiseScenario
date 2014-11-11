@@ -7,7 +7,7 @@
 (define-namespace bridger "bridger")
 (define-namespace evaluator "evaluator")
 
-(define evaluate-val 0)
+(define score ::number 0)
 
 (define (def:game-scenario)
   (def:ext-context YMCContext)
@@ -17,16 +17,21 @@
   (def:round
   (def:stage 'init
     (def:task 'Bridger 'bridger:init))
-  (def:stage 'game
+  (def:stage 'bridge-eval
     (def:task 'Bridger 'bridger:edit)
     (def:task 'Evaluator 'evaluator:evaluate)))
 
   (def:rounds 2
-  (def:restage 'game)))
+    (def:stage 'receive-eval
+      (def:task 'Bridger 'bridger:receive-eval))
+    (def:restage 'bridge-eval))
+)
 
 (define (bridger:init ctx ::YMCContext self ::Bridger)
   (ui:show-message self:name *instruction-message*))
 
+(define (bridger:receive-eval ctx ::YMCContext self ::Bridger)
+  (ui:show-message self:name (to-string "あなたの翻訳は" score "と評価されました．")))
 
 (define (bridger:edit ctx ::YMCContext self ::Bridger)
   (define a-orig-text (*a-orig-texts*:get ctx:roundnum))
@@ -73,9 +78,10 @@
   (ui:request-input self:name
     (make Form (<p> ctx:sentence)
       (make RadioInput 
-          (<strong> "この文章は分かりやすいですか？") 'score "1" (list "1" "2" "3" "4" "5") (list "1" "2" "3" "4" "5")))
-    (lambda (score)
-      (set! self:score (string->number score)))))
+          (<strong> "この文章は分かりやすいですか？") '_score "1" (list "1" "2" "3" "4" "5") (list "1" "2" "3" "4" "5")))
+    (lambda (_score)
+      (set! score (string->number _score))
+      (set! self:score (string->number _score)))))
 
 (define (translation src_lang target_lang src_text)
   (langrid:TranslationWithTemporalDictionary-translate 
