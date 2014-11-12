@@ -1,10 +1,11 @@
 package org.magcruise.gaming.sample;
 
+import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.magcruise.gaming.ui.cui.CUILauncher;
+import org.magcruise.gaming.ui.repl.ReplLauncher;
 
 public class ScenariosTest {
 	private static ScheduledExecutorService gameExecutor;
@@ -24,7 +25,8 @@ public class ScenariosTest {
 				"croquette/croquette_multi_x_3_item_x_2.scm",
 				"croquette/croquette_multi_x_4_item_x_2.scm" };
 		for (String scenario : scenarios) {
-			CUILauncher sl = new CUILauncher(scenario, true);
+			ReplLauncher sl = new ReplLauncher(new File("../MAGCruiseCore"),
+					scenario);
 			gameExecutor.scheduleAtFixedRate(sl, 1, 10, TimeUnit.SECONDS);
 		}
 	}

@@ -1,5 +1,3 @@
-(load  (to-string *magcruise-core-home* "/config/settings.scm"))
-
 (define (def:game-scenario)
   (def:player 'LangridInvoker 'human)
   (def:round 

@@ -24,8 +24,7 @@
   (def:rounds 2
     (def:stage 'receive-eval
       (def:task 'Bridger 'bridger:receive-eval))
-    (def:restage 'bridge-eval))
-)
+    (def:restage 'bridge-eval)))
 
 (define (bridger:init ctx ::YMCContext self ::Bridger)
   (ui:show-message self:name *instruction-message*))
@@ -47,7 +46,7 @@
     (make Form (<div>
       (<p> "質問文" ctx:roundnum ) (<blockquote> q-orig-text)
       (<p> "原文" ctx:roundnum) (<blockquote> a-orig-text))
-      (make TextInput (<p> (<strong> "上の文章を翻訳しやすい日本語文に修正して下さい．") (<h3>"修正した日本語文"))  'revised-sentence prev-revised-text))
+      (make TextInput (<p> (<strong> "上の文章を翻訳しやすい日本語文に修正して下さい．") (<p> (<strong>"修正した日本語文")))  'revised-sentence prev-revised-text))
     (lambda (revised-sentence)
       (set! self:revisedSentence revised-sentence)))
 
@@ -78,7 +77,7 @@
   (ui:request-input self:name
     (make Form (<p> ctx:sentence)
       (make RadioInput 
-          (<strong> "この文章は分かりやすいですか？") '_score "1" (list "1" "2" "3" "4" "5") (list "1" "2" "3" "4" "5")))
+          (<strong> "この文章は分かりやすいですか？") '_score "1" (String[] "1 (悪い) " "2" "3" "4" "5 (良い)") (String[] "1" "2" "3" "4" "5")))
     (lambda (_score)
       (set! score (string->number _score))
       (set! self:score (string->number _score)))))
