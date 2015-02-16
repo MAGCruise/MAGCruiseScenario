@@ -2,11 +2,14 @@ package org.magcruise.gaming.scenario.ele;
 
 import java.util.List;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.magcruise.gaming.model.Context;
 import org.magcruise.gaming.model.Players;
 import org.magcruise.gaming.model.Properties;
 
 public class MarketContext extends Context {
+	private static Logger log = LogManager.getLogger();
 
 	public MarketContext(Properties props, Players players, String scenarioHome) {
 		super(props, players, scenarioHome);
