@@ -7,7 +7,7 @@
   (def:player 'FirstPlayer 'human)
   (def:player 'SecondPlayer 'human)
 
-  (def:round
+  (def:rounds 2
     (def:stage 'negotiation
       (def:task 'FirstPlayer 'first-player)
       (def:task 'SecondPlayer 'second-player)
@@ -59,7 +59,7 @@
 
   (define (money-paid)
     (let* ((val-of-p2 proposition)
-           (val-of-p1 (- 100000 proposition)))
+           (val-of-p1 (- 100000 (to-num proposition))))
       (FirstPlayer:set 'account val-of-p1)
       (SecondPlayer:set 'account val-of-p2)
       (ui:show-message 'all

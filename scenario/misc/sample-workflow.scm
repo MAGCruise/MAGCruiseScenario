@@ -14,8 +14,8 @@
       (def:task 'HumanPlayer1 'vote))
     (def:exor-stage 'vote
       (list c1 c2)
-      (def:concurrent-stage 'h1_2
-        (def:concurrent-stage 'h1_3
+      (def:parallel-stage 'h1_2
+        (def:parallel-stage 'h1_3
           (def:task 'HumanPlayer1 'vote)
           (def:task 'HumanPlayer3 'vote))
         (def:task 'HumanPlayer2 'vote))

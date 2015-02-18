@@ -6,10 +6,10 @@
   (define fishers (list 'Fisherman1 'Fisherman2))
 
   (def:rounds 3
-    (def:concurrent-stage 'negotiation
+    (def:parallel-stage 'negotiation
       (def:task  'notify-status)
       (def:players-task fishers 'fisher:input-comment))
-    (def:concurrent-stage 'fishing
+    (def:parallel-stage 'fishing
       (def:players-task fishers 'fisher:decide-number-of-fish))
     (def:stage 'calc-fishing
       (def:task 'go-to-fishing)

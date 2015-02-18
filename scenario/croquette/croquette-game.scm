@@ -46,19 +46,19 @@
     (def:stage 'factory-delivery
       (def:task 'Factory 'factory:delivery)
       (def:players-task *shop-names* 'shop:receive-delivery))
-    (def:concurrent-stage 'shop-order-and-pricing
+    (def:parallel-stage 'shop-order-and-pricing
       (def:players-task *shop-names* 'shop:order-and-pricing))
     (def:stage 'factory-receive-order 
       (def:task 'Factory 'factory:receive-order))
     (def:stage 'factory-order 
       (def:task 'Factory 'factory:order)
       (def:players-task *farmer-names* 'farmer:receive-order))
-    (def:concurrent-stage 'closing
+    (def:parallel-stage 'closing
       (def:task 'Factory 'factory:closing)
       (def:players-task *shop-names* 'shop:closing)))
 
   (def:rounds 7
-    (def:concurrent-stage 'status
+    (def:parallel-stage 'status
       (def:players-task *shop-names* 'shop:status)
       (def:task 'Factory 'factory:status))
     (def:restage 'farmer-delivery)
@@ -72,9 +72,9 @@
     (def:restage 'status)
     (def:restage 'farmer-delivery)
     (def:restage 'factory-delivery)
-    (def:concurrent-stage 'shop-no-order
+    (def:parallel-stage 'shop-no-order
       (def:players-task *shop-names* 'shop:no-order))
-    (def:concurrent-stage 'shop-pricing
+    (def:parallel-stage 'shop-pricing
       (def:players-task *shop-names* 'shop:pricing))
     (def:restage 'factory-receive-order)
     (def:restage 'factory-order)

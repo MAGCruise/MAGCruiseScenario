@@ -18,12 +18,12 @@
   (def:round
     (def:stage 'init
       (def:task 'market:init))
-    (def:concurrent-stage 'vote
+    (def:parallel-stage 'vote
       (def:players-task *human* 'human:vote))
     (def:stage 'auction
       (def:task 'market:auction)))
   (def:round
-    (def:concurrent-stage 'status
+    (def:parallel-stage 'status
       (def:players-task (append *human* *agents*) 'player:status))
     (def:restage 'init)
     (def:restage 'vote)
