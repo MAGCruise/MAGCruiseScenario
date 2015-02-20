@@ -6,6 +6,7 @@ import gnu.mapping.Symbol;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.magcruise.gaming.lang.Attribute;
 import org.magcruise.gaming.model.Context;
 import org.magcruise.gaming.model.Player;
 import org.magcruise.gaming.scenario.croquette.msg.CroquetteOrder;
@@ -15,20 +16,32 @@ public class Factory extends Player {
 	public int initDelivary = 100;
 	public int price = 60;
 
-	public int demand;
-	public int sales;
+	@Attribute(name = "発注個数")
 	public int orderOfPotato;
+	@Attribute(name = "受注個数")
 	public int orderedCroquette;
+	@Attribute(name = "納品個数")
 	public int deliveredPotato;
-
+	@Attribute(name = "生産個数")
 	public int production;
+	@Attribute(name = "在庫個数")
 	public int stock = 400;
-	public int materialCost;
+	@Attribute(name = "加工費")
 	public int machiningCost;
+	@Attribute(name = "材料費")
+	public int materialCost;
+	@Attribute(name = "在庫費")
 	public int inventoryCost;
+	@Attribute(name = "売上個数")
+	public int sales;
+	@Attribute(name = "売上高")
 	public int earnings;
+	@Attribute(name = "利益")
 	public int profit;
+	@Attribute(name = "購入希望数")
+	public int demand;
 
+	@Attribute(name = "受注表")
 	public Map<Symbol, Integer> orders = new HashMap<>();
 
 	public Factory(Symbol playerName, Symbol playerType) {

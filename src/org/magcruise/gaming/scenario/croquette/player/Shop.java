@@ -5,20 +5,33 @@ import gnu.mapping.Symbol;
 import java.util.Arrays;
 import java.util.List;
 
+import org.magcruise.gaming.lang.Attribute;
 import org.magcruise.gaming.model.Player;
 
 public class Shop extends Player {
 
-	public int order;
-	public int stock;
 	public List<Integer> orders;
+
+	@Attribute(name = "発注個数")
+	public int order;
+
+	@Attribute(name = "在庫個数")
+	public int stock;
+	@Attribute(name = "納品個数")
 	public int delivery;
+	@Attribute(name = "販売価格")
 	public int price;
+	@Attribute(name = "在庫費")
 	public int inventoryCost;
-	public int sales;
+	@Attribute(name = "材料費")
 	public int materialCost;
+	@Attribute(name = "売上個数")
+	public int sales;
+	@Attribute(name = "売上高")
 	public int earnings;
+	@Attribute(name = "利益")
 	public int profit;
+	@Attribute(name = "購入希望数")
 	public int demand;
 
 	public Shop(Symbol playerName, Symbol playerType) {
@@ -28,8 +41,7 @@ public class Shop extends Player {
 	public void init() {
 		this.orders = Arrays.asList(200, 200, 200, 200, 200, 200, 200, 200,
 				200, 200);
-
-		this.stock = 100;
+		this.stock = 300;
 	}
 
 	public void order(int orderOfCroquette) {
@@ -48,7 +60,7 @@ public class Shop extends Player {
 	public void closing(Shop other, int demand) {
 		int totalPrice = price + other.price;
 		this.demand = (int) Math.floor(demand
-				* ((totalPrice - price) / totalPrice)); // 売れる量は値段の逆比
+				* (((double) totalPrice - price) / totalPrice)); // 売れる量は値段の逆比
 
 		if (price < other.price) {
 			this.demand += 100;// 安い金額を付けた方にボーナス

@@ -3,12 +3,15 @@ package org.magcruise.gaming.scenario.croquette.player;
 import gnu.mapping.SimpleSymbol;
 import gnu.mapping.Symbol;
 
+import org.magcruise.gaming.lang.Attribute;
 import org.magcruise.gaming.model.Context;
 import org.magcruise.gaming.model.Player;
 
 public class Farmer extends Player {
 
 	public int initDelivery;
+
+	@Attribute
 	public int receivedOrderOfPotato;
 
 	public Farmer(Symbol playerName, Symbol playerType) {

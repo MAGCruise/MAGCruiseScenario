@@ -88,24 +88,12 @@
 
 (define (shop:status ctx ::Market self ::Shop)
   (ui:show-message self:name 
-    (self:history:tabulate
-      (cons "発注個数" 'order) (cons "納品個数" 'delivery)
-      (cons "顧客数" 'demand) (cons "販売個数" 'sales) 
-      (cons "販売価格" 'price) (cons "在庫個数" 'stock)
-      (cons "在庫費(円)" 'inventoryCost) (cons "材料費(円)" 'materialCost)
-      (cons "売上高(円)" 'earnings) (cons "利益(円)" 'profit))))
+    (self:tabulateHistory 'order 'delivery 'price 'demand 'sales 'price 'stock 'inventoryCost 'materialCost 'earnings 'profit)))
 
 (define (factory:status ctx ::Market self ::Factory)
   (ui:show-message self:name 
-    (self:history:tabulate
-      (cons "発注個数(じゃがいも)" 'orderOfPotato) (cons "納品個数(じゃがいも)" 'deliveredPotato)
-      (cons "受注個数" 'orderedCroquette) (cons "需要個数" 'demand)
-      (cons "販売個数" 'sales) (cons "生産個数" 'production)
-      (cons "在庫個数" 'stock) (cons "在庫費(円)" 'inventoryCost)
-      (cons "材料費(円)" 'materialCost) (cons "加工費(円)" 'machiningCost)
-      (cons "売上高(円)" 'earnings)
-      (cons "利益(円)" 'profit))))
-
+    (self:tabulateHistory 'orderOfPotato 'deliveredPotato 'orderedCroquette 'demand 'sales
+                          'production 'stock 'inventoryCost 'materialCost 'machiningCost 'earnings 'profit)))
 
 (define (shop:init ctx ::Market self ::Shop)
   (self:init)
