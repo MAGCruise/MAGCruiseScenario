@@ -1,5 +1,3 @@
-(require 'list-lib)
-
 (define-alias CompanyPlayer org.magcruise.gaming.scenario.ele.CompanyPlayer)
 (define-alias MarketContext org.magcruise.gaming.scenario.ele.MarketContext)
 
