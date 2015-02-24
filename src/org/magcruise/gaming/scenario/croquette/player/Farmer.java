@@ -3,7 +3,7 @@ package org.magcruise.gaming.scenario.croquette.player;
 import gnu.mapping.SimpleSymbol;
 import gnu.mapping.Symbol;
 
-import org.magcruise.gaming.lang.Attribute;
+import org.magcruise.gaming.model.Attribute;
 import org.magcruise.gaming.model.Context;
 import org.magcruise.gaming.model.Player;
 

@@ -5,7 +5,7 @@ import gnu.mapping.Symbol;
 import java.util.Arrays;
 import java.util.List;
 
-import org.magcruise.gaming.lang.Attribute;
+import org.magcruise.gaming.model.Attribute;
 import org.magcruise.gaming.model.Player;
 
 public class Shop extends Player {

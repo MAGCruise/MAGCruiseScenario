@@ -2,10 +2,10 @@ package org.magcruise.gaming.scenario.ymc.incentive;
 
 import gnu.mapping.Symbol;
 
+import org.magcruise.gaming.lang.Properties;
 import org.magcruise.gaming.model.History;
 import org.magcruise.gaming.model.MessageBox;
 import org.magcruise.gaming.model.Player;
-import org.magcruise.gaming.model.Properties;
 
 public class Bridger extends Player {
 

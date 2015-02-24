@@ -1,9 +1,9 @@
 package org.magcruise.gaming.scenario.croquette;
 
+import org.magcruise.gaming.lang.Properties;
 import org.magcruise.gaming.model.Context;
 import org.magcruise.gaming.model.History;
 import org.magcruise.gaming.model.Players;
-import org.magcruise.gaming.model.Properties;
 
 public class Market extends Context {
 

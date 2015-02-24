@@ -6,7 +6,7 @@ import gnu.mapping.Symbol;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.magcruise.gaming.lang.Attribute;
+import org.magcruise.gaming.model.Attribute;
 import org.magcruise.gaming.model.Context;
 import org.magcruise.gaming.model.Player;
 import org.magcruise.gaming.scenario.croquette.msg.CroquetteOrder;

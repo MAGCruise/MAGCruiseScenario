@@ -21,7 +21,7 @@
 (define (first-player context ::Context self ::Player)
   (ui:request-input self:name
     (ui:form  (to-string "あなたは" provided-val "円を受けとりました．いくらを分け与えますか？")
-      (ui:val-input "分け与えると提案する金額" 'proposition 10))
+      (ui:val-input "分け与えると提案する金額" 'proposition 10 (make Min 0) (make Max 100000)))
     (lambda (prop)
       (self:set 'proposition prop)
       (set! proposition prop)

@@ -4,10 +4,10 @@ import gnu.mapping.Symbol;
 
 import java.text.DecimalFormat;
 
+import org.magcruise.gaming.lang.Properties;
 import org.magcruise.gaming.model.History;
 import org.magcruise.gaming.model.MessageBox;
 import org.magcruise.gaming.model.Player;
-import org.magcruise.gaming.model.Properties;
 
 public class Evaluator extends Player {
 
