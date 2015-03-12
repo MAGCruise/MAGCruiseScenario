@@ -34,7 +34,7 @@
       '("TranslationPL" "KyotoUJServer")
       '("BilingualDictionaryWithLongestMatchSearchPL" "http://robin.ai.soc.i.kyoto-u.ac.jp/ymccommunitydictionary/services/YMCCommunityDictionary")))
 
-    (ui:request-input self:name
+    (ui:input-request self:name
       (make Form (to-string  "<br>質問文"
                         (number->string context:roundnum)
                         "<br><pre>" question-orig-text "</pre>"
@@ -46,7 +46,7 @@
         (self:set 'revised-sentence revised-sentence)))
     (let* ((translated-sentence (translation "ja" "en" (self:get 'revised-sentence)))
            (back-translated-sentence (translation "en" "ja" translated-sentence)))
-        (ui:request-input self:name
+        (ui:input-request self:name
             (make Form 
               (to-string 
                   "質問文" (number->string context:roundnum) 

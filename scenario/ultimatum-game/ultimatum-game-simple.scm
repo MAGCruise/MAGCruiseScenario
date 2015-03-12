@@ -7,44 +7,22 @@
   (def:player 'FirstPlayer 'human)
   (def:player 'SecondPlayer 'human)
 
-  (def:round
-    (def:stage 'init
-      (def:task 'FirstPlayer 'init)
-      (def:task 'SecondPlayer 'init))
+  (def:rounds 2
     (def:stage 'negotiation
       (def:task 'FirstPlayer 'first-player)
       (def:task 'SecondPlayer 'second-player)
-      (def:task 'paid-model)))
+      (def:task 'paid-model))))
 
-  (def:rounds 9
-    (def:stage 'status
-      (def:task 'FirstPlayer 'status)
-      (def:task 'SecondPlayer 'status))
-    (def:stage 'negotiation
-      (def:task 'FirstPlayer 'first-player)
-      (def:task 'SecondPlayer 'second-player)
-      (def:task 'paid-model)))
-
-  (def:round
-    (def:stage 'status
-      (def:task 'FirstPlayer 'status)
-      (def:task 'SecondPlayer 'status))))
-
-
-(define (init cxt ::Context self ::Player)
-  (self:set 'account 0))
-
-(define (status cxt ::Context self ::Player)
-  (ui:show-message self:name (self:history:tabulate)))
 
 (define proposition 0)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 通牒者プレーヤ(FirstPlayer)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (first-player context ::Context self ::Player)
-  (ui:request-input self:name
+(define (first-player ctx ::Context self ::Player)
+  (ui:show-message self:name (to-string "第" ctx:roundnum "ラウンドです．"))
+  (ui:input-request self:name
     (ui:form  (to-string "あなたは" provided-val "円を受けとりました．いくらを分け与えますか？")
-      (ui:val-input "金額" 'proposition 1000))
+      (ui:val-input "分け与えると提案する金額" 'proposition 10 (make Min 0) (make Max 100000)))
     (lambda (prop)
       (self:set 'proposition prop)
       (set! proposition prop)
@@ -56,10 +34,11 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 判断者プレーヤ(SecondPlayer)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (second-player context ::Context self ::Player)
+(define (second-player ctx ::Context self ::Player)
+  (ui:show-message self:name (to-string "第" ctx:roundnum "ラウンドです．"))
   (define rec-msg (self:msgbox:pop))
   (log:debug rec-msg)
-  (ui:request-input self:name
+  (ui:input-request self:name
     (ui:form (to-string "FirstPlayerさんは" provided-val "円を受け取り，あなたに"
                 (rec-msg:get 'proposition) "円を分けると言いました．受けとりますか？")
       (ui:radio-input "受けとる？" 'yes-or-no "yes" (list "yes" "no") (list "yes" "no")))
@@ -72,9 +51,9 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 金銭の授受の計算モデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (paid-model context ::Context)
-  (define FirstPlayer (context:getPlayer 'FirstPlayer))
-  (define SecondPlayer (context:getPlayer 'SecondPlayer))
+(define (paid-model ctx ::Context)
+  (define FirstPlayer (ctx:getPlayer 'FirstPlayer))
+  (define SecondPlayer (ctx:getPlayer 'SecondPlayer))
 
   (if (equal? yes-or-no "yes")
     (money-paid)
@@ -82,17 +61,17 @@
 
   (define (money-paid)
     (let* ((val-of-p2 proposition)
-           (val-of-p1 (- 100000 proposition)))
-      (FirstPlayer:setAll    (cons 'account (+ (FirstPlayer:get 'account)  val-of-p1)) (cons 'paid val-of-p1) (cons 'yes-or-no "yes"))
-      (SecondPlayer:setAll   (cons 'account (+ (SecondPlayer:get 'account) val-of-p2)) (cons 'paid val-of-p2) (cons 'yes-or-no "yes"))
+           (val-of-p1 (- 100000 (to-num proposition))))
+      (FirstPlayer:set 'account val-of-p1)
+      (SecondPlayer:set 'account val-of-p2)
       (ui:show-message 'all
         "交渉が成立しました．"
-        (html:ul
-          (to-string "FirstPlayerは" val-of-p1 "円を取得しました．")
-          (to-string "SecondPlayerは" val-of-p2 "円を取得しました．")))))
+        (<ul>
+          (<li> (to-string "FirstPlayerは" val-of-p1 "円を取得しました．"))
+          (<li> (to-string "SecondPlayerは" val-of-p2 "円を取得しました．"))))))
 
   (define (money-not-paid)
     (ui:show-message 'all "交渉は成立しませんでした")
-    (FirstPlayer:setAll    (cons 'account (+ (FirstPlayer:get 'account)  0)) (cons 'paid 0) (cons 'yes-or-no "no"))
-    (SecondPlayer:setAll   (cons 'account (+ (SecondPlayer:get 'account) 0)) (cons 'paid 0) (cons 'yes-or-no "no")))
+    (FirstPlayer:set 'account 0)
+    (SecondPlayer:set 'account 0))
 )

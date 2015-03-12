@@ -60,7 +60,7 @@
   (bridger:edit-aux ctx self a-orig-text prev-revised-text))
   
 (define (bridger:edit-aux ctx ::YMCContext self ::Bridger a-orig-text prev-revised-text)
-  (ui:request-input self:name
+  (ui:input-request self:name
   (make Form
       (<div>
         (<p> "原文" ctx:roundnum) (<blockquote> a-orig-text)
@@ -81,7 +81,7 @@
       (<p> "原文" ctx:roundnum "は以下です．")(<blockquote> a-orig-text)
       (<p> "修正した文章は以下です．")(<blockquote> self:revisedSentence)))
 
-  (ui:request-input self:name
+  (ui:input-request self:name
     (make Form (make-msg)
       (make RadioInput 
           ( <strong>"これで修正を終えますか？") 'again-or-finish "AGAIN" (list "再修正" "修正完了") (list "AGAIN" "FINISH")))
@@ -91,7 +91,7 @@
 
 (define (evaluator:evaluate ctx ::YMCContext self ::Evaluator)
   (define bridger ::Bridger (ctx:getPlayer 'Bridger))
-  (ui:request-input self:name
+  (ui:input-request self:name
     (make Form
 　　　　 (<p> bridger:revisedSentence)
       (make RadioInput 

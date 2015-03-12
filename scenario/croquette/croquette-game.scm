@@ -18,7 +18,7 @@
   
   (def:ext-player 'Farmer 'agent Farmer)
   (def:ext-player 'Factory 'human Factory)
-  (def:ext-players *shop-names* 'Shop1 'human Shop)
+  (def:ext-players *shop-names* 'human Shop)
 
   (def:round
     (def:stage 'init
@@ -151,11 +151,11 @@
 
 
 (define (shop:order ctx ::Market self ::Shop)
-  (ui:request-input self:name
+  (ui:input-request self:name
     (ui:form
       (to-string ctx:roundnum "日目です．" self:name "さん，コロッケ工場へ発注して下さい．発注したものは，明後日に納品されます．")
       (ui:val-input "個数(冷凍コロッケ)" 'num-of-croquette (self:orders ctx:roundnum)))
-    (lambda (num-of-croquette)
+    (lambda (num-of-croquette ::number)
       (self:order num-of-croquette)
       (manager:send-message 'Factory (make CroquetteOrder self:name num-of-croquette)))))
 
@@ -165,7 +165,7 @@
   (define shop2-prices  (make ArrayList '(150 150 150 150 150 150 150 150 150 150)))
 
   (define shop-price ((if (eqv? self:name 'Shop1) shop1-prices shop2-prices) ctx:roundnum))
-  (ui:request-input self:name
+  (ui:input-request self:name
     (ui:form
           (to-string ctx:roundnum "日目です．" self:name "さん，今日のコロッケの販売価格を決定して下さい．")
       (ui:val-input "販売価格(コロッケ)" 'price shop-price))
@@ -193,7 +193,7 @@
 
 (define (factory:order ctx ::Market self ::Factory)
   (define factory-orders (make ArrayList '(200 200 200 200 200 200 200 200 200 200)))
-  (ui:request-input self:name
+  (ui:input-request self:name
     (ui:form
       (to-string
         ctx:roundnum "日目です．" self:name "さん，農場へじゃがいもを発注して下さい．発注したものは，明日に納品されます．")
