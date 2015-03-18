@@ -9,14 +9,14 @@
     (to-string "<h2>メッセージにはHTMLタグも使えるので，画像の挿入も出来ます．</h2>"
                "<img src=\"http://www.magcruise.org/jp/wp-content/themes/magcruise/img/logo.png\">"))
 
-  (ui:input-request self:name
+  (ui:request-to-input self:name
     (make Form "あなたの手を選んでください．"
       (make RadioInput  "手" 'hand "gu" (list "グー" "チョキ" "パー") (list "gu" "choki" "pa")))
     (lambda (hand)
       (ui:show-message 'all "あなたが入力した手は " hand " です．")))
   (ui:show-message  'all "じゃんけんの入力結果を受けとるまで，このメッセージが表示されないことに注意して下さい．")
 
-  (ui:input-request self:name
+  (ui:request-to-input self:name
     (make Form "あなたの属性とタイカレーの好みについて教えて下さい．"
       (make TextInput "名前" 'name "Scheme 太郎")
       (make ValInput "年齢" 'age 20)

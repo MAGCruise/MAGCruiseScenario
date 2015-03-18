@@ -38,11 +38,11 @@
   (ctx:auction))
 
 (define (human:vote ctx ::MarketContext self ::CompanyPlayer)
-  (ui:input-request self:name
+  (ui:request-to-input self:name
     (ui:form  (to-string "あなたは" self:type "です．" "必要量は" self:demand "です．" "留保価格をいくらにしますか？")
       (ui:val-input "金額(円/kWh)" 'reservation 6))
     (lambda (reservation)
       (set! self:reservation reservation))))
 
 (define (player:status ctx ::MarketContext self ::CompanyPlayer)
-  (ui:show-message self:name (self:history:tabulate)))
+  (ui:show-message self:name (self:tabulateHistory)))

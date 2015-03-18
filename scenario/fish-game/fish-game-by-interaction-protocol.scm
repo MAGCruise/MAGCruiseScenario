@@ -81,7 +81,7 @@
   (manager:send-event 'Fisherman1 (manager:make-event 'start-stage)))
 
 (define (fisher:input-negotiation ctx ::Context self ::Player)
-  (ui:input-request self:name
+  (ui:request-to-input self:name
     (ui:form "相手に伝えたいことを入力して下さい．"
       (ui:text-input "何も無ければENDと入力して下さい．" 'text "END"))
     (lambda (text ::string)

@@ -42,10 +42,10 @@
 ;; 通牒者プレーヤ(FirstPlayer)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (first-player context ::Context self ::Player)
-  (ui:input-request self:name
+  (ui:request-to-input self:name
     (ui:form  (to-string "あなたは" provided-val "円を受けとりました．いくらを分け与えますか？")
       (ui:val-input "金額" 'proposition 1000))
-    (lambda (prop)
+    (lambda (prop ::number)
       (self:set 'proposition prop)
       (set! proposition prop)
       (define msg ::Message (self:makeMessage 'proposition (cons 'proposition prop)))
@@ -59,7 +59,7 @@
 (define (second-player context ::Context self ::Player)
   (define rec-msg (self:msgbox:pop))
   (log:debug rec-msg)
-  (ui:input-request self:name
+  (ui:request-to-input self:name
     (ui:form (to-string "FirstPlayerさんは" provided-val "円を受け取り，あなたに"
                 (rec-msg:get 'proposition) "円を分けると言いました．受けとりますか？")
       (ui:radio-input "受けとる？" 'yes-or-no "yes" (list "yes" "no") (list "yes" "no")))

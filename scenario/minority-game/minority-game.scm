@@ -4,16 +4,17 @@
   (def:player 'HumanPlayer3 'human)
 
   (def:rounds 2
-    (def:stage 'vote
+    (def:parallel-stage 'vote
       (def:task 'HumanPlayer1 'vote)
       (def:task 'HumanPlayer2 'vote)
-      (def:task 'HumanPlayer3 'vote)
+      (def:task 'HumanPlayer3 'vote))
+    (def:stage 'dist
       (def:task 'distribution))))
 
 (define items '("アイテムX" "アイテムY"))
 
 (define (vote ctx ::Context self ::Player)
-  (ui:input-request self:name
+  (ui:request-to-input self:name
     (ui:form
       "1000円のアイテムXと100円のアイテムYがあります．
       あなたの他に2人プレーヤがいて，他のプレーヤと異なるアイテムを選べば，そのアイテムを貰うことができます．
@@ -31,7 +32,7 @@
     (html:p "結果は以下です"
     (apply html:ul
       (map
-        (lambda (p ::Player) (to-string p:name " → " (p:get 'item)))
+        (lambda (p ::Player) (to-string p:name "→" (p:get 'item) ", "))
         ctx:players:all))))
   (log:debug (ln) minority)
   (for-each

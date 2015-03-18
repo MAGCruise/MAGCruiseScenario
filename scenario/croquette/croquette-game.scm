@@ -151,7 +151,7 @@
 
 
 (define (shop:order ctx ::Market self ::Shop)
-  (ui:input-request self:name
+  (ui:request-to-input self:name
     (ui:form
       (to-string ctx:roundnum "日目です．" self:name "さん，コロッケ工場へ発注して下さい．発注したものは，明後日に納品されます．")
       (ui:val-input "個数(冷凍コロッケ)" 'num-of-croquette (self:orders ctx:roundnum)))
@@ -165,7 +165,7 @@
   (define shop2-prices  (make ArrayList '(150 150 150 150 150 150 150 150 150 150)))
 
   (define shop-price ((if (eqv? self:name 'Shop1) shop1-prices shop2-prices) ctx:roundnum))
-  (ui:input-request self:name
+  (ui:request-to-input self:name
     (ui:form
           (to-string ctx:roundnum "日目です．" self:name "さん，今日のコロッケの販売価格を決定して下さい．")
       (ui:val-input "販売価格(コロッケ)" 'price shop-price))
@@ -193,7 +193,7 @@
 
 (define (factory:order ctx ::Market self ::Factory)
   (define factory-orders (make ArrayList '(200 200 200 200 200 200 200 200 200 200)))
-  (ui:input-request self:name
+  (ui:request-to-input self:name
     (ui:form
       (to-string
         ctx:roundnum "日目です．" self:name "さん，農場へじゃがいもを発注して下さい．発注したものは，明日に納品されます．")
