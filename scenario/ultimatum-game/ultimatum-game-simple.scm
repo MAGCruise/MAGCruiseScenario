@@ -1,5 +1,4 @@
 ;; 最後通牒ゲーム
-;; http://www.magcruise.org/jp/developer/tutorial/ultimatum-game/all
 
 (define provided-val 100000)
 
