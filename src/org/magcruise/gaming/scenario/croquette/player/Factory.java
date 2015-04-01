@@ -13,7 +13,6 @@ import org.magcruise.gaming.scenario.croquette.msg.CroquetteOrder;
 
 public class Factory extends Player {
 
-	public int initDelivary = 100;
 	public int price = 60;
 
 	@Attribute(name = "発注個数")
@@ -44,8 +43,11 @@ public class Factory extends Player {
 	@Attribute(name = "受注表")
 	public Map<Symbol, Integer> orders = new HashMap<>();
 
-	public Factory(Symbol playerName, Symbol playerType) {
+	public int[] defaultOrdersToFarmer;
+
+	public Factory(Symbol playerName, Symbol playerType, int[] ordersToFarmer) {
 		super(playerName, playerType);
+		this.defaultOrdersToFarmer = ordersToFarmer;
 	}
 
 	public void init() {
@@ -60,7 +62,7 @@ public class Factory extends Player {
 
 	public int getTotalOrder(Context ctx) {
 		if (ctx.roundnum < 2) {
-			return initDelivary * 2;
+			return 0;
 		}
 
 		Map<Symbol, Integer> prevOrders = (Map<Symbol, Integer>) prev(2,
@@ -79,9 +81,8 @@ public class Factory extends Player {
 	public int delivery(Context ctx, Symbol shop, int stockBeforeDelivery) {
 		int totalOrder = getTotalOrder(ctx);
 
-		int order = ctx.roundnum < 2 ? initDelivary
-				: ((Map<Symbol, Integer>) prev(2, new SimpleSymbol("orders")))
-						.get(shop);
+		int order = ctx.roundnum < 2 ? 0 : ((Map<Symbol, Integer>) prev(2,
+				new SimpleSymbol("orders"))).get(shop);
 		int delivery = totalOrder <= stockBeforeDelivery ? order : (int) Math
 				.floor(stockBeforeDelivery * (order / totalOrder));
 		this.stock -= delivery;
@@ -102,9 +103,9 @@ public class Factory extends Player {
 
 		this.inventoryCost = stock * 5; // 1つストックするのに5円かかる．前回生産した残りに在庫維持費がかかる．
 
-		this.materialCost = deliveredPotato * 20; // 材料費(じゃがいも購入費1つ20円)
+		this.materialCost = deliveredPotato * 10; // 材料費(じゃがいも購入費1つ20円)
 		this.production = deliveredPotato * 2; // 1つのじゃがいもからコロッケが1つ
-		this.machiningCost = +production * 20; // コロッケ加工費1つ20円
+		this.machiningCost = +production * 5; // コロッケ加工費1つ10円
 		this.stock += production; // 生産してから，ストックの計算
 		this.earnings = sales * price; // 収入は個数×単価
 		this.profit = earnings - (materialCost + machiningCost + inventoryCost);// 利益は，収入から材料費，加工費，在庫維持費を引いたもの．

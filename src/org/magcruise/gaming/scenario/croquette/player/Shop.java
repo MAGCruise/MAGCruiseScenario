@@ -2,15 +2,10 @@ package org.magcruise.gaming.scenario.croquette.player;
 
 import gnu.mapping.Symbol;
 
-import java.util.Arrays;
-import java.util.List;
-
 import org.magcruise.gaming.model.Attribute;
 import org.magcruise.gaming.model.Player;
 
 public class Shop extends Player {
-
-	public List<Integer> orders;
 
 	@Attribute(name = "発注個数")
 	public int order;
@@ -31,17 +26,20 @@ public class Shop extends Player {
 	public int earnings;
 	@Attribute(name = "利益")
 	public int profit;
-	@Attribute(name = "購入希望数")
+	@Attribute(name = "来店者数")
 	public int demand;
 
-	public Shop(Symbol playerName, Symbol playerType) {
+	public int[] defaultOrders;
+	public int[] defaultPrices;
+
+	public Shop(Symbol playerName, Symbol playerType, int[] prices, int[] orders) {
 		super(playerName, playerType);
+		this.defaultPrices = prices;
+		this.defaultOrders = orders;
+		this.stock = 1000;
 	}
 
 	public void init() {
-		this.orders = Arrays.asList(200, 200, 200, 200, 200, 200, 200, 200,
-				200, 200);
-		this.stock = 300;
 	}
 
 	public void order(int orderOfCroquette) {
@@ -57,14 +55,8 @@ public class Shop extends Player {
 		this.stock += delivery;
 	}
 
-	public void closing(Shop other, int demand) {
-		int totalPrice = price + other.price;
-		this.demand = (int) Math.floor(demand
-				* (((double) totalPrice - price) / totalPrice)); // 売れる量は値段の逆比
-
-		if (price < other.price) {
-			this.demand += 100;// 安い金額を付けた方にボーナス
-		}
+	public void closing(int demand) {
+		this.demand = demand;
 
 		this.sales = (stock >= demand) ? demand : stock; // 需要だけ売れる．上限は在庫量．
 

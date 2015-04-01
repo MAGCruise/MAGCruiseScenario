@@ -9,8 +9,6 @@ import org.magcruise.gaming.model.Player;
 
 public class Farmer extends Player {
 
-	public int initDelivery;
-
 	@Attribute
 	public int receivedOrderOfPotato;
 
@@ -18,18 +16,13 @@ public class Farmer extends Player {
 		super(playerName, playerType);
 	}
 
-	public void init() {
-		this.initDelivery = 100;
-	}
-
 	public void receiveOrder(int order) {
 		this.receivedOrderOfPotato = order;
 	}
 
 	public int delivery(Context ctx) {
-
-		int order = ctx.roundnum < 1 ? initDelivery : (int) prev(1,
-				new SimpleSymbol("receivedOrderOfPotato"));
+		int order = ctx.roundnum < 1 ? 0 : (int) prev(1, new SimpleSymbol(
+				"receivedOrderOfPotato"));
 		return order;
 	}
 }
