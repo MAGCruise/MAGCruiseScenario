@@ -13,13 +13,12 @@ import org.magcruise.gaming.scenario.croquette.msg.CroquetteOrder;
 
 public class Factory extends Player {
 
+	@Attribute(name = "価格")
 	public int price = 60;
 
-	@Attribute(name = "発注個数")
+	@Attribute(name = "発注個数(じゃがいも)")
 	public int orderOfPotato;
-	@Attribute(name = "受注個数")
-	public int orderedCroquette;
-	@Attribute(name = "納品個数")
+	@Attribute(name = "納品個数(じゃがいも)")
 	public int deliveredPotato;
 	@Attribute(name = "生産個数")
 	public int production;
@@ -37,10 +36,10 @@ public class Factory extends Player {
 	public int earnings;
 	@Attribute(name = "利益")
 	public int profit;
-	@Attribute(name = "購入希望数")
+	@Attribute(name = "納品希望数")
 	public int demand;
 
-	@Attribute(name = "受注表")
+	@Attribute(name = "受注内容")
 	public Map<Symbol, Integer> orders = new HashMap<>();
 
 	public int[] defaultOrdersToFarmer;
@@ -49,7 +48,6 @@ public class Factory extends Player {
 		super(playerName, playerType);
 		this.defaultOrdersToFarmer = ordersToFarmer;
 		this.stock = 0;
-		this.orderedCroquette = 0;
 		this.demand = 0;
 		this.sales = 0;
 
@@ -90,22 +88,16 @@ public class Factory extends Player {
 		return delivery;
 	}
 
-	public void receiveDelivery(int potato) {
+	public void receiveDeliveryAndProduce(int potato) {
 		this.deliveredPotato = potato;
+		this.production = deliveredPotato * 2; // 1つのじゃがいもからコロッケが1つ
+		this.stock += production;
 	}
 
 	public void closing() {
-		this.orderedCroquette = 0;
-		for (Integer o : orders.values()) {
-			this.orderedCroquette += o;
-		}
-
-		this.inventoryCost = stock * 5; // 1つストックするのに5円かかる．前回生産した残りに在庫維持費がかかる．
-
+		this.inventoryCost = (stock - production) * 5; // 1つストックするのに5円かかる．今回の生産物には在庫費はかからない．
 		this.materialCost = deliveredPotato * 10; // 材料費(じゃがいも購入費1つ20円)
-		this.production = deliveredPotato * 2; // 1つのじゃがいもからコロッケが1つ
 		this.machiningCost = +production * 5; // コロッケ加工費1つ10円
-		this.stock += production; // 生産してから，ストックの計算
 		this.earnings = sales * price; // 収入は個数×単価
 		this.profit = earnings - (materialCost + machiningCost + inventoryCost);// 利益は，収入から材料費，加工費，在庫維持費を引いたもの．
 	}
