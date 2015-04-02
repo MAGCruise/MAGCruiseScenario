@@ -24,7 +24,7 @@ public class Factory extends Player {
 	@Attribute(name = "生産個数")
 	public int production;
 	@Attribute(name = "在庫個数")
-	public int stock = 400;
+	public int stock;
 	@Attribute(name = "加工費")
 	public int machiningCost;
 	@Attribute(name = "材料費")
@@ -48,12 +48,11 @@ public class Factory extends Player {
 	public Factory(Symbol playerName, Symbol playerType, int[] ordersToFarmer) {
 		super(playerName, playerType);
 		this.defaultOrdersToFarmer = ordersToFarmer;
-	}
-
-	public void init() {
+		this.stock = 0;
 		this.orderedCroquette = 0;
 		this.demand = 0;
 		this.sales = 0;
+
 	}
 
 	public void receiveOrder(CroquetteOrder msg) {

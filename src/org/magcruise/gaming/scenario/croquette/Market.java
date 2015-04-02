@@ -10,18 +10,13 @@ import org.magcruise.gaming.scenario.croquette.player.Shop;
 
 public class Market extends Context {
 
-	private int[] demands;
-
-	public Market(Properties props, Players players, String scenarioHome,
-			int[] demands) {
+	public Market(Properties props, Players players, String scenarioHome) {
 		super(props, players, scenarioHome);
-		this.demands = demands;
 	}
 
 	public Market(int roundnum, Properties props, History history,
-			Players players, String scenarioHome, int[] demands) {
+			Players players, String scenarioHome) {
 		super(roundnum, props, history, players, scenarioHome);
-		this.demands = demands;
 	}
 
 	public int distributeDemand(Shop shop) {

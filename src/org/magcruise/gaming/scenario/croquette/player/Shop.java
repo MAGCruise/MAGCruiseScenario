@@ -18,7 +18,7 @@ public class Shop extends Player {
 	public int price;
 	@Attribute(name = "在庫費")
 	public int inventoryCost;
-	@Attribute(name = "材料費")
+	@Attribute(name = "仕入費")
 	public int materialCost;
 	@Attribute(name = "売上個数")
 	public int sales;
