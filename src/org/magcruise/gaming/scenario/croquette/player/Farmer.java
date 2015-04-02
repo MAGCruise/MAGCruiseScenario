@@ -20,6 +20,10 @@ public class Farmer extends Player {
 		this.receivedOrderOfPotato = order;
 	}
 
+	public void refresh() {
+		this.receivedOrderOfPotato = 0;
+	}
+
 	public int delivery(Context ctx) {
 		int order = ctx.roundnum < 1 ? 0 : (int) prev(1, new SimpleSymbol(
 				"receivedOrderOfPotato"));

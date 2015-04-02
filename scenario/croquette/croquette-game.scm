@@ -17,14 +17,14 @@
   (def:ext-context Market)
   (def:ext-player 'Farmer 'agent Farmer)
   (def:ext-player 'Factory 'human Factory
-    (int[] 500 500 500 500 500 500 500 500 500 500))
+    (int[] 300 300 300 300 300 300 300 300 300 300 300))
 
   (def:ext-player 'Shop1 'human Shop
-      (int[] 100 100 100 100 100 100 100 100 100 100)
-      (int[] 400 400 400 400 400 400 400 400 400 400))
+      (int[] 100 100 100 100 100 100 100 100 100 100 100)
+      (int[] 400 400 400 400 400 400 400 400 400 400 400))
   (def:ext-player 'Shop2 'human Shop
-      (int[] 150 150 150 150 150 150 150 150 150 150)
-      (int[] 300 300 300 300 300 300 300 300 300 300))
+      (int[] 150 150 150 150 150 150 150 150 150 150 150)
+      (int[] 150 150 150 150 150 150 150 150 150 150 150))
 
   (def:round
     (def:stage 'init
@@ -45,7 +45,8 @@
   (def:round
     (def:parallel-stage 'status
       (def:players-task *shop-names* 'shop:status)
-      (def:task 'Factory 'factory:status))
+      (def:task 'Factory 'factory:status)
+      (def:task 'Farmer 'farmer:refresh))
     (def:stage 'farmer-delivery
       (def:task 'Farmer 'farmer:delivery)
       (def:task 'Factory 'factory:receive-delivery))
@@ -53,7 +54,7 @@
     (def:restage 'factory-receive-order)
     (def:restage 'closing))
 
-  (def:rounds 1
+  (def:rounds 6
     (def:restage 'status)
     (def:stage 'factory-delivery
       (def:task 'Factory 'factory:delivery)
@@ -77,6 +78,7 @@
 
   (def:round 
     (def:restage 'status)
+    (def:restage 'farmer-delivery)
     (def:restage 'factory-delivery)
     (def:restage 'factory-no-order)
     (def:restage 'shop-no-order)
@@ -87,10 +89,10 @@
     (def:restage 'status)))
 
 (define (shop:no-order ctx ::Market self ::Shop)
-  (self:set 'order-of-croquette 0))
+  (self:set 'order 0))
 
 (define (factory:no-order ctx ::Market self ::Factory)
-  (self:set 'order-of-potato 0))
+  (self:set 'orderOfPotato 0))
 
 
 (define (shop:status ctx ::Market self ::Shop)
@@ -122,7 +124,8 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'materialCost 'inventoryCost 'earnings 'profit))))
-  (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目がはじまりました．")))))
+  (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目がはじまりました．"))))
+  (self:refresh))
 
 (define (factory:status ctx ::Market self ::Factory)
   (ui:show-message self:name
@@ -148,8 +151,8 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'inventoryCost 'materialCost 'machiningCost 'earnings 'profit))))
-        
-  (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目がはじまりました．")))))
+  (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目がはじまりました．"))))
+  (self:refresh))
 
 (define (shop:init ctx ::Market self ::Shop)
   (ui:show-message self:name 
@@ -188,7 +191,7 @@
   (ui:request-to-input self:name
     (ui:form
           (to-string (<h4> ctx:roundnum "日目の販売価格") self:name "さん，今日のコロッケの販売価格を決定して下さい．")
-      (ui:val-input "販売価格(コロッケ)" 'price (self:defaultPrices ctx:roundnum) (Min 60) (Max 200)))
+      (ui:val-input "販売価格(コロッケ)" 'price (self:defaultPrices ctx:roundnum) (Min 50) (Max 200)))
     (lambda (price-of-croquette)
       (ui:show-message self:name (<div-class> "alert alert-success" (to-string "コロッケ1個の販売価格を" price-of-croquette "円に決めました．")))
       (self:price price-of-croquette))))
@@ -232,8 +235,7 @@
       (manager:send-message shop-name (make CroquetteDelivery self:name delivery)))
     *shop-names*)
   (ui:show-message self:name
-      (<div-class> "alert alert-info" msg "在庫は" self:stock "個になりました．"))
-)
+      (<div-class> "alert alert-info" msg "在庫は" self:stock "個になりました．")))
 
 (define (factory:receive-delivery ctx ::Market self ::Factory)
   (define msg ::PotatoDelivery (self:msgbox:pop))
@@ -249,3 +251,6 @@
 
 (define (farmer:delivery ctx ::Market self ::Farmer)
   (manager:send-message 'Factory (make PotatoDelivery self:name (self:delivery ctx))))
+
+(define (farmer:refresh ctx ::Market self ::Farmer)
+  (self:refresh))

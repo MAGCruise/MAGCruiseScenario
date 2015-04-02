@@ -14,7 +14,7 @@ import org.magcruise.gaming.scenario.croquette.msg.CroquetteOrder;
 public class Factory extends Player {
 
 	@Attribute(name = "価格")
-	public int price = 60;
+	public static int price = 60;
 
 	@Attribute(name = "発注個数(じゃがいも)")
 	public int orderOfPotato;
@@ -48,9 +48,18 @@ public class Factory extends Player {
 		super(playerName, playerType);
 		this.defaultOrdersToFarmer = ordersToFarmer;
 		this.stock = 0;
-		this.demand = 0;
-		this.sales = 0;
+	}
 
+	public void refresh() {
+		this.orderOfPotato = 0;
+		this.deliveredPotato = 0;
+		this.machiningCost = 0;
+		this.materialCost = 0;
+		this.inventoryCost = 0;
+		this.sales = 0;
+		this.earnings = 0;
+		this.profit = 0;
+		this.demand = 0;
 	}
 
 	public void receiveOrder(CroquetteOrder msg) {
@@ -95,9 +104,9 @@ public class Factory extends Player {
 	}
 
 	public void closing() {
-		this.inventoryCost = (stock - production) * 5; // 1つストックするのに5円かかる．今回の生産物には在庫費はかからない．
-		this.materialCost = deliveredPotato * 10; // 材料費(じゃがいも購入費1つ20円)
-		this.machiningCost = +production * 5; // コロッケ加工費1つ10円
+		this.inventoryCost = (stock - production) * 10; // 持ち越し在庫(=在庫量-生産量)*単価
+		this.materialCost = deliveredPotato * 20; // 材料費(じゃがいも個数*単価)
+		this.machiningCost = +production * 20; // 加工費(生産個数*単価)
 		this.earnings = sales * price; // 収入は個数×単価
 		this.profit = earnings - (materialCost + machiningCost + inventoryCost);// 利益は，収入から材料費，加工費，在庫維持費を引いたもの．
 	}
