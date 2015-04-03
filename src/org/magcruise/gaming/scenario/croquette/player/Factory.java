@@ -60,6 +60,7 @@ public class Factory extends Player {
 		this.earnings = 0;
 		this.profit = 0;
 		this.demand = 0;
+		this.orders.clear();
 	}
 
 	public void receiveOrder(CroquetteOrder msg) {

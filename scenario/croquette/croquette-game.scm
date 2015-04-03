@@ -27,7 +27,7 @@
       (int[] 150 150 150 150 150 150 150 150 150 150 150))
 
   (def:round
-    (def:stage 'init
+    (def:parallel-stage 'init
       (def:task 'Factory 'factory:init)
       (def:players-task *shop-names* 'shop:init))
     (def:parallel-stage 'shop-order-and-pricing-factory-order
@@ -97,12 +97,14 @@
 
 (define (shop:status ctx ::Market self ::Shop)
   (define other ::Shop (ctx:getOther self))
-  (define sale-msg (to-string "コロッケを1個" self:price "円で販売しました．" "お店にはお客さんが" self:demand "人きました．"
+  (define sale-msg (to-string "コロッケを1個" self:price "円で販売しました．" "お店にはお客さんが" self:demand "人来ました．"
                               self:sales "個が売れました．" "売り上げは" self:earnings "円です．"))
   (ui:show-message self:name
     (<div-class> "alert alert-info"
       (to-string
-        (<h4> (- ctx:roundnum 1) "日目が終了しました")
+        (<h4> (- ctx:roundnum 1) "日目が終わりました．")
+        (<br>)
+        (<h4> "概要")
         (<p> sale-msg)
         (<br>)
         (<h4> "詳細")
@@ -124,14 +126,20 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'materialCost 'inventoryCost 'earnings 'profit))))
-  (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目がはじまりました．"))))
+  (ui:request-to-input self:name
+    (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了")
+                         (<p> "次の日に進みます．")))
+    (lambda () #t))
+  (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
   (self:refresh))
 
 (define (factory:status ctx ::Market self ::Factory)
   (ui:show-message self:name
     (<div-class> "alert alert-info"
       (to-string
-        (<h4> (- ctx:roundnum 1) "日目が終了しました")
+        (<h4> (- ctx:roundnum 1) "日目が終わりました．")
+        (<br>)
+        (<h4> "概要")
         (<p>  self:deliveredPotato "個のじゃがいもが納品され，" self:production "個の冷凍コロッケを作成しました．"
              "また，各ショップから" self:orders "の注文を受けました．翌々日開始時点に納品する必要があります．")
         (<br>)
@@ -143,7 +151,11 @@
           (<li> "受注：" "各ショップから" self:orders "の注文を受けました．")
           (<li> "生産：" self:deliveredPotato "個のじゃがいもが納品されました．支払額は" self:materialCost "円です．"
                          self:production "個の冷凍コロッケを作成しました．" self:machiningCost "円の生産費がかかりました．")
-          (<li> "在庫：" "冷凍コロッケの在庫は" self:stock "個になりました．" "在庫維持費は" self:inventoryCost "円です．"))
+          (<li> "在庫：" "冷凍コロッケの在庫は" self:stock "個になりました．")
+          (<li> "収支：" "仕入費は" self:materialCost "円，"
+                         "在庫費は" self:inventoryCost "円，"
+                         "売上高は" self:earnings "円，"
+                         "利益は" self:profit "円です．"))
         (<br>)
         (<h4> "在庫表")
         (self:tabulateHistory 'deliveredPotato 'production 'stock 'orderOfPotato 'orders)
@@ -151,23 +163,32 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'inventoryCost 'materialCost 'machiningCost 'earnings 'profit))))
-  (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目がはじまりました．"))))
-  (self:refresh))
+  (ui:request-to-input self:name
+    (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了")
+                         (<p> "次の日に進みます．")))
+    (lambda () #t))
+  (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
+  (self:refresh)
+)
 
 (define (shop:init ctx ::Market self ::Shop)
-  (ui:show-message self:name 
-    (<div-class> "alert alert-warning"
-      (to-string (<h4> ctx:roundnum "日目がはじまりました．")
-                 "初日(0日目)に発注した冷凍コロッケは翌々日(2日目)に納品され，その日から販売できます．<br>"
-                 "現在の冷凍コロッケの在庫は" self:stock "個です．"))))
+  (define msg
+     (<div-class> "alert alert-warning"
+        (to-string (<h4> ctx:roundnum "日目がはじまりました．")
+                   "初日(0日目)に発注した冷凍コロッケは翌々日(2日目)に納品され，その日から販売できます．<br>"
+                   "現在の冷凍コロッケの在庫は" self:stock "個です．")))
+  (ui:request-to-input self:name (ui:form msg) (lambda () #t))
+  (ui:show-message self:name msg))
 
 (define (factory:init ctx ::Market self ::Factory)
-  (ui:show-message self:name 
-    (<div-class> "alert alert-warning"
-      (to-string (<h4> ctx:roundnum "日目がはじまりました．")
-                 "初日(0日目)に受ける注文は翌々日(2日目)開始時に納品しなくてはなりません．<br>"
-                 "初日(0日目)にじゃがいもを発注すると，翌日(1日目)に農家から納品されて冷凍コロッケを生産し，翌々日(2日目)にへショップへ納品できます．<br>"
-                 "現在の冷凍コロッケの在庫は" self:stock "個です．"))))
+  (define msg
+      (<div-class> "alert alert-warning"
+        (to-string (<h4> ctx:roundnum "日目がはじまりました．")
+                   "初日(0日目)に受ける注文は翌々日(2日目)開始時に納品しなくてはなりません．<br>"
+                   "初日(0日目)にじゃがいもを発注すると，翌日(1日目)に農家から納品されて冷凍コロッケを生産し，翌々日(2日目)にへショップへ納品できます．<br>"
+                   "現在の冷凍コロッケの在庫は" self:stock "個です．")))
+  (ui:request-to-input self:name (ui:form msg) (lambda () #t))
+  (ui:show-message self:name msg))
 
 
 (define (factory:closing ctx ::Market self ::Factory)
