@@ -256,7 +256,7 @@
   (ui:request-to-input self:name
     (ui:form
       (to-string ctx:roundnum "日目です．" self:name "さん，コロッケ工場へ発注して下さい．発注したものは，明後日に納品されます．")
-      (ui:val-input "個数(冷凍コロッケ)" 'num-of-potato-croquette shop-order))
+      (ui:number "個数(冷凍コロッケ)" 'num-of-potato-croquette shop-order))
     (lambda (num-of-potato-croquette)
       (self:set 'order-of-potato-croquette num-of-potato-croquette)
       (define msg ::Message (self:makeMessage 'order (cons 'num-of-potato-croquette num-of-potato-croquette)))
@@ -267,7 +267,7 @@
   (ui:request-to-input self:name
     (ui:form
           (to-string ctx:roundnum "日目です．" self:name "さん，今日のコロッケの販売価格を決定して下さい．")
-      (ui:val-input "販売価格(コロッケ)" 'price-of-potato-croquette shop-price))
+      (ui:number "販売価格(コロッケ)" 'price-of-potato-croquette shop-price))
     (lambda (price-of-potato-croquette)
       (self:set 'price-of-potato-croquette price-of-potato-croquette))))
 
@@ -299,7 +299,7 @@
     (ui:form
       (to-string
         ctx:roundnum "日目です．" self:name "さん，農場へじゃがいもを発注して下さい．発注したものは，明日に納品されます．")
-      (ui:val-input "個数(ジャガイモ)" 'potato (*factory-orders* ctx:roundnum)))
+      (ui:number "個数(ジャガイモ)" 'potato (*factory-orders* ctx:roundnum)))
     (lambda (potato)
       (self:set 'order-of-potato potato)
       (manager:send-message 'PotatoFarmer (self:makeMessage 'order (cons 'order-of-potato potato))))))

@@ -47,16 +47,16 @@
 (define (fisher:decide-number-of-fish ctx ::Context self ::Player)
   (ui:request-to-input self:name
     (ui:form "何匹の魚を取ろうとしますか？"
-      (ui:val-input "目標漁獲量" 'number 10))
+      (ui:number "目標漁獲量" 'number 10))
     (lambda (number ::number)
       (self:set 'decision number)
       (cons number decisions))))
 
-(define (fisher:input-comment ctx ::Context self ::Player)
+(define (fisher:comment ctx ::Context self ::Player)
   (ui:request-to-input self:name
     (ui:form "他の漁師に伝えたいメッセージを入力して下さい．"
-      (ui:text-input "何も無ければENDと入力して下さい．それ移行，このラウンド中は発言できなくなります．" 'text "END"))
+      (ui:text "何も無ければENDと入力して下さい．それ移行，このラウンド中は発言できなくなります．" 'text "END"))
     (lambda (text ::string)
       (self:set 'text text)
       (ui:show-message 'all self:name ": " (html:p text))))
-  (unless (equal? (self:get 'text) "END") (fisher:input-comment ctx self)))
+  (unless (equal? (self:get 'text) "END") (fisher:comment ctx self)))

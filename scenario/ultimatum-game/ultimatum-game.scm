@@ -43,7 +43,7 @@
 (define (first-player context ::Context self ::Player)
   (ui:request-to-input self:name
     (ui:form  (to-string "あなたは" provided-val "円を受けとりました．いくらを分け与えますか？")
-      (ui:val-input "金額" 'proposition 1000))
+      (ui:number "金額" 'proposition 1000))
     (lambda (prop ::number)
       (self:set 'proposition prop)
       (set! proposition prop)
@@ -61,7 +61,7 @@
   (ui:request-to-input self:name
     (ui:form (to-string "FirstPlayerさんは" provided-val "円を受け取り，あなたに"
                 (rec-msg:get 'proposition) "円を分けると言いました．受けとりますか？")
-      (ui:radio-input "受けとる？" 'yes-or-no "yes" (list "yes" "no") (list "yes" "no")))
+      (ui:radio "受けとる？" 'yes-or-no "yes" (list "yes" "no") (list "yes" "no")))
     (lambda (y-n)
       (self:set 'yes-or-no y-n)
       (set! yes-or-no y-n))))
@@ -85,13 +85,14 @@
       (FirstPlayer:setAll    (cons 'account (+ (FirstPlayer:get 'account)  val-of-p1)) (cons 'paid val-of-p1) (cons 'yes-or-no "yes"))
       (SecondPlayer:setAll   (cons 'account (+ (SecondPlayer:get 'account) val-of-p2)) (cons 'paid val-of-p2) (cons 'yes-or-no "yes"))
       (ui:show-message 'all
-        "交渉が成立しました．"
-        (html:ul
-          (to-string "FirstPlayerは" val-of-p1 "円を取得しました．")
-          (to-string "SecondPlayerは" val-of-p2 "円を取得しました．")))))
+        (<div-class> "alert alert-success" 
+          "交渉が成立しました．"
+          (html:ul
+            (to-string "FirstPlayerは" val-of-p1 "円を取得しました．")
+            (to-string "SecondPlayerは" val-of-p2 "円を取得しました．"))))))
 
   (define (money-not-paid)
-    (ui:show-message 'all "交渉は成立しませんでした")
+    (ui:show-message 'all (<div-class> "alert alert-warning" "交渉は成立しませんでした"))
     (FirstPlayer:setAll    (cons 'account (+ (FirstPlayer:get 'account)  0)) (cons 'paid 0) (cons 'yes-or-no "no"))
     (SecondPlayer:setAll   (cons 'account (+ (SecondPlayer:get 'account) 0)) (cons 'paid 0) (cons 'yes-or-no "no")))
 )

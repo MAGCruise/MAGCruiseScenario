@@ -3,11 +3,16 @@ package org.magcruise.gaming.scenario.croquette.player;
 import gnu.mapping.SimpleSymbol;
 import gnu.mapping.Symbol;
 
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
+import org.magcruise.gaming.lang.Properties;
 import org.magcruise.gaming.model.Attribute;
 import org.magcruise.gaming.model.Context;
+import org.magcruise.gaming.model.History;
+import org.magcruise.gaming.model.MessageBox;
 import org.magcruise.gaming.model.Player;
 import org.magcruise.gaming.scenario.croquette.msg.CroquetteOrder;
 
@@ -23,7 +28,7 @@ public class Factory extends Player {
 	@Attribute(name = "生産個数")
 	public int production;
 	@Attribute(name = "在庫個数")
-	public int stock;
+	public int stock = 0;
 	@Attribute(name = "加工費")
 	public int machiningCost;
 	@Attribute(name = "材料費")
@@ -42,12 +47,19 @@ public class Factory extends Player {
 	@Attribute(name = "受注内容")
 	public Map<Symbol, Integer> orders = new HashMap<>();
 
-	public int[] defaultOrdersToFarmer;
+	@Attribute(name = "発注個数のデフォルト値")
+	public List<Integer> defaultOrdersToFarmer;
 
-	public Factory(Symbol playerName, Symbol playerType, int[] ordersToFarmer) {
-		super(playerName, playerType);
-		this.defaultOrdersToFarmer = ordersToFarmer;
-		this.stock = 0;
+	public Factory(Symbol playerName, Symbol playerType, String operatorId,
+			Properties props, MessageBox msgbox, History history) {
+		super(playerName, playerType, operatorId, props, msgbox, history);
+	}
+
+	public Factory(Symbol playerName, Symbol playerType, String operatorId,
+			Properties props, MessageBox msgbox, History history,
+			Integer[] ordersToFarmer) {
+		super(playerName, playerType, operatorId, props, msgbox, history);
+		this.defaultOrdersToFarmer = Arrays.asList(ordersToFarmer);
 	}
 
 	public void refresh() {

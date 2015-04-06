@@ -8,7 +8,7 @@
   (def:rounds 3
     (def:parallel-stage 'negotiation
       (def:task  'notify-status)
-      (def:players-task fishers 'fisher:input-comment))
+      (def:players-task fishers 'fisher:comment))
     (def:parallel-stage 'fishing
       (def:players-task fishers 'fisher:decide-number-of-fish))
     (def:stage 'calc-fishing

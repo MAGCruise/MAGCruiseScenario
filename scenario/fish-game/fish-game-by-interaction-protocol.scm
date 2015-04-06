@@ -31,7 +31,7 @@
    (manager:send-event 'Fisherman1 (manager:make-event 'notify)))
 
   (define (!negotiation ctx ::Context self ::Player event ::Event)
-    (fisher:input-negotiation ctx self)
+    (fisher:negotiation ctx self)
       (if (equal? (self:get 'text) "END")
         (begin
           (manager:send-event 'Fisherman1 (self:makeEvent 'finish-negotiation))
@@ -62,7 +62,7 @@
    (manager:send-event 'Fisherman2 (manager:make-event 'notify)))
 
   (define (!response ctx ::Context self ::Player event ::Event)
-    (fisher:input-negotiation ctx self)
+    (fisher:negotiation ctx self)
     (let* ((event (self:makeEvent 'response)))
       (manager:send-event 'Fisherman1 event)))
 
@@ -80,10 +80,10 @@
 (define (start-stage ctx ::Context)
   (manager:send-event 'Fisherman1 (manager:make-event 'start-stage)))
 
-(define (fisher:input-negotiation ctx ::Context self ::Player)
+(define (fisher:negotiation ctx ::Context self ::Player)
   (ui:request-to-input self:name
     (ui:form "相手に伝えたいことを入力して下さい．"
-      (ui:text-input "何も無ければENDと入力して下さい．" 'text "END"))
+      (ui:text "何も無ければENDと入力して下さい．" 'text "END"))
     (lambda (text ::string)
       (self:set 'text text)
       (ui:show-message 'all self:name ": " (html:p text)))))

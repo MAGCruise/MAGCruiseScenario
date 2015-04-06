@@ -17,14 +17,14 @@
   (def:ext-context Market)
   (def:ext-player 'Farmer 'agent Farmer)
   (def:ext-player 'Factory 'human Factory
-    (int[] 300 300 300 300 300 300 300 300 300 300 300))
+    (Integer[] 300 300 300 300 300 300 300 300 300 300 300))
 
   (def:ext-player 'Shop1 'human Shop
-      (int[] 100 100 100 100 100 100 100 100 100 100 100)
-      (int[] 400 400 400 400 400 400 400 400 400 400 400))
+      (Integer[] 100 100 100 100 100 100 100 100 100 100 100)
+      (Integer[] 400 400 400 400 400 400 400 400 400 400 400))
   (def:ext-player 'Shop2 'human Shop
-      (int[] 150 150 150 150 150 150 150 150 150 150 150)
-      (int[] 150 150 150 150 150 150 150 150 150 150 150))
+      (Integer[] 150 150 150 150 150 150 150 150 150 150 150)
+      (Integer[] 150 150 150 150 150 150 150 150 150 150 150))
 
   (def:round
     (def:parallel-stage 'init
@@ -43,9 +43,9 @@
       (def:players-task *shop-names* 'shop:closing)))
 
   (def:round
-    (def:parallel-stage 'status
-      (def:players-task *shop-names* 'shop:status)
-      (def:task 'Factory 'factory:status)
+    (def:parallel-stage 'refresh
+      (def:players-task *shop-names* 'shop:refresh)
+      (def:task 'Factory 'factory:refresh)
       (def:task 'Farmer 'farmer:refresh))
     (def:stage 'farmer-delivery
       (def:task 'Farmer 'farmer:delivery)
@@ -55,7 +55,7 @@
     (def:restage 'closing))
 
   (def:rounds 6
-    (def:restage 'status)
+    (def:restage 'refresh)
     (def:stage 'factory-delivery
       (def:task 'Factory 'factory:delivery)
       (def:players-task *shop-names* 'shop:receive-delivery))
@@ -65,37 +65,24 @@
     (def:restage 'closing))
 
   (def:round 
-    (def:restage 'status)
+    (def:restage 'refresh)
     (def:restage 'factory-delivery)
     (def:restage 'farmer-delivery)
-    (def:stage 'factory-no-order
-      (def:task 'Factory 'factory:no-order))
-    (def:parallel-stage 'shop-no-order
-      (def:players-task *shop-names* 'shop:no-order))
     (def:parallel-stage 'shop-pricing
       (def:players-task *shop-names* 'shop:pricing))
     (def:restage 'closing))
 
   (def:round 
-    (def:restage 'status)
-    (def:restage 'farmer-delivery)
+    (def:restage 'refresh)
     (def:restage 'factory-delivery)
-    (def:restage 'factory-no-order)
-    (def:restage 'shop-no-order)
     (def:restage 'shop-pricing)
     (def:restage 'closing))
 
   (def:round 
-    (def:restage 'status)))
-
-(define (shop:no-order ctx ::Market self ::Shop)
-  (self:set 'order 0))
-
-(define (factory:no-order ctx ::Market self ::Factory)
-  (self:set 'orderOfPotato 0))
+    (def:restage 'refresh)))
 
 
-(define (shop:status ctx ::Market self ::Shop)
+(define (shop:refresh ctx ::Market self ::Shop)
   (define other ::Shop (ctx:getOther self))
   (define sale-msg (to-string "コロッケを1個" self:price "円で販売しました．" "お店にはお客さんが" self:demand "人来ました．"
                               self:sales "個が売れました．" "売り上げは" self:earnings "円です．"))
@@ -133,7 +120,7 @@
   (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
   (self:refresh))
 
-(define (factory:status ctx ::Market self ::Factory)
+(define (factory:refresh ctx ::Market self ::Factory)
   (ui:show-message self:name
     (<div-class> "alert alert-info"
       (to-string
@@ -202,7 +189,7 @@
   (ui:request-to-input self:name
     (ui:form
       (to-string  (<h4> ctx:roundnum "日目の発注") self:name "さん，コロッケ工場へ発注して下さい．発注したものは，翌々日の販売前に納品される予定です．")
-      (ui:val-input "個数(冷凍コロッケ)" 'num-of-croquette (self:defaultOrders ctx:roundnum) (Min 0) (Max 1000)))
+      (ui:number "個数(冷凍コロッケ)" 'num-of-croquette (self:defaultOrders ctx:roundnum) (Min 0) (Max 1000)))
     (lambda (num-of-croquette ::number)
       (self:order num-of-croquette)
       (ui:show-message self:name (<div-class> "alert alert-success" (to-string "冷凍コロッケを" num-of-croquette "個発注しました．翌々日に納品されます．")))
@@ -212,8 +199,8 @@
   (ui:request-to-input self:name
     (ui:form
           (to-string (<h4> ctx:roundnum "日目の販売価格") self:name "さん，今日のコロッケの販売価格を決定して下さい．")
-      (ui:val-input "販売価格(コロッケ)" 'price (self:defaultPrices ctx:roundnum) (Min 50) (Max 200)))
-    (lambda (price-of-croquette)
+      (ui:number "販売価格(コロッケ)" 'price (self:defaultPrices ctx:roundnum) (Min 50) (Max 200)))
+    (lambda (price-of-croquette ::number)
       (ui:show-message self:name (<div-class> "alert alert-success" (to-string "コロッケ1個の販売価格を" price-of-croquette "円に決めました．")))
       (self:price price-of-croquette))))
 
@@ -240,7 +227,7 @@
   (ui:request-to-input self:name
     (ui:form
       (to-string (<h4> ctx:roundnum "日目の発注") self:name "さん，農場へじゃがいもを発注して下さい．発注したものは，翌日に納品されます．")
-      (ui:val-input "個数(ジャガイモ)" 'potato (self:defaultOrdersToFarmer ctx:roundnum) (Min 0) (Max 1000)))
+      (ui:number "個数(ジャガイモ)" 'potato (self:defaultOrdersToFarmer ctx:roundnum) (Min 0) (Max 1000)))
     (lambda (potato ::number)
       (self:order potato)
       (ui:show-message self:name (<div-class> "alert alert-success" (to-string "じゃがいもを" potato "個発注しました．翌日に納品されます．")))

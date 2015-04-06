@@ -2,7 +2,13 @@ package org.magcruise.gaming.scenario.croquette.player;
 
 import gnu.mapping.Symbol;
 
+import java.util.Arrays;
+import java.util.List;
+
+import org.magcruise.gaming.lang.Properties;
 import org.magcruise.gaming.model.Attribute;
+import org.magcruise.gaming.model.History;
+import org.magcruise.gaming.model.MessageBox;
 import org.magcruise.gaming.model.Player;
 
 public class Shop extends Player {
@@ -29,13 +35,23 @@ public class Shop extends Player {
 	@Attribute(name = "来店者数")
 	public int demand;
 
-	public int[] defaultOrders;
-	public int[] defaultPrices;
+	@Attribute(name = "発注個数のデフォルト値")
+	public List<Integer> defaultOrders;
+	@Attribute(name = "販売価格のデフォルト値")
+	public List<Integer> defaultPrices;
 
-	public Shop(Symbol playerName, Symbol playerType, int[] prices, int[] orders) {
-		super(playerName, playerType);
-		this.defaultPrices = prices;
-		this.defaultOrders = orders;
+	public Shop(Symbol playerName, Symbol playerType, String operatorId,
+			Properties props, MessageBox msgbox, History history) {
+		super(playerName, playerType, operatorId, props, msgbox, history);
+		revert();
+	}
+
+	public Shop(Symbol playerName, Symbol playerType, String operatorId,
+			Properties props, MessageBox msgbox, History history,
+			Integer[] prices, Integer[] orders) {
+		super(playerName, playerType, operatorId, props, msgbox, history);
+		this.defaultPrices = Arrays.asList(prices);
+		this.defaultOrders = Arrays.asList(orders);
 		this.stock = 600;
 	}
 

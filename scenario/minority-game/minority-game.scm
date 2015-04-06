@@ -19,7 +19,7 @@
       "1000円のアイテムXと100円のアイテムYがあります．
       あなたの他に2人プレーヤがいて，他のプレーヤと異なるアイテムを選べば，そのアイテムを貰うことができます．
       もし，一緒のアイテムを選んだ場合は，何も貰うことは出来ません．どちらのアイテムを選びますか？"
-      (ui:radio-input "アイテムの選択" 'item (car items) items items))
+      (ui:radio "アイテムの選択" 'item (car items) items items))
     (lambda (item)
       (self:set 'item item))))
 

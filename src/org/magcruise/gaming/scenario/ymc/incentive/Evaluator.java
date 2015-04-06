@@ -13,10 +13,6 @@ public class Evaluator extends Player {
 
 	public String averageScore = "0.00";
 
-	public Evaluator(Symbol playerName, Symbol playerType) {
-		super(playerName, playerType);
-	}
-
 	public Evaluator(Symbol playerName, Symbol playerType, String operatorId,
 			Properties props, MessageBox msgbox, History history) {
 		super(playerName, playerType, operatorId, props, msgbox, history);
