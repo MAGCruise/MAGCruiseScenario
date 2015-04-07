@@ -2,7 +2,6 @@ package org.magcruise.gaming.scenario.croquette.player;
 
 import gnu.mapping.Symbol;
 
-import java.util.Arrays;
 import java.util.List;
 
 import org.magcruise.gaming.lang.Properties;

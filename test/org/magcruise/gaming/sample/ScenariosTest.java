@@ -1,6 +1,5 @@
 package org.magcruise.gaming.sample;
 
-import java.io.File;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -25,8 +24,7 @@ public class ScenariosTest {
 				"croquette/croquette_multi_x_3_item_x_2.scm",
 				"croquette/croquette_multi_x_4_item_x_2.scm" };
 		for (String scenario : scenarios) {
-			ReplLauncher sl = new ReplLauncher(new File("../MAGCruiseCore"),
-					scenario);
+			ReplLauncher sl = new ReplLauncher("../MAGCruiseCore", scenario);
 			gameExecutor.scheduleAtFixedRate(sl, 1, 10, TimeUnit.SECONDS);
 		}
 	}

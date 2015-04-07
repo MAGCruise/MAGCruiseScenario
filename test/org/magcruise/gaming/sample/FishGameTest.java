@@ -1,7 +1,5 @@
 package org.magcruise.gaming.sample;
 
-import java.io.File;
-
 import org.junit.Before;
 import org.junit.Test;
 import org.magcruise.gaming.ui.swing.LocalGUILauncher;
@@ -30,7 +28,7 @@ public class FishGameTest {
 	@Test
 	public void testScenario() {
 		String scenario = "fish-game/fish.scm";
-		LocalGUILauncher sl = new LocalGUILauncher(new File("../MAGCruiseCore/"),
+		LocalGUILauncher sl = new LocalGUILauncher("../MAGCruiseCore/",
 				scenario);
 		sl.run();
 	}
