@@ -3,7 +3,6 @@ package org.magcruise.gaming.scenario.croquette.player;
 import gnu.mapping.SimpleSymbol;
 import gnu.mapping.Symbol;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -45,10 +44,10 @@ public class Factory extends Player {
 	public int demand;
 
 	@Attribute(name = "受注内容")
-	public Map<Symbol, Integer> orders = new HashMap<>();
+	public Map<Symbol, Number> orders = new HashMap<>();
 
 	@Attribute(name = "発注個数のデフォルト値")
-	public List<Integer> defaultOrdersToFarmer;
+	public List<Number> defaultOrdersToFarmer;
 
 	public Factory(Symbol playerName, Symbol playerType, String operatorId,
 			Properties props, MessageBox msgbox, History history) {
@@ -57,9 +56,9 @@ public class Factory extends Player {
 
 	public Factory(Symbol playerName, Symbol playerType, String operatorId,
 			Properties props, MessageBox msgbox, History history,
-			Integer[] ordersToFarmer) {
+			List<Number> ordersToFarmer) {
 		super(playerName, playerType, operatorId, props, msgbox, history);
-		this.defaultOrdersToFarmer = Arrays.asList(ordersToFarmer);
+		this.defaultOrdersToFarmer = ordersToFarmer;
 	}
 
 	public void refresh() {
@@ -76,7 +75,7 @@ public class Factory extends Player {
 	}
 
 	public void receiveOrder(CroquetteOrder msg) {
-		this.orders.put(msg.from, msg.num);
+		this.orders.put(msg.from, new Integer(msg.num));
 	}
 
 	public int getTotalOrder(Context ctx) {
@@ -84,11 +83,11 @@ public class Factory extends Player {
 			return 0;
 		}
 
-		Map<Symbol, Integer> prevOrders = (Map<Symbol, Integer>) prev(2,
+		Map<Symbol, Number> prevOrders = (Map<Symbol, Number>) prev(2,
 				new SimpleSymbol("orders"));
 		int tmp = 0;
-		for (int num : prevOrders.values()) {
-			tmp += num;
+		for (Number num : prevOrders.values()) {
+			tmp += Integer.valueOf(num.toString());
 		}
 		return tmp;
 	}
@@ -100,8 +99,9 @@ public class Factory extends Player {
 	public int delivery(Context ctx, Symbol shop, int stockBeforeDelivery) {
 		int totalOrder = getTotalOrder(ctx);
 
-		int order = ctx.roundnum < 2 ? 0 : ((Map<Symbol, Integer>) prev(2,
-				new SimpleSymbol("orders"))).get(shop);
+		int order = ctx.roundnum < 2 ? 0 : Integer
+				.valueOf(((Map<Symbol, Number>) prev(2, new SimpleSymbol(
+						"orders"))).get(shop).toString());
 		int delivery = totalOrder <= stockBeforeDelivery ? order : (int) Math
 				.floor(stockBeforeDelivery * (order / totalOrder));
 		this.stock -= delivery;

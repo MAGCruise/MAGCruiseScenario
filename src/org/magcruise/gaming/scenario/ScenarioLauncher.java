@@ -20,7 +20,7 @@ public class ScenarioLauncher {
 
 		LocalGUILauncher launcher = new LocalGUILauncher(new File(
 				"../MAGCruiseCore"), scenario);
-		 launcher.setTestMode(false);
+		launcher.setTestMode(false);
 
 		launcher.run();
 	}

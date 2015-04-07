@@ -5,7 +5,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-import org.magcruise.gaming.ui.repl.ReplLauncher;
+import org.magcruise.gaming.ui.swing.ReplLauncher;
 
 public class ScenariosTest {
 	private static ScheduledExecutorService gameExecutor;

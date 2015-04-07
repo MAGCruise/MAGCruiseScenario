@@ -2,14 +2,13 @@ package org.magcruise.gaming.scenario.croquette.player;
 
 import gnu.mapping.SimpleSymbol;
 import gnu.mapping.Symbol;
-import gnu.math.IntNum;
 
 import org.magcruise.gaming.lang.Properties;
 import org.magcruise.gaming.model.Attribute;
-import org.magcruise.gaming.model.Context;
 import org.magcruise.gaming.model.History;
 import org.magcruise.gaming.model.MessageBox;
 import org.magcruise.gaming.model.Player;
+import org.magcruise.gaming.scenario.croquette.Market;
 
 public class Farmer extends Player {
 
@@ -29,10 +28,9 @@ public class Farmer extends Player {
 		this.receivedOrderOfPotato = 0;
 	}
 
-	public int delivery(Context ctx) {
+	public int delivery(Market ctx) {
 		int order = ctx.roundnum < 1 ? 0 : Integer.valueOf(prev(1,
 				new SimpleSymbol("receivedOrderOfPotato")).toString());
-
 		return order;
 	}
 }

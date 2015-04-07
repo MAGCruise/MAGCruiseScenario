@@ -17,14 +17,14 @@
   (def:ext-context Market)
   (def:ext-player 'Farmer 'agent Farmer)
   (def:ext-player 'Factory 'human Factory
-    (Integer[] 300 300 300 300 300 300 300 300 300 300 300))
+    (list 300 300 300 300 300 300 300 300 300 300 300))
 
   (def:ext-player 'Shop1 'human Shop
-      (Integer[] 100 100 100 100 100 100 100 100 100 100 100)
-      (Integer[] 400 400 400 400 400 400 400 400 400 400 400))
+      (list 100 100 100 100 100 100 100 100 100 100 100)
+      (list 400 400 400 400 400 400 400 400 400 400 400))
   (def:ext-player 'Shop2 'human Shop
-      (Integer[] 150 150 150 150 150 150 150 150 150 150 150)
-      (Integer[] 150 150 150 150 150 150 150 150 150 150 150))
+      (list 150 150 150 150 150 150 150 150 150 150 150)
+      (list 150 150 150 150 150 150 150 150 150 150 150))
 
   (def:round
     (def:parallel-stage 'init

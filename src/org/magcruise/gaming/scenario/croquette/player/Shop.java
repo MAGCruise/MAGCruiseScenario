@@ -36,22 +36,21 @@ public class Shop extends Player {
 	public int demand;
 
 	@Attribute(name = "発注個数のデフォルト値")
-	public List<Integer> defaultOrders;
+	public List<Number> defaultOrders;
 	@Attribute(name = "販売価格のデフォルト値")
-	public List<Integer> defaultPrices;
+	public List<Number> defaultPrices;
 
 	public Shop(Symbol playerName, Symbol playerType, String operatorId,
 			Properties props, MessageBox msgbox, History history) {
 		super(playerName, playerType, operatorId, props, msgbox, history);
-		revert();
 	}
 
 	public Shop(Symbol playerName, Symbol playerType, String operatorId,
 			Properties props, MessageBox msgbox, History history,
-			Integer[] prices, Integer[] orders) {
+			List<Number> prices, List<Number> orders) {
 		super(playerName, playerType, operatorId, props, msgbox, history);
-		this.defaultPrices = Arrays.asList(prices);
-		this.defaultOrders = Arrays.asList(orders);
+		this.defaultPrices = prices;
+		this.defaultOrders = orders;
 		this.stock = 600;
 	}
 
