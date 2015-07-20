@@ -5,7 +5,8 @@ import org.magcruise.gaming.ui.swing.LocalGUILauncher;
 public class ScenarioLauncher {
 
 	public static void main(String[] args) {
-		String scenario = "scenario/croquette/croquette-game.scm";
+		String scenario = "scenario/ultimatum-game/ultimatum-game-children.scm";
+		// String scenario = "scenario/croquette/croquette-game.scm";
 		// String scenario = "scenario/ele/ele.scm";
 		// String scenario = "scenario/fish-game/fish.scm";
 		// String scenario =

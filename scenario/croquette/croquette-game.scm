@@ -1,3 +1,4 @@
+(define-namespace croquette "croquette")
 (define-namespace shop "shop")
 (define-namespace factory "factory")
 (define-namespace farmer "farmer")
@@ -12,6 +13,11 @@
 (define-alias Farmer org.magcruise.gaming.scenario.croquette.player.Farmer)
 (define-alias Factory org.magcruise.gaming.scenario.croquette.player.Factory)
 (define-alias Market org.magcruise.gaming.scenario.croquette.Market)
+
+(define (croquette:assign ctx ::Context u1 u2 u3)
+  (def:assign ctx u1 'Factory)
+  (def:assign ctx u2 'Shop1)
+  (def:assign ctx u3 'Shop2))
 
 (define (def:game-scenario)
   (def:ext-context Market)
