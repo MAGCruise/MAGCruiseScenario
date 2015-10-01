@@ -5,6 +5,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 public class Constraints {
 	Map<String, Integer> constraints = new HashMap<>();
 
@@ -39,4 +42,11 @@ public class Constraints {
 		constraints.put(from + "-" + to, tmp);
 		constraints.put(to + "-" + from, tmp);
 	}
+
+	@Override
+	public String toString() {
+		return ToStringBuilder.reflectionToString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
 }

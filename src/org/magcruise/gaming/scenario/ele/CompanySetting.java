@@ -1,5 +1,8 @@
 package org.magcruise.gaming.scenario.ele;
 
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
 import com.orangesignal.csv.annotation.CsvColumn;
 import com.orangesignal.csv.annotation.CsvEntity;
 
@@ -23,7 +26,8 @@ public class CompanySetting {
 
 	@Override
 	public String toString() {
-		return name + "," + type + "," + demand + "," + reservation;
+		return ToStringBuilder.reflectionToString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 }

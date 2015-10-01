@@ -1,8 +1,11 @@
 package org.magcruise.gaming.scenario.ele;
 
-import gnu.mapping.Symbol;
-
 import java.io.Serializable;
+
+import org.apache.commons.lang.builder.ToStringBuilder;
+import org.apache.commons.lang.builder.ToStringStyle;
+
+import gnu.mapping.Symbol;
 
 public class Trade implements Serializable {
 
@@ -18,6 +21,8 @@ public class Trade implements Serializable {
 
 	@Override
 	public String toString() {
-		return partner + "," + amount + "," + price;
+		return ToStringBuilder.reflectionToString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
+
 }

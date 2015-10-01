@@ -19,7 +19,7 @@ public class Companies {
 	public void align() {
 		List<CompanyPlayer> tmp = new ArrayList<CompanyPlayer>();
 		for (CompanyPlayer p : companies) {
-			if (p.demand == 0) {
+			if (p.remaindDemand == 0) {
 				tmp.add(p);
 			}
 		}
@@ -68,8 +68,8 @@ public class Companies {
 		int min = Integer.MAX_VALUE;
 		CompanyPlayer lowestSeller = null;
 		for (CompanyPlayer p : getSellers()) {
-			if (p.reservation < min) {
-				min = p.reservation;
+			if (p.inputPrice < min) {
+				min = p.inputPrice;
 				lowestSeller = p;
 			}
 		}
@@ -82,8 +82,8 @@ public class Companies {
 
 		for (String area : areas) {
 			for (CompanyPlayer p : getBuyersIn(area)) {
-				if (p.reservation > max) {
-					max = p.reservation;
+				if (p.inputPrice > max) {
+					max = p.inputPrice;
 					heiestBuyer = p;
 				}
 			}

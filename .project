@@ -3,6 +3,7 @@
 	<name>MAGCruiseScenario</name>
 	<comment></comment>
 	<projects>
+		<project>MAGCruiseLibraries</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
