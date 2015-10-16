@@ -17,7 +17,7 @@
   (list "0.00" "1.11" "2.22" "3.33" "4.44" "5.55" "6.66" "7.77" "8.88" "9.99"))
 
 
-(define-alias Bridger org.magcruise.gaming.scenario.ymc.incentive.Bridger)
+(define-alias Bridger org.magcruise.gaming.scenario.ymc.incentive.JPBridger)
 (define-alias Evaluator org.magcruise.gaming.scenario.ymc.incentive.Evaluator)
 (define-alias YMCContext org.magcruise.gaming.scenario.ymc.incentive.YMCContext)
 

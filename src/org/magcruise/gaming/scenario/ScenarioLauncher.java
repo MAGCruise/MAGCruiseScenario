@@ -8,7 +8,7 @@ public class ScenarioLauncher {
 		// String scenario =
 		// "scenario/ultimatum-game/ultimatum-game-children.scm";
 		// String scenario = "scenario/croquette/croquette-game.scm";
-		String scenario = "scenario/ele/ele.scm";
+		// String scenario = "scenario/ele/ele.scm";
 		// String scenario = "scenario/fish-game/fish.scm";
 		// String scenario =
 		// "scenario/fish-game/fish-game-by-interaction-protocol.scm";
@@ -19,6 +19,7 @@ public class ScenarioLauncher {
 		// String scenario = "scenario/ultimatum-game/ultimatum-game.scm";
 		// String scenario =
 		// "scenario/ultimatum-game/ultimatum-game-simple.scm";
+		String scenario = "scenario/CandC-2015/ymc-exp.scm";
 
 		LocalGUILauncher launcher = new LocalGUILauncher("../MAGCruiseCore",
 				scenario);

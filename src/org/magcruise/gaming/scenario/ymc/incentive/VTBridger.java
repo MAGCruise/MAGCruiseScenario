@@ -7,11 +7,11 @@ import org.magcruise.gaming.model.History;
 import org.magcruise.gaming.model.MessageBox;
 import org.magcruise.gaming.model.Player;
 
-public class Bridger extends Player {
+public class VTBridger extends Player {
 
 	public String revisedSentence = "";
 
-	public Bridger(Symbol playerName, Symbol playerType, String operatorId,
+	public VTBridger(Symbol playerName, Symbol playerType, String operatorId,
 			Properties props, MessageBox msgbox, History history) {
 		super(playerName, playerType, operatorId, props, msgbox, history);
 	}

@@ -1,6 +1,6 @@
 (util:load-resource "scenario/ymc-gaming-2013-11/settings.scm")
 
-(define-alias Bridger org.magcruise.gaming.scenario.ymc.incentive.Bridger)
+(define-alias Bridger org.magcruise.gaming.scenario.ymc.incentive.JPBridger)
 (define-alias Evaluator org.magcruise.gaming.scenario.ymc.incentive.Evaluator)
 (define-alias YMCContext org.magcruise.gaming.scenario.ymc.incentive.YMCContext)
 
@@ -67,11 +67,11 @@
 
 (define (make-msg roundnum q-orig-text a-orig-text revisedSentence translated-sentence back-translated-sentence)
   (<div>
-    (<p> "質問文" roundnum "は以下です．")(<blockquote> q-orig-text)
-    (<p> "原文" roundnum "は以下です．")(<blockquote> a-orig-text)
-    (<p> "修正した文章は以下です．")(<blockquote> revisedSentence)
-    (<p> "翻訳(日→英)の結果は以下です．")(<blockquote> translated-sentence)
-    (<p> "折り返し翻訳(日→英→日)の結果は以下です．")(<blockquote> back-translated-sentence)))
+    (<p> "Question" roundnum)(<blockquote> q-orig-text)
+    (<p> "Original Sentence" roundnum)(<blockquote> a-orig-text)
+    (<p> "Revised Sentence")(<blockquote> revisedSentence)
+    (<p> "Translation")(<blockquote> translated-sentence)
+    (<p> "Backtranslation")(<blockquote> back-translated-sentence)))
 
 (define (evaluator:evaluate ctx ::YMCContext self ::Evaluator)
   (ui:request-to-input self:name
@@ -86,9 +86,9 @@
       (log:debug _scoreA _scoreB _scoreC))))
 
 (define (translation src_lang target_lang src_text)
-  (langrid:TranslationWithTemporalDictionary-translate 
-    "TranslationCombinedWithBilingualDictionaryWithLongestMatchSearch" src_lang target_lang src_text
-    (ArrayUtil:array Translation)
-    target_lang
+  (define client (langrid:make-client TranslationWithTemporalDictionaryService
+    "TranslationCombinedWithBilingualDictionaryWithLongestMatchSearch"
     '("TranslationPL" "KyotoUJServer")
-    '("BilingualDictionaryWithLongestMatchSearchPL" "http://robin.ai.soc.i.kyoto-u.ac.jp/ymccommunitydictionary/services/YMCCommunityDictionary")))
+    '("BilingualDictionaryWithLongestMatchSearchPL"
+        "http://robin.ai.soc.i.kyoto-u.ac.jp/ymccommunitydictionary/services/YMCCommunityDictionary")))
+    (client:translate src_lang target_lang src_text (ArrayUtil:array Translation) target_lang))

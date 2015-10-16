@@ -19,7 +19,7 @@
 
 
 
-(define-alias Bridger org.magcruise.gaming.scenario.ymc.incentive.Bridger)
+(define-alias Bridger org.magcruise.gaming.scenario.ymc.incentive.JPBridger)
 (define-alias Evaluator org.magcruise.gaming.scenario.ymc.incentive.Evaluator)
 (define-alias YMCContext org.magcruise.gaming.scenario.ymc.incentive.YMCContext)
 
