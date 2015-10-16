@@ -26,7 +26,11 @@
       (def:task 'JP-Bridger 'jp-bridger:bridge-jp-en)
       (def:task 'VT-Bridger 'vt-bridger:bridge-en-vt))
     (def:stage 'feedback
-      (def:task 'VT-Youth 'vt-youth:decide-feedback))))
+      (def:task 'VT-Youth 'vt-youth:decide-feedback)))
+
+  (def:rounds 1
+    (def:restage 'question-answer)
+    (def:restage 'feedback)))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -53,42 +57,36 @@
 
     (define (rewrite self ::JPBridger ctx ::YMCContext question-orig-text answer-orig-text prev-revised-text)
       (ui:request-to-input self:name
-        (make Form (to-string 
-                      "Question No. "
-                      (number->string ctx:roundnum)
-                      (<br>) (<pre> question-orig-text)
-                      (<br>) "Original sentences of the answer"
-                      (number->string ctx:roundnum)
-                      (<br>) (<pre> answer-orig-text)
+        (ui:form (to-string 
+                      (<p> "Question No. " ctx:roundnum) (<pre> question-orig-text)
+                      (<p> "Original sentences of Answer No. " ctx:roundnum)(<pre> answer-orig-text)
                       (<p> (<strong> "Please, rewrite the sentences to raise translation quality. ")))
-              (make TextInput (<strong> "Revised sentences")  'revised-sentence prev-revised-text))
+              (ui:textarea (<strong> "Revised sentences")  'revised-sentence prev-revised-text))
         (lambda (revised-sentence)
           (set! self:revisedSentence revised-sentence)))
       
       (let* ((translated-sentence (translation "ja" "en" self:revisedSentence))
              (back-translated-sentence (translation "en" "ja" translated-sentence)))
           (ui:request-to-input self:name
-              (make Form 
+              (ui:form 
                 (to-string 
-                    "質問文" (number->string ctx:roundnum) 
-                    "は以下です．<br>" (<pre> question-orig-text)
-                    "原文" (number->string ctx:roundnum) 
-                    "は以下です．<br>" (<pre> answer-orig-text)
-                    "修正した文章は以下です．<br>" (<pre> self:revisedSentence)
-                    "翻訳(日→英)の結果は以下です．<br>" (<pre> translated-sentence)
-                    "折り返し翻訳(日→英→日)の結果は以下です．<br>" (<pre> back-translated-sentence))
-                (make RadioInput 
-                        (<strong> "これで日本語の修正を終えますか？")
-                        'again-or-finish "AGAIN" (list "再修正" "修正完了") (list "AGAIN" "FINISH")))
+                    (<p> "Question No. " ctx:roundnum )(<pre> question-orig-text)
+                    (<p> "Original senteces" ctx:roundnum )(<pre> answer-orig-text)
+                    (<p> "Revised sentences")(<pre> self:revisedSentence)
+                    (<p> "Result of translation (jp->en)")(<pre> translated-sentence)
+                    (<p> "Result of back-translation (jp->en->jp)")(<pre> back-translated-sentence))
+                (ui:radio 
+                        (<strong> "Do you want to finish rewriting?")
+                        'again-or-finish "AGAIN" (list "Again" "Finish") (list "AGAIN" "FINISH")))
             (lambda (again-or-finish)
               (self:set 'again-or-finish again-or-finish)))
 
         (ui:show-message 'JapaneseBridger
-            (to-string (<br>) (<strong> "・質問文" ctx:roundnum) (<br>) question-orig-text 
-                       (<br>) (<strong> "・原文" ctx:roundnum) (<br>) answer-orig-text 
-                       (<br>) (<strong> "・修正した文") (<br>) self:revisedSentence
-                       (<br>) (<strong> "・翻訳(日→英)の結果") (<br>) translated-sentence
-                       (<br>) (<strong> "・折り返し翻訳(日→英→日)の結果") (<br>) back-translated-sentence)))
+            (to-string (<br>) (<strong> " - Question No. " ctx:roundnum) (<br>) question-orig-text 
+                       (<br>) (<strong> " - Original senteces" ctx:roundnum) (<br>) answer-orig-text 
+                       (<br>) (<strong> " - Revised sentences") (<br>) self:revisedSentence
+                       (<br>) (<strong> " - Result of translation (jp->en)") (<br>) translated-sentence
+                       (<br>) (<strong> " - Result of back-translation (jp->en->jp)") (<br>) back-translated-sentence)))
 
           (unless (equal? (self:get 'again-or-finish) "FINISH")
               (japanese-bridger-behavior self ctx 

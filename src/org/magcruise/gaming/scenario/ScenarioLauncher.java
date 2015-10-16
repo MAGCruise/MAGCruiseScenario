@@ -19,7 +19,7 @@ public class ScenarioLauncher {
 		// String scenario = "scenario/ultimatum-game/ultimatum-game.scm";
 		// String scenario =
 		// "scenario/ultimatum-game/ultimatum-game-simple.scm";
-		String scenario = "scenario/CandC-2015/ymc-exp.scm";
+		String scenario = "scenario/cc-2015/ymc.scm";
 
 		LocalGUILauncher launcher = new LocalGUILauncher("../MAGCruiseCore",
 				scenario);
