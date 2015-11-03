@@ -1,14 +1,11 @@
 (load-relative "fisherman.scm")
 
 (define (def:game-scenario)
-  (define (c1 ctx ::Context) (eqv? ctx:roundnum 0))
-
   (def:player 'Fisherman1 'human)
   (def:player 'Fisherman2 'human)
 
   (def:rounds 2
     (def:interaction-protocol-stage 'fish-game
-      (def:cond c1)
       (def:assign-scenario 'Fisherman1 'fisherman1-scenario)
       (def:assign-scenario 'Fisherman2 'fisherman2-scenario)
       (def:task 'start-stage))

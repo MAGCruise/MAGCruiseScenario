@@ -7,10 +7,6 @@ import org.magcruise.gaming.model.Players;
 
 public class YMCContext extends Context {
 
-	public YMCContext(Properties props, Players players, String scenarioHome) {
-		super(props, players, scenarioHome);
-	}
-
 	public YMCContext(int roundnum, Properties props, History history,
 			Players players, String scenarioHome) {
 		super(roundnum, props, history, players, scenarioHome);
