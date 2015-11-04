@@ -2,13 +2,14 @@
   (def:player 'HumanPlayer1 'human)
   (def:player 'HumanPlayer2 'human)
   (def:player 'HumanPlayer3 'human)
+  (def:player 'HumanPlayer4 'human)
 
   (define (c1 ctx ::Context) (eqv? ctx:roundnum 0))
   (define (c2 ctx ::Context) (eqv? ctx:roundnum 1))
 
-  ;; r1: H1 → H2 -> H1, H3, H2 → task
-  ;; r2: H1 → H1 → task
-  ;; r3: H1 → H2 → task
+  ;; r1: (H1 → H2)  → (H1, H3, H2) → (H4)
+  ;; r2: (H1 → H2)  → (H1) → (H4)
+  ;; r3: (H1 → H2)  → (H2) → (H4)
   (def:rounds 3
     (def:stage 'test
       (def:task 'HumanPlayer1 'vote)
@@ -38,11 +39,18 @@
       (self:set 'item item))))
 
 (define (distribution ctx ::Context)
+  (manager:sync-request-to-input (ctx:players:get 'HumanPlayer4):name
+    (ui:form
+      "フロー確認のために表示しています．"
+      (ui:radio "アイテムの選択" 'item (car items) items items))
+    (lambda (item)
+      #t))
+
   (define select-first (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 0))) ctx:players:all))
   (define select-second (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 1))) ctx:players:all))
   (define minority
     (if (< (length select-first) (length select-second)) select-first select-second))
-  (ui:show-message 'all
+  (manager:show-message 'all
     (html:p "結果は以下です"
     (apply html:ul
       (map
