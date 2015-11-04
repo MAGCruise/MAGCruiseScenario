@@ -41,11 +41,11 @@
   (self:vote ctx))
 
 (define (human:vote ctx ::MarketContext self ::CompanyPlayer)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form (to-string "あなたは" self:type "です．" "必要量は" self:demand "です．" "留保価格をいくらにしますか？")
       (ui:number "金額(円/kWh)" 'reservation self:reservation))
     (lambda (inputPrice)
       (set! self:inputPrice inputPrice))))
 
 (define (player:status ctx ::MarketContext self ::CompanyPlayer)
-  (ui:show-message self:name (self:tabulateHistory)))
+  (manager:show-message self:name (self:tabulateHistory)))

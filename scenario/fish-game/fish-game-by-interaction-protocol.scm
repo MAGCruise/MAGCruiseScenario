@@ -40,7 +40,7 @@
         (manager:send-scenario-event 'Fisherman2 (self:makeEvent 'negotiation))))
 
   (define (!decide-target ctx ::Context self ::Player event ::ScenarioEvent)
-    (ui:show-message 'all event)
+    (manager:show-message 'all event)
     (fisher:decide-number-of-fish ctx self))
 
   (def:player-scenario 'fisherman1
@@ -67,7 +67,7 @@
       (manager:send-scenario-event 'Fisherman1 event)))
 
   (define (!decide-target ctx ::Context self ::Player event ::ScenarioEvent)
-    (ui:show-message 'all event)
+    (manager:show-message 'all event)
     (fisher:decide-number-of-fish ctx self))
 
   (def:player-scenario 'fisherman2 
@@ -81,10 +81,10 @@
   (manager:send-scenario-event 'Fisherman1 (manager:make-scenario-event 'start-stage)))
 
 (define (fisher:negotiation ctx ::Context self ::Player)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form "相手に伝えたいことを入力して下さい．"
       (ui:text "何も無ければENDと入力して下さい．" 'text "END"))
     (lambda (text ::string)
       (self:set 'text text)
-      (ui:show-message 'all self:name ": " (html:p text)))))
+      (manager:show-message 'all self:name ": " (html:p text)))))
 

@@ -42,25 +42,25 @@
     (def:restage 'bridge-eval)))
 
 (define (bridger:init ctx ::YMCContext self ::Bridger)
-  (ui:show-message self:name "Bridgerであるあなたの日本文の書き換えサービスによって，翻訳文の品質が改善されます．"))
+  (manager:show-message self:name "Bridgerであるあなたの日本文の書き換えサービスによって，翻訳文の品質が改善されます．"))
 
 (define (evaluator:init ctx ::YMCContext self ::Evaluator)
-  (ui:show-message self:name "評価する文章が到着するまでお待ち下さい．"))
+  (manager:show-message self:name "評価する文章が到着するまでお待ち下さい．"))
 
 (define (bridger:receive-eval ctx ::YMCContext self ::Bridger)
   (define evaluator ::Evaluator (ctx:getPlayer 'Evaluator))
-  (ui:show-message self:name (html:div class:"alert alert-info" (to-string "原文の評価値は" (*a-orig-scores*:get ctx:roundnum) "でした．" "修正した文章の評価値は" evaluator:averageScore "になりました．"))))
+  (manager:show-message self:name (html:div class:"alert alert-info" (to-string "原文の評価値は" (*a-orig-scores*:get ctx:roundnum) "でした．" "修正した文章の評価値は" evaluator:averageScore "になりました．"))))
 
 (define (bridger:edit ctx ::YMCContext self ::Bridger)
   (define a-orig-text (*a-orig-texts*:get ctx:roundnum))
   (define prev-revised-text a-orig-text)
 
-  (ui:show-message self:name
+  (manager:show-message self:name
     "原文" ctx:roundnum "の修正をはじめて下さい．")
   (bridger:edit-aux ctx self a-orig-text prev-revised-text))
   
 (define (bridger:edit-aux ctx ::YMCContext self ::Bridger a-orig-text prev-revised-text)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
   (make Form
       (<div>
         (<p> "原文" ctx:roundnum) (<blockquote> a-orig-text)
@@ -70,7 +70,7 @@
   )
     (lambda (revised-sentence)
       (set! self:revisedSentence revised-sentence)
-　　　(ui:show-message self:name "文章の評価がされるまでお待ち下さい．")
+　　　(manager:show-message self:name "文章の評価がされるまでお待ち下さい．")
       (define ev ::Evaluator (ctx:getPlayer 'Evaluator))
       (evaluator:evaluate ctx ev)
       (bridger:receive-eval ctx self)))
@@ -81,7 +81,7 @@
       (<p> "原文" ctx:roundnum "は以下です．")(<blockquote> a-orig-text)
       (<p> "修正した文章は以下です．")(<blockquote> self:revisedSentence)))
 
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (make Form (make-msg)
       (make RadioInput 
           ( <strong>"これで修正を終えますか？") 'again-or-finish "AGAIN" (list "再修正" "修正完了") (list "AGAIN" "FINISH")))
@@ -91,7 +91,7 @@
 
 (define (evaluator:evaluate ctx ::YMCContext self ::Evaluator)
   (define bridger ::Bridger (ctx:getPlayer 'Bridger))
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (make Form
 　　　　 (<p> bridger:revisedSentence)
       (make RadioInput 
@@ -102,4 +102,4 @@
           "Cさん，この文章は分かりやすいですか？" '_scoreC "3" (String[] "1 (悪い) " "2" "3" "4" "5 (良い)") (String[] "1" "2" "3" "4" "5")))
     (lambda (_scoreA _scoreB _scoreC)
       (self:setAverageScore _scoreA _scoreB _scoreC)
-      (ui:show-message self:name "評価する次の文章が到着するまでお待ち下さい．"))))
+      (manager:show-message self:name "評価する次の文章が到着するまでお待ち下さい．"))))

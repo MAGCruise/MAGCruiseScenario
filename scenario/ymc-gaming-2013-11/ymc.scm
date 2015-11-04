@@ -25,7 +25,7 @@
     (def:restage 'bridge-eval)))
 
 (define (bridger:init ctx ::YMCContext self ::Bridger)
-  (ui:show-message self:name *instruction-message*))
+  (manager:show-message self:name *instruction-message*))
 
 (define (bridger:receive-eval ctx ::YMCContext self ::Bridger)
   (define evaluator ::Evaluator (ctx:getPlayer 'Evaluator)))
@@ -35,12 +35,12 @@
   (define q-orig-text (*q-orig-texts*:get ctx:roundnum))
   (define prev-revised-text a-orig-text)
 
-  (ui:show-message self:name
+  (manager:show-message self:name
     (<p> "原文" ctx:roundnum "の修正をはじめて下さい．"))
   (bridger:edit-aux ctx self q-orig-text a-orig-text a-orig-text))
   
 (define (bridger:edit-aux ctx ::YMCContext self ::Bridger q-orig-text a-orig-text prev-revised-text)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (make Form
       (<div>
         (<p> "質問文" ctx:roundnum ) (<blockquote> q-orig-text)
@@ -53,13 +53,13 @@
   (define translated-sentence (translation "ja" "en" self:revisedSentence))
   (define back-translated-sentence (translation "en" "ja" translated-sentence))
 
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (make Form (make-msg ctx:roundnum q-orig-text a-orig-text self:revisedSentence translated-sentence back-translated-sentence)
       (make RadioInput 
           (<strong> "これで日本語の修正を終えますか？") 'again-or-finish "AGAIN" (list "再修正" "修正完了") (list "AGAIN" "FINISH")))
     (lambda (again-or-finish)
       (set! self:againOrFinish again-or-finish)))
-  (ui:show-message self:name (make-msg ctx:roundnum q-orig-text a-orig-text self:revisedSentence translated-sentence back-translated-sentence))
+  (manager:show-message self:name (make-msg ctx:roundnum q-orig-text a-orig-text self:revisedSentence translated-sentence back-translated-sentence))
 
   (if (equal? self:againOrFinish "FINISH")
     (set! ctx:sentence translated-sentence)
@@ -74,7 +74,7 @@
     (<p> "Backtranslation")(<blockquote> back-translated-sentence)))
 
 (define (evaluator:evaluate ctx ::YMCContext self ::Evaluator)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (make Form (<p> ctx:sentence)
       (make RadioInput 
           (<strong> "Aさん，この文章は分かりやすいですか？") '_scoreA "0" (String[] "1 (悪い) " "2" "3" "4" "5 (良い)") (String[] "1" "2" "3" "4" "5"))

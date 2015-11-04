@@ -2,6 +2,12 @@
 
 (define provided-val 100000)
 
+(define-namespace ult "ult")
+(define (ult:assign ctx ::Context u1 u2)
+  (def:assign ctx u1 'FirstPlayer)
+  (def:assign ctx u2 'SecondPlayer))
+
+
 (define (def:game-scenario)
   (def:player 'FirstPlayer 'human)
   (def:player 'SecondPlayer 'human)
@@ -28,20 +34,20 @@
     (def:restage 'status)))
 
 (define (notify-round ctx ::Context)
-  (ui:show-message 'all (to-string "第" ctx:roundnum "ラウンドです．")))
+  (manager:show-message 'all (to-string "第" ctx:roundnum "ラウンドです．")))
 
 (define (init cxt ::Context self ::Player)
   (self:set 'account 0))
 
 (define (status cxt ::Context self ::Player)
-  (ui:show-message self:name (self:history:tabulate)))
+  (manager:show-message self:name (self:history:tabulate)))
 
 (define proposition 0)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 通牒者プレーヤ(FirstPlayer)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (first-player context ::Context self ::Player)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form  (to-string "あなたは" provided-val "円を受けとりました．いくらを分け与えますか？")
       (ui:number "金額" 'proposition 1000))
     (lambda (prop ::number)
@@ -58,7 +64,7 @@
 (define (second-player context ::Context self ::Player)
   (define rec-msg (self:msgbox:pop))
   (log:debug rec-msg)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form (to-string "FirstPlayerさんは" provided-val "円を受け取り，あなたに"
                 (rec-msg:get 'proposition) "円を分けると言いました．受けとりますか？")
       (ui:radio "受けとる？" 'yes-or-no "yes" (list "yes" "no") (list "yes" "no")))
@@ -84,7 +90,7 @@
            (val-of-p1 (- 100000 proposition)))
       (FirstPlayer:setAll    (cons 'account (+ (FirstPlayer:get 'account)  val-of-p1)) (cons 'paid val-of-p1) (cons 'yes-or-no "yes"))
       (SecondPlayer:setAll   (cons 'account (+ (SecondPlayer:get 'account) val-of-p2)) (cons 'paid val-of-p2) (cons 'yes-or-no "yes"))
-      (ui:show-message 'all
+      (manager:show-message 'all
         (<div-class> "alert alert-success" 
           "交渉が成立しました．"
           (html:ul
@@ -92,7 +98,8 @@
             (to-string "SecondPlayerは" val-of-p2 "円を取得しました．"))))))
 
   (define (money-not-paid)
-    (ui:show-message 'all (<div-class> "alert alert-warning" "交渉は成立しませんでした"))
+    (log:breakpoint (ln) "")
+    (manager:show-message 'all (<div-class> "alert alert-warning" "交渉は成立しませんでした"))
     (FirstPlayer:setAll    (cons 'account (+ (FirstPlayer:get 'account)  0)) (cons 'paid 0) (cons 'yes-or-no "no"))
     (SecondPlayer:setAll   (cons 'account (+ (SecondPlayer:get 'account) 0)) (cons 'paid 0) (cons 'yes-or-no "no")))
 )

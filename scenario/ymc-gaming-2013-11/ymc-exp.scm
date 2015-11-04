@@ -74,7 +74,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (jp-bridger:init ctx ::YMCContext self ::Bridger)
-  (ui:show-message 'JP-Bridger *instruction-message*))
+  (manager:show-message 'JP-Bridger *instruction-message*))
 
 (define (vt-youth:question)
   (set! self:question (question-orig-text (*question-orig-texts*:get ctx:roundnum))))
@@ -83,7 +83,7 @@
   (set! self:answer (answer-orig-text (*answer-orig-texts*:get ctx:roundnum))))
   
 (define (jp-bridger:bridge-jp-en ctx ::YMCContext self ::Bridger)
-    (ui:show-message 'JP-Bridger
+    (manager:show-message 'JP-Bridger
         (to-string "原文<strong>" ctx:roundnum "</strong>の修正をはじめて下さい．"))
     (japanese-bridger-behavior self ctx question-orig-text answer-orig-text prev-revised-text)))
 
@@ -100,7 +100,7 @@
     (client:translate src_lang target_lang src_text (make Translation[]) target_lang))
 
 (define (japanese-bridger-behavior self ::Player ctx ::Context question-orig-text answer-orig-text prev-revised-text)
-    (ui:request-to-input self:name
+    (manager:sync-request-to-input self:name
       (make Form (to-string 
                     "質問文"
                     (number->string ctx:roundnum)
@@ -114,7 +114,7 @@
     
     (let* ((translated-sentence (translation "ja" "en" self:revisedSentence))
            (back-translated-sentence (translation "en" "ja" translated-sentence)))
-        (ui:request-to-input self:name
+        (manager:sync-request-to-input self:name
             (make Form 
               (to-string 
                   "質問文" (number->string ctx:roundnum) 
@@ -129,7 +129,7 @@
                       'again-or-finish "AGAIN" (list "再修正" "修正完了") (list "AGAIN" "FINISH")))
           (lambda (again-or-finish)
             (self:set 'again-or-finish again-or-finish)))
-      (ui:show-message 'JapaneseBridger
+      (manager:show-message 'JapaneseBridger
           (to-string "<br><strong>・質問文" ctx:roundnum "</strong><br>　" question-orig-text 
                      "<br><strong>・原文" ctx:roundnum "</strong><br>　" answer-orig-text 
                      "<br><strong>・修正した文</strong><br>" (self:get 'revised-sentence)
@@ -138,8 +138,8 @@
 
         (if (equal? (self:get 'again-or-finish) "FINISH")
             (cond
-               ((equal? (*thanks-message-timings*:get ctx:roundnum) #f) (ui:show-message 'JP-Bridger *thanks-message*))
-               ((equal? (*failure-message-timings*:get ctx:roundnum) #t) (ui:show-message 'JP-Bridger *failure-message*)))
+               ((equal? (*thanks-message-timings*:get ctx:roundnum) #f) (manager:show-message 'JP-Bridger *thanks-message*))
+               ((equal? (*failure-message-timings*:get ctx:roundnum) #t) (manager:show-message 'JP-Bridger *failure-message*)))
             (japanese-bridger-behavior self ctx 
                 question-orig-text answer-orig-text (self:get 'revised-sentence))))
 

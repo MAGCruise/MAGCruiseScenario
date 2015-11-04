@@ -2,6 +2,12 @@
 
 (define provided-val 100000)
 
+(define-namespace ult "ult")
+(define (ult:assign ctx ::Context u1 u2)
+  (def:assign ctx u1 'FirstPlayer)
+  (def:assign ctx u2 'SecondPlayer))
+
+
 (define (def:game-scenario)
   (def:player 'FirstPlayer 'human)
   (def:player 'SecondPlayer 'human)
@@ -18,8 +24,8 @@
 ;; 通牒者プレーヤ(FirstPlayer)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (first-player ctx ::Context self ::Player)
-  (ui:show-message self:name (to-string "第" ctx:roundnum "ラウンドです．"))
-  (ui:request-to-input self:name
+  (manager:show-message self:name (to-string "第" ctx:roundnum "ラウンドです．"))
+  (manager:sync-request-to-input self:name
     (ui:form  (to-string "あなたは" provided-val "円を受けとりました．いくらを分け与えますか？")
       (ui:number "分け与えると提案する金額" 'proposition 10 (make Min 0) (make Max 100000)))
     (lambda (prop ::number)
@@ -34,10 +40,10 @@
 ;; 判断者プレーヤ(SecondPlayer)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (second-player ctx ::Context self ::Player)
-  (ui:show-message self:name (to-string "第" ctx:roundnum "ラウンドです．"))
+  (manager:show-message self:name (to-string "第" ctx:roundnum "ラウンドです．"))
   (define rec-msg (self:msgbox:pop))
   (log:debug rec-msg)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form (to-string "FirstPlayerさんは" provided-val "円を受け取り，あなたに"
                 (rec-msg:get 'proposition) "円を分けると言いました．受けとりますか？")
       (ui:radio "受けとる？" 'yes-or-no "yes" (list "yes" "no") (list "yes" "no")))
@@ -63,14 +69,14 @@
            (val-of-p1 (- 100000 (to-num proposition))))
       (FirstPlayer:set 'account val-of-p1)
       (SecondPlayer:set 'account val-of-p2)
-      (ui:show-message 'all
+      (manager:show-message 'all
         "交渉が成立しました．"
         (<ul>
           (<li> (to-string "FirstPlayerは" val-of-p1 "円を取得しました．"))
           (<li> (to-string "SecondPlayerは" val-of-p2 "円を取得しました．"))))))
 
   (define (money-not-paid)
-    (ui:show-message 'all "交渉は成立しませんでした")
+    (manager:show-message 'all "交渉は成立しませんでした")
     (FirstPlayer:set 'account 0)
     (SecondPlayer:set 'account 0))
 )

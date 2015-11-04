@@ -21,14 +21,14 @@
 
 
 (define (vote1 ctx ::Context self ::Player)
-  (ui:show-message self:name 1))
+  (manager:show-message self:name 1))
   
 (define (vote2 ctx ::Context self ::Player)
-  (ui:show-message self:name 2))
+  (manager:show-message self:name 2))
 
 (define (vote3 ctx ::Context self ::Player)
-  (ui:show-message self:name 3))
+  (manager:show-message self:name 3))
   
 
 (define (distribution ctx ::Context)
-  (ui:show-message 'all "dist"))
+  (manager:show-message 'all "dist"))

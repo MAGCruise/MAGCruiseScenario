@@ -6,12 +6,13 @@
   (define (c1 ctx ::Context) (eqv? ctx:roundnum 0))
   (define (c2 ctx ::Context) (eqv? ctx:roundnum 1))
 
-  ;; r1: H1 → H1, H3, H2 → task
+  ;; r1: H1 → H2 -> H1, H3, H2 → task
   ;; r2: H1 → H1 → task
   ;; r3: H1 → H2 → task
   (def:rounds 3
     (def:stage 'test
-      (def:task 'HumanPlayer1 'vote))
+      (def:task 'HumanPlayer1 'vote)
+      (def:task 'HumanPlayer2 'vote))
     (def:cond-stage 'vote
       (list c1 c2)
       (def:parallel-stage 'h1_2

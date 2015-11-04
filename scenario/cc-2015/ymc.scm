@@ -40,7 +40,7 @@
 
 (define (jp-bridger:init ctx ::YMCContext self ::JPBridger)
     (when (eqv? ctx:roundnum 0)
-        (ui:show-message self:name *instruction-message*)))
+        (manager:show-message self:name *instruction-message*)))
 
 (define (vt-youth:init ctx ::YMCContext self ::VTYouth)
     (self:init ctx:roundnum))
@@ -49,7 +49,7 @@
     (self:init ctx:roundnum))
 
 (define (jp-bridger:bridge-jp-en ctx ::YMCContext self ::JPBridger)
-    (ui:show-message self:name
+    (manager:show-message self:name
         (<div-class> "panel panel-warning"
             (<div-class> "panel-heading"
                 (<h4-attr> '(("class ""panel-title")) "No. " ctx:roundnum " : Question (for demo)"))
@@ -61,7 +61,7 @@
 
         
     (define (rewrite self ::JPBridger ctx ::YMCContext prev-revised-text)
-        (ui:request-to-input self:name
+        (manager:sync-request-to-input self:name
             (ui:form 
                 (<div> 
                     (<div-class> "panel panel-success"
@@ -77,13 +77,13 @@
             (lambda (revised-sentence)
                 (set! self:revisedSentence revised-sentence)))
 
-        (ui:show-message self:name
+        (manager:show-message self:name
             (<div-class> "panel panel-warning"
                 (<div-class> "panel-heading"
                     (<h4-attr> '(("class ""panel-title")) "No. " ctx:roundnum " : Answer (REVISED sentences translated by MT) (for demo)"))
                 (<div-class> "panel-body" (translation "ja" "en" self:revisedSentence))))
         
-         (ui:request-to-input self:name
+         (manager:sync-request-to-input self:name
             (ui:form 
                 (<div>
                      (<p> "No. " ctx:roundnum " : Question")(<pre> *VT-Youth*:question)
@@ -102,7 +102,7 @@
     (rewrite self ctx  *JP-Expert*:answer))
 
 (define (vt-youth:decide-feedback ctx ::YMCContext self ::VTYouth)
-    (ui:request-to-input self:name
+    (manager:sync-request-to-input self:name
         (ui:form 
             (<div> 
                 (<div-class> "panel panel-warning"
@@ -123,7 +123,7 @@
         (lambda (yes-or-no)
             (when
                 (equal? yes-or-no "Yes")
-                (ui:show-message *JP-Bridger*:name *thanks-message*)))))
+                (manager:show-message *JP-Bridger*:name *thanks-message*)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

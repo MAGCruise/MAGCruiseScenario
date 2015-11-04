@@ -14,7 +14,7 @@
 (define items '("アイテムX" "アイテムY"))
 
 (define (vote ctx ::Context self ::Player)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form
       "1000円のアイテムXと100円のアイテムYがあります．
       あなたの他に2人プレーヤがいて，他のプレーヤと異なるアイテムを選べば，そのアイテムを貰うことができます．
@@ -28,7 +28,7 @@
   (define select-second (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 1))) ctx:players:all))
   (define minority
     (if (< (length select-first) (length select-second)) select-first select-second))
-  (ui:show-message 'all
+  (manager:show-message 'all
     (html:p "結果は以下です"
     (apply html:ul
       (map
@@ -37,6 +37,6 @@
   (log:debug (ln) minority)
   (for-each
     (lambda (p ::Player)
-      (ui:show-message 'all p:name "が" (p:get 'item) "を手に入れました．"))
+      (manager:show-message 'all p:name "が" (p:get 'item) "を手に入れました．"))
     minority)
-  (ui:show-message 'all "ラウンド" ctx:roundnum "が終了しました"))
+  (manager:show-message 'all "ラウンド" ctx:roundnum "が終了しました"))

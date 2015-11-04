@@ -19,8 +19,6 @@
 ;; 最後通牒ゲーム
 
 (define-namespace ult "ult")
-
-
 (define (ult:assign ctx ::Context u1 u2)
   (def:assign ctx u1 'BigBear)
   (def:assign ctx u2 'SmallBear))
@@ -56,20 +54,20 @@
     (def:restage 'status)))
 
 (define (notify-round ctx ::Context)
-  (ui:show-message 'all (to-string (<ruby> "第" "だい") ctx:roundnum "ラウンドです．")))
+  (manager:show-message 'all (to-string (<ruby> "第" "だい") ctx:roundnum "ラウンドです．")))
 
 (define (init cxt ::Context self ::Player)
   (set! self:account 0))
 
 (define (status cxt ::Context self ::Player)
-  (ui:show-message self:name (self:tabulateHistory 'proposition 'yesOrNo 'acquisition 'account)))
+  (manager:show-message self:name (self:tabulateHistory 'proposition 'yesOrNo 'acquisition 'account)))
 
 (define proposition 0)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 通牒者プレーヤ(BigBear)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (first-player context ::Context self ::Player)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form 
       (to-string
         "おおぐま君，<br>あなたは" provided-val "円を" (<ruby> "受" "う") "けとりました．こぐま君にいくらを" (<ruby> "分" "わ") "けますか？"
@@ -89,7 +87,7 @@
 (define (second-player context ::Context self ::Player)
   (define rec-msg (self:msgbox:pop))
   (log:debug rec-msg)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form (to-string "こぐま君，<br>おおぐま君は" provided-val "円を" (<ruby> "受" "う") "け取り，あなたに"
                 (rec-msg:get 'proposition) "円を" (<ruby> "分" "わ") "けると言いました．" (<ruby> "受" "う") "けとりますか？"
                 (<div-class> "pull-right" (<img> "http://res.nkjmlab.org/www/img/WASEDA_BEAR_SMALL.png")))
@@ -121,7 +119,7 @@
       (set! SmallBear:account (+ SmallBear:account val-of-p2))
       (set! SmallBear:acquisition val-of-p2)
       (set! SmallBear:yesOrNo "yes")
-      (ui:show-message 'all
+      (manager:show-message 'all
         (<div-class> "alert alert-success" 
           (to-string (<ruby> "交渉" "こうしょう") "が" (<ruby> "成立" "せいりつ")  "しました．")
           (html:ul
@@ -129,7 +127,7 @@
             (to-string "こぐま君は" val-of-p2 "円を手に入れました．"))))))
 
   (define (money-not-paid)
-    (ui:show-message 'all (<div-class> "alert alert-warning" (<ruby> "交渉" "こうしょう") "は" (<ruby> "成立" "せいりつ") "しませんでした"))
+    (manager:show-message 'all (<div-class> "alert alert-warning" (<ruby> "交渉" "こうしょう") "は" (<ruby> "成立" "せいりつ") "しませんでした"))
       (set! BigBear:acquisition 0)
       (set! BigBear:yesOrNo "no")
       (set! SmallBear:acquisition 0)

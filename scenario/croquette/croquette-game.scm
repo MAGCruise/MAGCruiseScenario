@@ -92,7 +92,7 @@
   (define other ::Shop (ctx:getOther self))
   (define sale-msg (to-string "コロッケを1個" self:price "円で販売しました．" "お店にはお客さんが" self:demand "人来ました．"
                               self:sales "個が売れました．" "売り上げは" self:earnings "円です．"))
-  (ui:show-message self:name
+  (manager:show-message self:name
     (<div-class> "alert alert-info"
       (to-string
         (<h4> (- ctx:roundnum 1) "日目が終わりました．")
@@ -119,15 +119,15 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'materialCost 'inventoryCost 'earnings 'profit))))
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了")
                          (<p> "次の日に進みます．")))
     (lambda () #t))
-  (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
+  (manager:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
   (self:refresh))
 
 (define (factory:refresh ctx ::Market self ::Factory)
-  (ui:show-message self:name
+  (manager:show-message self:name
     (<div-class> "alert alert-info"
       (to-string
         (<h4> (- ctx:roundnum 1) "日目が終わりました．")
@@ -156,11 +156,11 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'inventoryCost 'materialCost 'machiningCost 'earnings 'profit))))
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了")
                          (<p> "次の日に進みます．")))
     (lambda () #t))
-  (ui:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
+  (manager:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
   (self:refresh)
 )
 
@@ -170,8 +170,8 @@
         (to-string (<h4> ctx:roundnum "日目がはじまりました．")
                    "初日(0日目)に発注した冷凍コロッケは翌々日(2日目)に納品され，その日から販売できます．<br>"
                    "現在の冷凍コロッケの在庫は" self:stock "個です．")))
-  (ui:request-to-input self:name (ui:form msg) (lambda () #t))
-  (ui:show-message self:name msg))
+  (manager:sync-request-to-input self:name (ui:form msg) (lambda () #t))
+  (manager:show-message self:name msg))
 
 (define (factory:init ctx ::Market self ::Factory)
   (define msg
@@ -180,8 +180,8 @@
                    "初日(0日目)に受ける注文は翌々日(2日目)開始時に納品しなくてはなりません．<br>"
                    "初日(0日目)にじゃがいもを発注すると，翌日(1日目)に農家から納品されて冷凍コロッケを生産し，翌々日(2日目)にへショップへ納品できます．<br>"
                    "現在の冷凍コロッケの在庫は" self:stock "個です．")))
-  (ui:request-to-input self:name (ui:form msg) (lambda () #t))
-  (ui:show-message self:name msg))
+  (manager:sync-request-to-input self:name (ui:form msg) (lambda () #t))
+  (manager:show-message self:name msg))
 
 
 (define (factory:closing ctx ::Market self ::Factory)
@@ -192,22 +192,22 @@
 
 
 (define (shop:order ctx ::Market self ::Shop)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form
       (to-string  (<h4> ctx:roundnum "日目の発注") self:name "さん，コロッケ工場へ発注して下さい．発注したものは，翌々日の販売前に納品される予定です．")
       (ui:number "個数(冷凍コロッケ)" 'num-of-croquette (self:defaultOrders ctx:roundnum) (Min 0) (Max 1000)))
     (lambda (num-of-croquette ::number)
       (self:order num-of-croquette)
-      (ui:show-message self:name (<div-class> "alert alert-success" (to-string "冷凍コロッケを" num-of-croquette "個発注しました．翌々日に納品されます．")))
+      (manager:show-message self:name (<div-class> "alert alert-success" (to-string "冷凍コロッケを" num-of-croquette "個発注しました．翌々日に納品されます．")))
       (manager:send-message 'Factory (make CroquetteOrder self:name num-of-croquette)))))
 
 (define (shop:pricing ctx ::Market self ::Shop)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form
           (to-string (<h4> ctx:roundnum "日目の販売価格") self:name "さん，今日のコロッケの販売価格を決定して下さい．")
       (ui:number "販売価格(コロッケ)" 'price (self:defaultPrices ctx:roundnum) (Min 50) (Max 200)))
     (lambda (price-of-croquette ::number)
-      (ui:show-message self:name (<div-class> "alert alert-success" (to-string "コロッケ1個の販売価格を" price-of-croquette "円に決めました．")))
+      (manager:show-message self:name (<div-class> "alert alert-success" (to-string "コロッケ1個の販売価格を" price-of-croquette "円に決めました．")))
       (self:price price-of-croquette))))
 
 (define (shop:order-and-pricing ctx ::Market self ::Player)
@@ -217,7 +217,7 @@
 (define (shop:receive-delivery ctx ::Market self ::Shop)
   (define msg ::CroquetteDelivery (self:msgbox:pop))
   (self:receiveDelivery msg:num)
-  (ui:show-message self:name 
+  (manager:show-message self:name 
     (<div-class> "alert alert-info"
       (to-string "冷凍コロッケが" msg:num "個納品されました．在庫数は" self:stock "個になりました．"))))
 
@@ -230,13 +230,13 @@
 
 
 (define (factory:order ctx ::Market self ::Factory)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
     (ui:form
       (to-string (<h4> ctx:roundnum "日目の発注") self:name "さん，農場へじゃがいもを発注して下さい．発注したものは，翌日に納品されます．")
       (ui:number "個数(ジャガイモ)" 'potato (self:defaultOrdersToFarmer ctx:roundnum) (Min 0) (Max 1000)))
     (lambda (potato ::number)
       (self:order potato)
-      (ui:show-message self:name (<div-class> "alert alert-success" (to-string "じゃがいもを" potato "個発注しました．翌日に納品されます．")))
+      (manager:show-message self:name (<div-class> "alert alert-success" (to-string "じゃがいもを" potato "個発注しました．翌日に納品されます．")))
       (manager:send-message 'Farmer (make PotatoOrder self:name potato)))))
 
 (define (factory:delivery ctx ::Market self ::Factory)
@@ -248,13 +248,13 @@
       (set! msg (to-string msg (to-string shop-name "に冷凍コロッケ" delivery "個を納品しました．")))
       (manager:send-message shop-name (make CroquetteDelivery self:name delivery)))
     *shop-names*)
-  (ui:show-message self:name
+  (manager:show-message self:name
       (<div-class> "alert alert-info" msg "在庫は" self:stock "個になりました．")))
 
 (define (factory:receive-delivery ctx ::Market self ::Factory)
   (define msg ::PotatoDelivery (self:msgbox:pop))
   (self:receiveDeliveryAndProduce msg:num)
-  (ui:show-message self:name
+  (manager:show-message self:name
     (<div-class> "alert alert-info"
       (to-string "じゃがいも" msg:num "個が納品され，" self:production "個の冷凍コロッケを生産しました．在庫は" self:stock "個になりました．"))))
 

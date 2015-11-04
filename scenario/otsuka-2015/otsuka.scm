@@ -52,18 +52,18 @@
   (self:init ctx))
 
 (define (status ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
-  (ui:show-message self:name (self:history:tabulate)))
+  (manager:show-message self:name (self:history:tabulate)))
 
 (define (agent:decide ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
   (self:decide ctx))
 
 (define (human:decide ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
-  (ui:request-to-input self:name
+  (manager:sync-request-to-input self:name
       (ui:form  (to-string (<h1> "ラウンド" ctx:roundnum ": お金出" "しますか？" ))
         (ui:number "共同基金への出資金額" 'money 1000 (make Min 0) (make Max self:account)))
       (lambda (money ::number)
         (set! self:investment money)
-        (ui:show-message self:name (to-string "あなたの出資金額は" self:investment "円です．")))))
+        (manager:show-message self:name (to-string "あなたの出資金額は" self:investment "円です．")))))
 
 
 (define (clearing ctx ::PublicGoodsGameContext)
