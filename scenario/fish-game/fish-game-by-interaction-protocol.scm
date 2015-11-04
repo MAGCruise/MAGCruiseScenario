@@ -6,37 +6,40 @@
 
   (def:rounds 2
     (def:interaction-protocol-stage 'fish-game
-      (def:assign-scenario 'Fisherman1 'fisherman1-scenario)
-      (def:assign-scenario 'Fisherman2 'fisherman2-scenario)
+      (def:scenario-task 'Fisherman1 'fisherman1-scenario)
+      (def:scenario-task 'Fisherman2 'fisherman2-scenario)
       (def:task 'start-stage))
     (def:stage 'calc-fishing
       (def:task 'go-to-fishing)
       (def:task 'cleanup-and-recover))))
 
+
+(define (fish-test ctx ::Context self ::Player event ::ScenarioEvent)
+  (event:isNamed 'start-stage))
+
 (define (fisherman1-scenario)
-  (define (?start-stage ctx ::Context self ::Player event ::Event)
+  (define (?start-stage ctx ::Context self ::Player event ::ScenarioEvent)
     (event:isNamed 'start-stage))
 
-  (define (?response ctx ::Context self ::Player event ::Event)
+  (define (?response ctx ::Context self ::Player event ::ScenarioEvent)
     (event:isNamed 'response))
 
-  (define (?finish-negotiation ctx ::Context self ::Player event ::Event)
+  (define (?finish-negotiation ctx ::Context self ::Player event ::ScenarioEvent)
     (event:isNamed 'finish-negotiation))
 
-  (define (!change-scene ctx ::Context self ::Player event ::Event)
+  (define (!change-scene ctx ::Context self ::Player event ::ScenarioEvent)
    (log:breakpoint event)
-   (manager:send-event 'Fisherman1 (manager:make-event 'notify)))
+   (manager:send-scenario-event 'Fisherman1 (manager:make-scenario-event 'notify)))
 
-  (define (!negotiation ctx ::Context self ::Player event ::Event)
+  (define (!negotiation ctx ::Context self ::Player event ::ScenarioEvent)
     (fisher:negotiation ctx self)
       (if (equal? (self:get 'text) "END")
         (begin
-          (manager:send-event 'Fisherman1 (self:makeEvent 'finish-negotiation))
-          ;; for swing gui mode (sleep 2)
-          (manager:send-event 'Fisherman2 (self:makeEvent 'finish-negotiation)))
-        (manager:send-event 'Fisherman2 (self:makeEvent 'negotiation))))
+          (manager:send-scenario-event 'Fisherman1 (self:makeEvent 'finish-negotiation))
+          (manager:send-scenario-event 'Fisherman2 (self:makeEvent 'finish-negotiation)))
+        (manager:send-scenario-event 'Fisherman2 (self:makeEvent 'negotiation))))
 
-  (define (!decide-target ctx ::Context self ::Player event ::Event)
+  (define (!decide-target ctx ::Context self ::Player event ::ScenarioEvent)
     (ui:show-message 'all event)
     (fisher:decide-number-of-fish ctx self))
 
@@ -49,21 +52,21 @@
       (def:default-behavior !decide-target 'end-scene))))
 
 (define (fisherman2-scenario)
-  (define (?negotiation ctx ::Context self ::Player event ::Event)
+  (define (?negotiation ctx ::Context self ::Player event ::ScenarioEvent)
     (event:isNamed 'negotiation))
 
-  (define (?finish-negotiation ctx ::Context self ::Player event ::Event)
+  (define (?finish-negotiation ctx ::Context self ::Player event ::ScenarioEvent)
     (event:isNamed 'finish-negotiation))
     
-  (define (!change-scene ctx ::Context self ::Player event ::Event)
-   (manager:send-event 'Fisherman2 (manager:make-event 'notify)))
+  (define (!change-scene ctx ::Context self ::Player event ::ScenarioEvent)
+   (manager:send-scenario-event 'Fisherman2 (manager:make-scenario-event 'notify)))
 
-  (define (!response ctx ::Context self ::Player event ::Event)
+  (define (!response ctx ::Context self ::Player event ::ScenarioEvent)
     (fisher:negotiation ctx self)
     (let* ((event (self:makeEvent 'response)))
-      (manager:send-event 'Fisherman1 event)))
+      (manager:send-scenario-event 'Fisherman1 event)))
 
-  (define (!decide-target ctx ::Context self ::Player event ::Event)
+  (define (!decide-target ctx ::Context self ::Player event ::ScenarioEvent)
     (ui:show-message 'all event)
     (fisher:decide-number-of-fish ctx self))
 
@@ -75,7 +78,7 @@
       (def:default-behavior !decide-target 'end-scene))))
 
 (define (start-stage ctx ::Context)
-  (manager:send-event 'Fisherman1 (manager:make-event 'start-stage)))
+  (manager:send-scenario-event 'Fisherman1 (manager:make-scenario-event 'start-stage)))
 
 (define (fisher:negotiation ctx ::Context self ::Player)
   (ui:request-to-input self:name
