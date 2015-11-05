@@ -5,11 +5,7 @@
 	<classpathentry kind="lib" path="lib/orangesignal-csv-2.2.1.jar"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.junit.JUNIT_CONTAINER/4"/>
-	<classpathentry kind="lib" path="/MAGCruiseLibraries/apache/log4j-api-2.1.jar"/>
-	<classpathentry kind="lib" path="/MAGCruiseLibraries/apache/log4j-core-2.1.jar"/>
-	<classpathentry kind="lib" path="/MAGCruiseLibraries/kawa/kawa-2.0.jar" sourcepath="/MAGCruiseLibraries/kawa/kawa-2.0-src.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/MAGCruiseLangrid"/>
-	<classpathentry kind="lib" path="/MAGCruiseLibraries/commons/commons-lang-2.5.jar"/>
 	<classpathentry kind="con" path="org.eclipse.jst.j2ee.internal.module.container"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JavaSE-1.8">
 		<attributes>

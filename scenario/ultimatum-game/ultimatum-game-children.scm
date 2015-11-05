@@ -56,17 +56,17 @@
 (define (notify-round ctx ::Context)
   (manager:show-message 'all (to-string (<ruby> "第" "だい") ctx:roundnum "ラウンドです．")))
 
-(define (init cxt ::Context self ::Player)
+(define (init cxt ::Context self ::UltPlayer)
   (set! self:account 0))
 
-(define (status cxt ::Context self ::Player)
+(define (status cxt ::Context self ::UltPlayer)
   (manager:show-message self:name (self:tabulateHistory 'proposition 'yesOrNo 'acquisition 'account)))
 
 (define proposition 0)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 通牒者プレーヤ(BigBear)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (first-player context ::Context self ::Player)
+(define (first-player context ::Context self ::UltPlayer)
   (manager:sync-request-to-input self:name
     (ui:form 
       (to-string
@@ -84,7 +84,7 @@
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 判断者プレーヤ(SmallBear)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (second-player context ::Context self ::Player)
+(define (second-player context ::Context self ::UltPlayer)
   (define rec-msg (self:msgbox:pop))
   (log:debug rec-msg)
   (manager:sync-request-to-input self:name
@@ -103,8 +103,8 @@
 ;; 金銭の授受の計算モデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (paid-model context ::Context)
-  (define BigBear ::Player (context:getPlayer 'BigBear))
-  (define SmallBear ::Player (context:getPlayer 'SmallBear))
+  (define BigBear ::UltPlayer (context:getPlayer 'BigBear))
+  (define SmallBear ::UltPlayer (context:getPlayer 'SmallBear))
 
   (if (equal? yes-or-no "yes")
     (money-paid)
