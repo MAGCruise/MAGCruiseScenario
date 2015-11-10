@@ -31,10 +31,10 @@
 (define *potato-cost-ratio* 20)
 
 (define (def:game-scenario)
-  (def:player 'PotatoFarmer 'agent)
-  (def:player 'Factory 'human)
-  (def:player 'Shop1 'human)
-  (def:player 'Shop2 'human)
+  (def:player 'PotatoFarmer 'agent SimplePlayer)
+  (def:player 'Factory 'human SimplePlayer)
+  (def:player 'Shop1 'human SimplePlayer)
+  (def:player 'Shop2 'human SimplePlayer)
 
   (def:round
     (def:stage 'init

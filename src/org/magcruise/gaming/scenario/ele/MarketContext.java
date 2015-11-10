@@ -5,11 +5,15 @@ import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.magcruise.gaming.lang.Properties;
+import org.magcruise.gaming.model.Attribute;
 import org.magcruise.gaming.model.Context;
 import org.magcruise.gaming.model.History;
 import org.magcruise.gaming.model.Players;
 
 public class MarketContext extends Context {
+
+	@Attribute(name = "テスト用")
+	public int testAttr;
 
 	public MarketContext(int roundnum, Properties props, History history,
 			Players players, String scenarioHome) {

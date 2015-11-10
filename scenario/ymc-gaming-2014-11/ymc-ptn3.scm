@@ -27,9 +27,9 @@
 (define-namespace evaluator "evaluator")
 
 (define (def:game-scenario)
-  (def:ext-context YMCContext)
-  (def:ext-player 'Bridger 'human Bridger)
-  (def:ext-player 'Evaluator 'human Evaluator)
+  (def:context YMCContext)
+  (def:player 'Bridger 'human Bridger)
+  (def:player 'Evaluator 'human Evaluator)
 
   (def:round
     (def:stage 'init

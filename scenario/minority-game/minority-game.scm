@@ -1,7 +1,7 @@
 (define (def:game-scenario)
-  (def:player 'HumanPlayer1 'human)
-  (def:player 'HumanPlayer2 'human)
-  (def:player 'HumanPlayer3 'human)
+  (def:player 'HumanPlayer1 'human SimplePlayer)
+  (def:player 'HumanPlayer2 'human SimplePlayer)
+  (def:player 'HumanPlayer3 'human SimplePlayer)
 
   (def:rounds 2
     (def:parallel-stage 'vote

@@ -14,13 +14,13 @@
 ;;(define *agent-players* (list 'C 'D 'E 'F 'G 'H))
 
 (define (def:game-scenario)
-    (def:ext-context PublicGoodsGameContext)
-    (def:ext-player 'FirstPlayer  'agent PublicGoodsGameAgentPlayerAlwaysPayAll)
-    (def:ext-player 'SecondPlayer 'human PublicGoodsGameAgentPlayerHuman)
-    (def:ext-player 'ThirdPlayer  'agent PublicGoodsGameAgentPlayerAlwaysNo)
+    (def:context PublicGoodsGameContext)
+    (def:player 'FirstPlayer  'agent PublicGoodsGameAgentPlayerAlwaysPayAll)
+    (def:player 'SecondPlayer 'human PublicGoodsGameAgentPlayerHuman)
+    (def:player 'ThirdPlayer  'agent PublicGoodsGameAgentPlayerAlwaysNo)
 
-    ;; (def:ext-players *agent-players* 'agent CompanyPlayer)
-    ;; (def:ext-players *human-players* 'human CompanyPlayer)
+    ;; (def:players *agent-players* 'agent CompanyPlayer)
+    ;; (def:players *human-players* 'human CompanyPlayer)
 
 
   (def:round

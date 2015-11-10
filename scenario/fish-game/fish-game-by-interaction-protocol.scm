@@ -1,8 +1,8 @@
 (load-relative "fisherman.scm")
 
 (define (def:game-scenario)
-  (def:player 'Fisherman1 'human)
-  (def:player 'Fisherman2 'human)
+  (def:player 'Fisherman1 'human SimplePlayer)
+  (def:player 'Fisherman2 'human SimplePlayer)
 
   (def:rounds 2
     (def:interaction-protocol-stage 'fish-game

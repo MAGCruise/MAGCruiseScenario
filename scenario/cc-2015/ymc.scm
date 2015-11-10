@@ -17,11 +17,11 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (def:game-scenario)
-    (def:ext-context YMCContext)
-    (def:ext-player 'JP-Expert 'agent JPExpert)
-    (def:ext-player 'JP-Bridger 'human JPBridger)
-    (def:ext-player 'VT-Bridger 'agent VTBridger)
-    (def:ext-player 'VT-Youth 'human VTYouth)
+    (def:context YMCContext)
+    (def:player 'JP-Expert 'agent JPExpert)
+    (def:player 'JP-Bridger 'human JPBridger)
+    (def:player 'VT-Bridger 'agent VTBridger)
+    (def:player 'VT-Youth 'human VTYouth)
 
     (def:rounds 2
         (def:stage 'init

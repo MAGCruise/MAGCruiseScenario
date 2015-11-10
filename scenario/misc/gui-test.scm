@@ -1,5 +1,5 @@
 (define (def:game-scenario)
-  (def:player 'Tester 'human)
+  (def:player 'Tester 'human SimplePlayer)
   (def:round 
     (def:stage 'gui-test
       (def:task 'Tester 'gui-test))))

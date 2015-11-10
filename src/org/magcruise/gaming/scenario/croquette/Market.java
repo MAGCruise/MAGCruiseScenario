@@ -1,12 +1,12 @@
 package org.magcruise.gaming.scenario.croquette;
 
-import gnu.mapping.SimpleSymbol;
-
 import org.magcruise.gaming.lang.Properties;
 import org.magcruise.gaming.model.Context;
 import org.magcruise.gaming.model.History;
 import org.magcruise.gaming.model.Players;
 import org.magcruise.gaming.scenario.croquette.player.Shop;
+
+import gnu.mapping.SimpleSymbol;
 
 public class Market extends Context {
 

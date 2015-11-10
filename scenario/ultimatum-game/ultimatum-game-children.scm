@@ -1,23 +1,4 @@
-(define (htmlext:rt content)
-  (htmlext:tag "rt" content))
-
-(define (htmlext:rb content)
-  (htmlext:tag "rb" content))
-
-(define (htmlext:rp content)
-  (htmlext:tag "rp" content))
-
-(define (htmlext:ruby rbc rtc)
-  (htmlext:tag  "ruby" (htmlext:rb  rbc) (htmlext:rp  "(") (htmlext:rt rtc) (htmlext:rp  ")")))
-
-(define-alias <rb> htmlext:rb)
-(define-alias <rt> htmlext:rt)
-
-(define-alias <ruby> htmlext:ruby)
-
-
 ;; 最後通牒ゲーム
-
 (define-namespace ult "ult")
 (define (ult:assign ctx ::Context u1 u2)
   (def:assign ctx u1 'BigBear)
@@ -29,8 +10,8 @@
 
 
 (define (def:game-scenario)
-  (def:ext-player 'BigBear 'human UltPlayer)
-  (def:ext-player 'SmallBear 'human UltPlayer)
+  (def:player 'BigBear 'human UltPlayer)
+  (def:player 'SmallBear 'human UltPlayer)
 
   (def:round
     (def:stage 'start-of-round
@@ -43,7 +24,7 @@
       (def:task 'SmallBear 'second-player)
       (def:task 'paid-model)))
 
-  (def:rounds 9
+  (def:rounds 2
     (def:restage 'start-of-round)
     (def:stage 'status
       (def:task 'BigBear 'status)

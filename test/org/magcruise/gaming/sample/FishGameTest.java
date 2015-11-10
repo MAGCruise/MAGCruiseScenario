@@ -28,8 +28,7 @@ public class FishGameTest {
 	@Test
 	public void testScenario() {
 		String scenario = "fish-game/fish.scm";
-		LocalGUILauncher sl = new LocalGUILauncher("../MAGCruiseCore/",
-				scenario);
+		LocalGUILauncher sl = new LocalGUILauncher(scenario);
 		sl.run();
 	}
 

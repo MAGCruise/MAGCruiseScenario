@@ -1,13 +1,13 @@
 package org.magcruise.gaming.scenario.ele;
 
-import java.io.Serializable;
-
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.magcruise.gaming.lang.SConvertible;
+import org.magcruise.gaming.util.SExpressionUtils;
 
 import gnu.mapping.Symbol;
 
-public class Trade implements Serializable {
+public class Trade implements SConvertible {
 
 	private Symbol partner;
 	private int price;
@@ -23,6 +23,12 @@ public class Trade implements Serializable {
 	public String toString() {
 		return ToStringBuilder.reflectionToString(this,
 				ToStringStyle.SHORT_PREFIX_STYLE);
+	}
+
+
+	@Override
+	public String toSExpression() {
+		return SExpressionUtils.toSExpression(this, partner, price, amount);
 	}
 
 }

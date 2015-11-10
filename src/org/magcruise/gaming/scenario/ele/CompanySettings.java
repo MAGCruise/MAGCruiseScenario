@@ -21,8 +21,8 @@ public class CompanySettings {
 			cfg.setIgnoreTrailingWhitespaces(true);
 			CsvEntityManager manager = new CsvEntityManager(cfg);
 
-			companies = manager.load(CompanySetting.class).from(
-					new File(ctx.getScenarioHome() + File.separator
+			companies = manager.load(CompanySetting.class)
+					.from(new File(ctx.getGameProjectHome() + File.separator
 							+ "scenario/ele/companies.csv"));
 		} catch (IOException e) {
 			e.printStackTrace();

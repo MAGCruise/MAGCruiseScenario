@@ -9,8 +9,8 @@
 
 
 (define (def:game-scenario)
-  (def:player 'FirstPlayer 'human)
-  (def:player 'SecondPlayer 'human)
+  (def:player 'FirstPlayer 'human SimplePlayer)
+  (def:player 'SecondPlayer 'human SimplePlayer)
 
   (def:round
     (def:stage 'start-of-round

@@ -1,8 +1,8 @@
 (define (def:game-scenario)
-  (def:player 'HumanPlayer1 'human)
-  (def:player 'HumanPlayer2 'human)
-  (def:player 'HumanPlayer3 'human)
-  (def:player 'HumanPlayer4 'human)
+  (def:player 'HumanPlayer1 'human SimplePlayer)
+  (def:player 'HumanPlayer2 'human SimplePlayer)
+  (def:player 'HumanPlayer3 'human SimplePlayer)
+  (def:player 'HumanPlayer4 'human SimplePlayer)
 
   (define (c1 ctx ::Context) (eqv? ctx:roundnum 0))
   (define (c2 ctx ::Context) (eqv? ctx:roundnum 1))

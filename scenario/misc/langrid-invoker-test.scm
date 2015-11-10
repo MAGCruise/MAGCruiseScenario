@@ -1,5 +1,5 @@
 (define (def:game-scenario)
-  (def:player 'LangridInvoker 'human)
+  (def:player 'LangridInvoker 'human SimplePlayer)
   (def:round 
     (def:stage 'langrid-test
       (def:task 'LangridInvoker 'langrid-test))))

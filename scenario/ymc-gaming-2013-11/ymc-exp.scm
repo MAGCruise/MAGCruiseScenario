@@ -55,11 +55,11 @@
 (define-namespace vt-youth "vt-youth")
 
 (define (def:game-scenario)
-  (def:ext-context YMCContext)
-  (def:player 'JP-Expert 'agent)
-  (def:ext-player 'JP-Bridger 'human Bridger)
-  (def:player 'VT-Bridger 'agent)
-  (def:player 'VT-Youth 'agent)
+  (def:context YMCContext)
+  (def:player 'JP-Expert 'agent SimplePlayer)
+  (def:player 'JP-Bridger 'human Bridger)
+  (def:player 'VT-Bridger 'agent SimplePlayer)
+  (def:player 'VT-Youth 'agent SimplePlayer)
 
   (def:rounds 10
     (def:stage 'question-answer

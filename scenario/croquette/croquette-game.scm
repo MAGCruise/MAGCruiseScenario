@@ -20,15 +20,15 @@
   (def:assign ctx u3 'Shop2))
 
 (define (def:game-scenario)
-  (def:ext-context Market)
-  (def:ext-player 'Farmer 'agent Farmer)
-  (def:ext-player 'Factory 'human Factory
+  (def:context Market)
+  (def:player 'Farmer 'agent Farmer)
+  (def:player 'Factory 'human Factory
     (list 300 300 300 300 300 300 300 300 300 300 300))
 
-  (def:ext-player 'Shop1 'human Shop
+  (def:player 'Shop1 'human Shop
       (list 100 100 100 100 100 100 100 100 100 100 100)
       (list 400 400 400 400 400 400 400 400 400 400 400))
-  (def:ext-player 'Shop2 'human Shop
+  (def:player 'Shop2 'human Shop
       (list 150 150 150 150 150 150 150 150 150 150 150)
       (list 150 150 150 150 150 150 150 150 150 150 150))
 
