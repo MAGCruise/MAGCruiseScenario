@@ -8,7 +8,7 @@
   (def:assign ctx u2 'SecondPlayer))
 
 
-(define (def:game-scenario)
+(define (def:setup-game-builder game-builder ::GameBuilder)
   (def:player 'FirstPlayer 'human SimplePlayer)
   (def:player 'SecondPlayer 'human SimplePlayer)
 
@@ -47,7 +47,7 @@
 ;; 通牒者プレーヤ(FirstPlayer)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (first-player context ::Context self ::Player)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form  (to-string "あなたは" provided-val "円を受けとりました．いくらを分け与えますか？")
       (ui:number "金額" 'proposition 1000))
     (lambda (prop ::number)
@@ -64,7 +64,7 @@
 (define (second-player context ::Context self ::Player)
   (define rec-msg (self:msgbox:pop))
   (log:debug rec-msg)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form (to-string "FirstPlayerさんは" provided-val "円を受け取り，あなたに"
                 (rec-msg:get 'proposition) "円を分けると言いました．受けとりますか？")
       (ui:radio "受けとる？" 'yes-or-no "yes" (list "yes" "no") (list "yes" "no")))

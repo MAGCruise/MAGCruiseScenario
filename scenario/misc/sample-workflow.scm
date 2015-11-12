@@ -1,4 +1,4 @@
-(define (def:game-scenario)
+(define (def:setup-game-builder game-builder ::GameBuilder)
   (def:player 'HumanPlayer1 'human SimplePlayer)
   (def:player 'HumanPlayer2 'human SimplePlayer)
   (def:player 'HumanPlayer3 'human SimplePlayer)

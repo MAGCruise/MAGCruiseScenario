@@ -10,7 +10,8 @@ import gnu.mapping.Symbol;
 public class VTYouth extends Player {
 
 	public String[] questions = { "菌はお米に害を与えますか？", "乾田直播とは何ですか？" };
-	public String[] questionsEn = { "Do the bacteria harm rice?", "What is a dry paddy field direct seeding?" };
+	public String[] questionsEn = { "Do the bacteria harm rice?",
+			"What is a dry paddy field direct seeding?" };
 
 	public String question = questions[0];
 
@@ -19,9 +20,9 @@ public class VTYouth extends Player {
 	boolean[] thanksMessageTimings = { true, false };
 	boolean[] failureMessageTimings = { true, false };
 
-	public VTYouth(Symbol playerName, Symbol playerType, String operatorId, Properties props, MessageBox msgbox,
-			History history) {
-		super(playerName, playerType, operatorId, props, msgbox, history);
+	public VTYouth(Symbol playerName, Symbol playerType, String operatorId,
+			Properties props, History history, MessageBox msgbox) {
+		super(playerName, playerType, operatorId, props, history, msgbox);
 	}
 
 	public void init(int roundnum) {

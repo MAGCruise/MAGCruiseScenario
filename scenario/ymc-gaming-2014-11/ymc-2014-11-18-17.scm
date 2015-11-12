@@ -24,7 +24,7 @@
 (define-namespace bridger "bridger")
 (define-namespace evaluator "evaluator")
 
-(define (def:game-scenario)
+(define (def:setup-game-builder game-builder ::GameBuilder)
   (def:context YMCContext)
   (def:player 'Bridger 'human Bridger)
   (def:player 'Evaluator 'human Evaluator)
@@ -60,7 +60,7 @@
   (bridger:edit-aux ctx self a-orig-text prev-revised-text))
   
 (define (bridger:edit-aux ctx ::YMCContext self ::Bridger a-orig-text prev-revised-text)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (make Form
       (<div>
         (<p> "原文" ctx:roundnum) (<blockquote> a-orig-text)
@@ -78,7 +78,7 @@
       (<p> "原文" ctx:roundnum "は以下です．")(<blockquote> a-orig-text)
       (<p> "修正した文章は以下です．")(<blockquote> self:revisedSentence)))
 
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (make Form (make-msg)
       (make RadioInput 
           (<strong> "これで修正を終えますか？") 'again-or-finish "AGAIN" (list "再修正" "修正完了") (list "AGAIN" "FINISH")))
@@ -88,7 +88,7 @@
 
 (define (evaluator:evaluate ctx ::YMCContext self ::Evaluator)
   (define bridger ::Bridger (ctx:getPlayer 'Bridger))
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (make Form (<p> bridger:revisedSentence)
       (make RadioInput 
           (<strong> "Aさん，この文章は分かりやすいですか？") '_scoreA "3" (String[] "1 (悪い) " "2" "3" "4" "5 (良い)") (String[] "1" "2" "3" "4" "5"))

@@ -15,8 +15,8 @@ public class JPExpert extends Player {
 	public String answer = answers[0];
 
 	public JPExpert(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, MessageBox msgbox, History history) {
-		super(playerName, playerType, operatorId, props, msgbox, history);
+			Properties props, History history, MessageBox msgbox) {
+		super(playerName, playerType, operatorId, props, history, msgbox);
 	}
 
 	public void init(int roundnum) {

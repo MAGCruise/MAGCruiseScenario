@@ -30,7 +30,7 @@
 (define *croquette-cost-ratio* 60)
 (define *potato-cost-ratio* 20)
 
-(define (def:game-scenario)
+(define (def:setup-game-builder game-builder ::GameBuilder)
   (def:player 'PotatoFarmer 'agent SimplePlayer)
   (def:player 'Factory 'human SimplePlayer)
   (def:player 'Shop1 'human SimplePlayer)
@@ -253,7 +253,7 @@
 
 (define (shop:order ctx ::Context self ::Player)
   (define shop-order ((if (eqv? self:name 'Shop1) *shop1-orders* *shop2-orders*) ctx:roundnum))
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form
       (to-string ctx:roundnum "日目です．" self:name "さん，コロッケ工場へ発注して下さい．発注したものは，明後日に納品されます．")
       (ui:number "個数(冷凍コロッケ)" 'num-of-potato-croquette shop-order))
@@ -264,7 +264,7 @@
 
 (define (shop:pricing ctx ::Context self ::Player)
   (define shop-price ((if (eqv? self:name 'Shop1) *shop1-prices* *shop2-prices*) ctx:roundnum))
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form
           (to-string ctx:roundnum "日目です．" self:name "さん，今日のコロッケの販売価格を決定して下さい．")
       (ui:number "販売価格(コロッケ)" 'price-of-potato-croquette shop-price))
@@ -295,7 +295,7 @@
 
 
 (define (factory:order ctx ::Context self ::Player)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form
       (to-string
         ctx:roundnum "日目です．" self:name "さん，農場へじゃがいもを発注して下さい．発注したものは，明日に納品されます．")

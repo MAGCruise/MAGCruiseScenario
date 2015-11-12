@@ -9,30 +9,35 @@
 (define-alias UltPlayer org.magcruise.gaming.scenario.ultimatum.UltPlayer)
 
 
-(define (def:game-scenario)
-  (def:player 'BigBear 'human UltPlayer)
-  (def:player 'SmallBear 'human UltPlayer)
+(define (def:setup-game-builder game-builder ::GameBuilder)
+  (game-builder:addDefContext
+    (def:context SimpleContext))
 
-  (def:round
-    (def:stage 'start-of-round
-      (def:task 'notify-round))
-    (def:stage 'init
-      (def:task 'BigBear 'init)
-      (def:task 'SmallBear 'init))
-    (def:stage 'negotiation
-      (def:task 'BigBear 'first-player)
-      (def:task 'SmallBear 'second-player)
-      (def:task 'paid-model)))
+  (game-builder:addDefPlayers
+    (def:player 'BigBear 'human UltPlayer)
+    (def:player 'SmallBear 'human UltPlayer))
 
-  (def:rounds 2
-    (def:restage 'start-of-round)
-    (def:stage 'status
-      (def:task 'BigBear 'status)
-      (def:task 'SmallBear 'status))
-    (def:restage 'negotiation))
+  (game-builder:addDefRounds
+    (def:round
+      (def:stage 'start-of-round
+        (def:task 'notify-round))
+      (def:stage 'init
+        (def:task 'BigBear 'init)
+        (def:task 'SmallBear 'init))
+      (def:stage 'negotiation
+        (def:task 'BigBear 'first-player)
+        (def:task 'SmallBear 'second-player)
+        (def:task 'paid-model)))
 
-  (def:round
-    (def:restage 'status)))
+    (def:rounds 2
+      (def:restage 'start-of-round)
+      (def:stage 'status
+        (def:task 'BigBear 'status)
+        (def:task 'SmallBear 'status))
+      (def:restage 'negotiation))
+
+    (def:round
+      (def:restage 'status))))
 
 (define (notify-round ctx ::Context)
   (manager:show-message 'all (to-string (<ruby> "第" "だい") ctx:roundnum "ラウンドです．")))
@@ -48,7 +53,7 @@
 ;; 通牒者プレーヤ(BigBear)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (first-player context ::Context self ::UltPlayer)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form 
       (to-string
         "おおぐま君，<br>あなたは" provided-val "円を" (<ruby> "受" "う") "けとりました．こぐま君にいくらを" (<ruby> "分" "わ") "けますか？"
@@ -57,7 +62,7 @@
     (lambda (prop ::number)
       (set! self:proposition prop)
       (set! proposition prop)
-      (define msg ::Message (self:makeMessage 'proposition (cons 'proposition prop)))
+      (define msg ::Message (self:makeMessage 'proposition  (cons 'proposition prop)))
       (manager:send-message 'SmallBear msg))))
 
 (define yes-or-no "")
@@ -68,7 +73,7 @@
 (define (second-player context ::Context self ::UltPlayer)
   (define rec-msg (self:msgbox:pop))
   (log:debug rec-msg)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form (to-string "こぐま君，<br>おおぐま君は" provided-val "円を" (<ruby> "受" "う") "け取り，あなたに"
                 (rec-msg:get 'proposition) "円を" (<ruby> "分" "わ") "けると言いました．" (<ruby> "受" "う") "けとりますか？"
                 (<div-class> "pull-right" (<img> "http://res.nkjmlab.org/www/img/WASEDA_BEAR_SMALL.png")))

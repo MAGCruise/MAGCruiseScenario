@@ -1,6 +1,6 @@
 (load-relative "fisherman.scm")
 
-(define (def:game-scenario)
+(define (def:setup-game-builder game-builder ::GameBuilder)
   (def:player 'Fisherman1 'human SimplePlayer)
   (def:player 'Fisherman2 'human SimplePlayer)
   (define fishers (list 'Fisherman1 'Fisherman2))

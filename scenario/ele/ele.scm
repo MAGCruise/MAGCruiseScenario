@@ -6,34 +6,35 @@
 (define-namespace human "human")
 (define-namespace market "market")
 
-(define *human-players*  (list 'A 'B))
-(define *agent-players* (list 'C 'D 'E 'F 'G 'H))
-(define *all-players* (append *human-players* *agent-players*))
 
 (define (def:setup-game-builder game-builder ::GameBuilder)
-  (game-builder:addContext (def:context MarketContext))
+  (define *human-players*  (list 'A ))
+  (define *agent-players* (list 'B 'C 'D 'E 'F 'G 'H))
+  (define *all-players* (append *human-players* *agent-players*))
 
-  (game-builder:addPlayers
+  (game-builder:addDefContext
+    (def:context MarketContext))
+
+  (game-builder:addDefPlayers
     (def:players *agent-players* 'agent CompanyPlayer)
     (def:players *human-players* 'human CompanyPlayer))
 
-  (game-builder:addRounds
+  (game-builder:addDefRounds
     (def:round 
       (def:stage 'init
-        (def:task 'market:init))
+        (def:task 'init))
       (def:parallel-stage 'vote
-        (def:players-task *agent-players* 'agent:vote)
-        (def:players-task *human-players* 'human:vote))
+        (def:players-task *all-players* 'vote))
       (def:stage 'auction
-        (def:task 'market:auction)))
+        (def:task 'auction)))
     (def:round
       (def:parallel-stage 'status
-        (def:players-task *all-players* 'player:status))
-      (def:registered-stage 'init)
-      (def:registered-stage 'vote)
-      (def:registered-stage 'auction))
+        (def:players-task *all-players* 'status))
+      (def:restage 'init)
+      (def:restage 'vote)
+      (def:restage 'auction))
     (def:round 
-      (def:registered-stage 'status))))
+      (def:restage 'status))))
 
 ;; (load framework)                            MAGCruiseフレームワークのロード
 ;;
@@ -61,21 +62,25 @@
   (log:debug (ln) "proc def:before-start-first-round .."))
 
 
-(define (market:init ctx ::MarketContext)
-  (ctx:init))
+;; ゲームシナリオから呼び出す関数が定義されていない場合，暗黙的に target:methodname が呼び出される．
+;; つまり，以下の様な関数は定義しなくても，暗黙的に呼び出される．
+;; (define (init ctx ::MarketContext) (ctx:init))
+;; (define (auction ctx ::MarketContext) (ctx:auction))
+;; (define (status ctx ::MarketContext self ::CompanyPlayer) (self:status ctx))
 
-(define (market:auction ctx ::MarketContext)
-  (ctx:auction))
+
+(define (vote ctx ::MarketContext self ::CompanyPlayer)
+  (if (self:isAgent)
+      (self:vote ctx)
+      (human:vote ctx self)))
 
 (define (agent:vote ctx ::MarketContext self ::CompanyPlayer)
   (self:vote ctx))
 
 (define (human:vote ctx ::MarketContext self ::CompanyPlayer)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form (to-string "あなたは" self:type "です．" "必要量は" self:demand "です．" "留保価格をいくらにしますか？")
       (ui:number "金額(円/kWh)" 'reservation self:reservation))
-    (lambda (inputPrice)
+    (lambda (inputPrice ::integer)
       (set! self:inputPrice inputPrice))))
 
-(define (player:status ctx ::MarketContext self ::CompanyPlayer)
-  (manager:show-message self:name (self:tabulateHistory)))

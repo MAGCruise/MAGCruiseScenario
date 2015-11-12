@@ -26,8 +26,8 @@ public class UltPlayer extends Player {
 	public MessageBox[] ps = new MessageBox[2];
 
 	public UltPlayer(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, MessageBox msgbox, History history) {
-		super(playerName, playerType, operatorId, props, msgbox, history);
+			Properties props, History history, MessageBox msgbox) {
+		super(playerName, playerType, operatorId, props, history, msgbox);
 		ps[0] = new MessageBox();
 		ps[1] = new MessageBox();
 

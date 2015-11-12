@@ -16,7 +16,7 @@
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (def:game-scenario)
+(define (def:setup-game-builder game-builder ::GameBuilder)
     (def:context YMCContext)
     (def:player 'JP-Expert 'agent JPExpert)
     (def:player 'JP-Bridger 'human JPBridger)
@@ -61,7 +61,7 @@
 
         
     (define (rewrite self ::JPBridger ctx ::YMCContext prev-revised-text)
-        (manager:sync-request-to-input self:name
+        (self:syncRequestForInput 
             (ui:form 
                 (<div> 
                     (<div-class> "panel panel-success"
@@ -83,7 +83,7 @@
                     (<h4-attr> '(("class ""panel-title")) "No. " ctx:roundnum " : Answer (REVISED sentences translated by MT) (for demo)"))
                 (<div-class> "panel-body" (translation "ja" "en" self:revisedSentence))))
         
-         (manager:sync-request-to-input self:name
+         (self:syncRequestForInput 
             (ui:form 
                 (<div>
                      (<p> "No. " ctx:roundnum " : Question")(<pre> *VT-Youth*:question)
@@ -102,7 +102,7 @@
     (rewrite self ctx  *JP-Expert*:answer))
 
 (define (vt-youth:decide-feedback ctx ::YMCContext self ::VTYouth)
-    (manager:sync-request-to-input self:name
+    (self:syncRequestForInput 
         (ui:form 
             (<div> 
                 (<div-class> "panel panel-warning"

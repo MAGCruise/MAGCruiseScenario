@@ -19,73 +19,80 @@
   (def:assign ctx u2 'Shop1)
   (def:assign ctx u3 'Shop2))
 
-(define (def:game-scenario)
-  (def:context Market)
-  (def:player 'Farmer 'agent Farmer)
-  (def:player 'Factory 'human Factory
-    (list 300 300 300 300 300 300 300 300 300 300 300))
+(define (def:setup-game-builder game-builder ::GameBuilder)
+  (game-builder:addDefContext
+    (def:context Market))
 
-  (def:player 'Shop1 'human Shop
-      (list 100 100 100 100 100 100 100 100 100 100 100)
-      (list 400 400 400 400 400 400 400 400 400 400 400))
-  (def:player 'Shop2 'human Shop
-      (list 150 150 150 150 150 150 150 150 150 150 150)
-      (list 150 150 150 150 150 150 150 150 150 150 150))
+  (game-builder:addDefPlayers
+    (def:player 'Farmer 'agent Farmer)
+    (def:player 'Factory 'human Factory
+      (list 300 300 300 300 300 300 300 300 300 300 300))
 
-  (def:round
-    (def:parallel-stage 'init
-      (def:task 'Factory 'factory:init)
-      (def:players-task *shop-names* 'shop:init))
-    (def:parallel-stage 'shop-order-and-pricing-factory-order
-      (def:players-task *shop-names* 'shop:order)
-      (def:players-task *shop-names* 'shop:pricing)
-      (def:stage 'factory-order 
-        (def:task 'Factory 'factory:order)
-        (def:task 'Farmer 'farmer:receive-order)))
-    (def:stage 'factory-receive-order 
-      (def:task 'Factory 'factory:receive-order))
-    (def:parallel-stage 'closing
-      (def:task 'Factory 'factory:closing)
-      (def:players-task *shop-names* 'shop:closing)))
+    (def:player 'Shop1 'human Shop
+        (list 100 100 100 100 100 100 100 100 100 100 100)
+        (list 400 400 400 400 400 400 400 400 400 400 400))
+    (def:player 'Shop2 'human Shop
+        (list 150 150 150 150 150 150 150 150 150 150 150)
+        (list 150 150 150 150 150 150 150 150 150 150 150)))
 
-  (def:round
-    (def:parallel-stage 'refresh
-      (def:players-task *shop-names* 'shop:refresh)
-      (def:task 'Factory 'factory:refresh)
-      (def:task 'Farmer 'farmer:refresh))
-    (def:stage 'farmer-delivery
-      (def:task 'Farmer 'farmer:delivery)
-      (def:task 'Factory 'factory:receive-delivery))
-    (def:restage 'shop-order-and-pricing-factory-order)
-    (def:restage 'factory-receive-order)
-    (def:restage 'closing))
+  (game-builder:addDefRounds
+    (def:round
+      (def:parallel-stage 'init
+        (def:task 'Factory 'factory:init)
+        (def:players-task *shop-names* 'shop:init))
+      (def:parallel-stage 'shop-order-and-pricing-factory-order
+        (def:players-task *shop-names* 'shop:order)
+        (def:players-task *shop-names* 'shop:pricing)
+        (def:stage 'factory-order 
+          (def:task 'Factory 'factory:order)
+          (def:task 'Farmer 'farmer:receive-order)))
+      (def:stage 'factory-receive-order 
+        (def:task 'Factory 'factory:receive-order))
+      (def:parallel-stage 'closing
+        (def:task 'Factory 'factory:closing)
+        (def:players-task *shop-names* 'shop:closing))))
 
-  (def:rounds 6
-    (def:restage 'refresh)
-    (def:stage 'factory-delivery
-      (def:task 'Factory 'factory:delivery)
-      (def:players-task *shop-names* 'shop:receive-delivery))
-    (def:restage 'farmer-delivery)
-    (def:restage 'shop-order-and-pricing-factory-order)
-    (def:restage 'factory-receive-order)
-    (def:restage 'closing))
+  (game-builder:addDefRounds
+    (def:round
+      (def:parallel-stage 'refresh
+        (def:players-task *shop-names* 'shop:refresh)
+        (def:task 'Factory 'factory:refresh)
+        (def:task 'Farmer 'farmer:refresh))
+      (def:stage 'farmer-delivery
+        (def:task 'Farmer 'farmer:delivery)
+        (def:task 'Factory 'factory:receive-delivery))
+      (def:restage 'shop-order-and-pricing-factory-order)
+      (def:restage 'factory-receive-order)
+      (def:restage 'closing)))
 
-  (def:round 
-    (def:restage 'refresh)
-    (def:restage 'factory-delivery)
-    (def:restage 'farmer-delivery)
-    (def:parallel-stage 'shop-pricing
-      (def:players-task *shop-names* 'shop:pricing))
-    (def:restage 'closing))
+  (game-builder:addDefRounds
+    (def:rounds 6
+      (def:restage 'refresh)
+      (def:stage 'factory-delivery
+        (def:task 'Factory 'factory:delivery)
+        (def:players-task *shop-names* 'shop:receive-delivery))
+      (def:restage 'farmer-delivery)
+      (def:restage 'shop-order-and-pricing-factory-order)
+      (def:restage 'factory-receive-order)
+      (def:restage 'closing)))
 
-  (def:round 
-    (def:restage 'refresh)
-    (def:restage 'factory-delivery)
-    (def:restage 'shop-pricing)
-    (def:restage 'closing))
+  (game-builder:addDefRounds
+    (def:round 
+      (def:restage 'refresh)
+      (def:restage 'factory-delivery)
+      (def:restage 'farmer-delivery)
+      (def:parallel-stage 'shop-pricing
+        (def:players-task *shop-names* 'shop:pricing))
+      (def:restage 'closing)))
 
-  (def:round 
-    (def:restage 'refresh)))
+  (game-builder:addDefRounds
+    (def:round 
+      (def:restage 'refresh)
+      (def:restage 'factory-delivery)
+      (def:restage 'shop-pricing)
+      (def:restage 'closing))
+    (def:round 
+      (def:restage 'refresh))))
 
 
 (define (shop:refresh ctx ::Market self ::Shop)
@@ -119,7 +126,7 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'materialCost 'inventoryCost 'earnings 'profit))))
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了")
                          (<p> "次の日に進みます．")))
     (lambda () #t))
@@ -156,7 +163,7 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'inventoryCost 'materialCost 'machiningCost 'earnings 'profit))))
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了")
                          (<p> "次の日に進みます．")))
     (lambda () #t))
@@ -170,7 +177,7 @@
         (to-string (<h4> ctx:roundnum "日目がはじまりました．")
                    "初日(0日目)に発注した冷凍コロッケは翌々日(2日目)に納品され，その日から販売できます．<br>"
                    "現在の冷凍コロッケの在庫は" self:stock "個です．")))
-  (manager:sync-request-to-input self:name (ui:form msg) (lambda () #t))
+  (self:syncRequestForInput  (ui:form msg) (lambda () #t))
   (manager:show-message self:name msg))
 
 (define (factory:init ctx ::Market self ::Factory)
@@ -180,7 +187,7 @@
                    "初日(0日目)に受ける注文は翌々日(2日目)開始時に納品しなくてはなりません．<br>"
                    "初日(0日目)にじゃがいもを発注すると，翌日(1日目)に農家から納品されて冷凍コロッケを生産し，翌々日(2日目)にへショップへ納品できます．<br>"
                    "現在の冷凍コロッケの在庫は" self:stock "個です．")))
-  (manager:sync-request-to-input self:name (ui:form msg) (lambda () #t))
+  (self:syncRequestForInput  (ui:form msg) (lambda () #t))
   (manager:show-message self:name msg))
 
 
@@ -192,7 +199,7 @@
 
 
 (define (shop:order ctx ::Market self ::Shop)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form
       (to-string  (<h4> ctx:roundnum "日目の発注") self:name "さん，コロッケ工場へ発注して下さい．発注したものは，翌々日の販売前に納品される予定です．")
       (ui:number "個数(冷凍コロッケ)" 'num-of-croquette (self:defaultOrders ctx:roundnum) (Min 0) (Max 1000)))
@@ -202,7 +209,7 @@
       (manager:send-message 'Factory (make CroquetteOrder self:name num-of-croquette)))))
 
 (define (shop:pricing ctx ::Market self ::Shop)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form
           (to-string (<h4> ctx:roundnum "日目の販売価格") self:name "さん，今日のコロッケの販売価格を決定して下さい．")
       (ui:number "販売価格(コロッケ)" 'price (self:defaultPrices ctx:roundnum) (Min 50) (Max 200)))
@@ -230,7 +237,7 @@
 
 
 (define (factory:order ctx ::Market self ::Factory)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form
       (to-string (<h4> ctx:roundnum "日目の発注") self:name "さん，農場へじゃがいもを発注して下さい．発注したものは，翌日に納品されます．")
       (ui:number "個数(ジャガイモ)" 'potato (self:defaultOrdersToFarmer ctx:roundnum) (Min 0) (Max 1000)))

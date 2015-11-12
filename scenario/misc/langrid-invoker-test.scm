@@ -1,4 +1,4 @@
-(define (def:game-scenario)
+(define (def:setup-game-builder game-builder ::GameBuilder)
   (def:player 'LangridInvoker 'human SimplePlayer)
   (def:round 
     (def:stage 'langrid-test

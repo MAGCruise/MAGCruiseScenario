@@ -45,7 +45,7 @@
   (manager:show-message 'all "現在，漁場には" ocean:fishes "匹の魚がいます．"))
 
 (define (fisher:decide-number-of-fish ctx ::Context self ::Player)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form "何匹の魚を取ろうとしますか？"
       (ui:number "目標漁獲量" 'number 10))
     (lambda (number ::number)
@@ -53,7 +53,7 @@
       (cons number decisions))))
 
 (define (fisher:comment ctx ::Context self ::Player)
-  (manager:sync-request-to-input self:name
+  (self:syncRequestForInput 
     (ui:form "他の漁師に伝えたいメッセージを入力して下さい．"
       (ui:text "何も無ければENDと入力して下さい．それ移行，このラウンド中は発言できなくなります．" 'text "END"))
     (lambda (text ::string)

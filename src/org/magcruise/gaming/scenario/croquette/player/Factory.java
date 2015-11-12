@@ -49,14 +49,15 @@ public class Factory extends Player {
 	@Attribute(name = "発注個数のデフォルト値")
 	public List<Number> defaultOrdersToFarmer;
 
-	public Factory(Symbol playerName, Symbol playerType, String operatorId, Properties props, MessageBox msgbox,
-			History history) {
-		super(playerName, playerType, operatorId, props, msgbox, history);
+	public Factory(Symbol playerName, Symbol playerType, String operatorId,
+			Properties props, History history, MessageBox msgbox) {
+		super(playerName, playerType, operatorId, props, history, msgbox);
 	}
 
-	public Factory(Symbol playerName, Symbol playerType, String operatorId, Properties props, MessageBox msgbox,
-			History history, List<Number> ordersToFarmer) {
-		super(playerName, playerType, operatorId, props, msgbox, history);
+	public Factory(Symbol playerName, Symbol playerType, String operatorId,
+			Properties props, History history, MessageBox msgbox,
+			List<Number> ordersToFarmer) {
+		super(playerName, playerType, operatorId, props, history, msgbox);
 		this.defaultOrdersToFarmer = ordersToFarmer;
 	}
 
@@ -82,7 +83,8 @@ public class Factory extends Player {
 			return 0;
 		}
 
-		Map<Symbol, Number> prevOrders = (Map<Symbol, Number>) getValueBefore(new SimpleSymbol("orders"), 2);
+		Map<Symbol, Number> prevOrders = (Map<Symbol, Number>) getValueBefore(
+				new SimpleSymbol("orders"), 2);
 		int tmp = 0;
 		for (Number num : prevOrders.values()) {
 			tmp += Integer.valueOf(num.toString());
@@ -98,8 +100,8 @@ public class Factory extends Player {
 		int totalOrder = getTotalOrder(ctx);
 
 		int order = ctx.roundnum < 2 ? 0
-				: Integer.valueOf(
-						((Map<Symbol, Number>) getValueBefore(new SimpleSymbol("orders"), 2)).get(shop).toString());
+				: Integer.valueOf(((Map<Symbol, Number>) getValueBefore(
+						new SimpleSymbol("orders"), 2)).get(shop).toString());
 		int delivery = totalOrder <= stockBeforeDelivery ? order
 				: (int) Math.floor(stockBeforeDelivery * (order / totalOrder));
 		this.stock -= delivery;

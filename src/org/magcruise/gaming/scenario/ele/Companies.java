@@ -10,7 +10,7 @@ public class Companies {
 	private List<CompanyPlayer> companies = new ArrayList<>();
 
 	public Companies(Context ctx) {
-		for (Player p : ctx.players.values()) {
+		for (Player p : ctx.players) {
 			companies.add((CompanyPlayer) p);
 		}
 		align();

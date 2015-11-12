@@ -25,12 +25,17 @@ public class Trades implements SConvertible {
 
 	@Override
 	public String toString() {
-		return ToStringBuilder.reflectionToString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return ToStringBuilder.reflectionToString(this,
+				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
 	@Override
 	public String toSExpression() {
 		return SExpressionUtils.toSExpression(this, trades);
+	}
+
+	public List<Trade> getTrades() {
+		return trades;
 	}
 
 }

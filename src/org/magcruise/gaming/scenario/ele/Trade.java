@@ -13,6 +13,9 @@ public class Trade implements SConvertible {
 	private int price;
 	private int amount;
 
+	public Trade() {
+	}
+
 	public Trade(Symbol partner, int price, int amount) {
 		this.partner = partner;
 		this.price = price;
@@ -25,10 +28,21 @@ public class Trade implements SConvertible {
 				ToStringStyle.SHORT_PREFIX_STYLE);
 	}
 
-
 	@Override
 	public String toSExpression() {
 		return SExpressionUtils.toSExpression(this, partner, price, amount);
+	}
+
+	public Symbol getPartner() {
+		return partner;
+	}
+
+	public int getPrice() {
+		return price;
+	}
+
+	public int getAmount() {
+		return amount;
 	}
 
 }

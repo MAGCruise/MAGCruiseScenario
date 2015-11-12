@@ -7,6 +7,7 @@ import org.magcruise.gaming.model.Attribute;
 import org.magcruise.gaming.model.History;
 import org.magcruise.gaming.model.MessageBox;
 import org.magcruise.gaming.model.Player;
+import org.magcruise.gaming.ui.model.Form;
 
 import gnu.mapping.Symbol;
 
@@ -32,9 +33,9 @@ public class CompanyPlayer extends Player {
 	public Trades trades;
 
 	public CompanyPlayer(Symbol playerName, Symbol playerType,
-			String operatorId, Properties props, MessageBox msgbox,
-			History history) {
-		super(playerName, playerType, operatorId, props, msgbox, history);
+			String operatorId, Properties props, History history,
+			MessageBox msgbox) {
+		super(playerName, playerType, operatorId, props, history, msgbox);
 	}
 
 	public void init(CompanySetting c) {
@@ -54,6 +55,17 @@ public class CompanyPlayer extends Player {
 
 	public void vote(MarketContext ctx) {
 		System.out.println("Agentの意志決定が書けます．");
+	}
+
+	public void voteByHuman(MarketContext ctx, Form form) {
+		messenger.syncRequestForInput(name, form, params -> {
+			System.out.println(params);
+		});
+
+	}
+
+	public void status(MarketContext ctx) {
+		showMessage(tabulateHistory());
 	}
 
 	@Override

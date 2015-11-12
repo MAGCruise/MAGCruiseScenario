@@ -14,13 +14,13 @@ public class Evaluator extends Player {
 	public String averageScore = "0.00";
 
 	public Evaluator(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, MessageBox msgbox, History history) {
-		super(playerName, playerType, operatorId, props, msgbox, history);
+			Properties props, History history, MessageBox msgbox) {
+		super(playerName, playerType, operatorId, props, history, msgbox);
 	}
 
 	public void setAverageScore(String scoreA, String scoreB, String scoreC) {
-		this.averageScore = new DecimalFormat("0.00").format((Double
-				.valueOf(scoreA) + Double.valueOf(scoreB) + Double
-				.valueOf(scoreC)) / 3.0);
+		this.averageScore = new DecimalFormat("0.00")
+				.format((Double.valueOf(scoreA) + Double.valueOf(scoreB)
+						+ Double.valueOf(scoreC)) / 3.0);
 	}
 }

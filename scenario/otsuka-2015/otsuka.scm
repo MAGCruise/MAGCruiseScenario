@@ -3,68 +3,55 @@
 (define-alias PublicGoodsGameAgentPlayerHuman org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerHuman)
 (define-alias PublicGoodsGameAgentPlayerAlwaysPayAll org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerAlwaysPayAll)
 (define-alias PublicGoodsGameAgentPlayerAlwaysNo org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerAlwaysNo)
-
+(define-alias PublicGoodsGameAgentPlayerTFT org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerTFT)
+(define-alias PublicGoodsGameAgentPlayerConditional org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerConditional)
+(define-alias PublicGoodsGameAgentPlayerRandom org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerRandom)
 
 (define-namespace agent "agent")
 (define-namespace human "human")
 
-(define *players* '(FirstPlayer SecondPlayer ThirdPlayer))
 
-;;(define *human-players*  (list 'A 'B))
-;;(define *agent-players* (list 'C 'D 'E 'F 'G 'H))
+(define (def:setup-game-builder builder ::GameBuilder)
+  (define pnames    (list 'FirstPlayer 'SecondPlayer 'ThirdPlayer 'FourthPlayer))
+  (define ptypes    (list 'agent 'agent 'agent 'human))
+  (define pclasses  (list PublicGoodsGameAgentPlayerAlwaysPayAll
+                          PublicGoodsGameAgentPlayerTFT
+                          PublicGoodsGameAgentPlayerConditional
+                          PublicGoodsGameAgentPlayerHuman))
 
-(define (def:game-scenario)
-    (def:context PublicGoodsGameContext)
-    (def:player 'FirstPlayer  'agent PublicGoodsGameAgentPlayerAlwaysPayAll)
-    (def:player 'SecondPlayer 'human PublicGoodsGameAgentPlayerHuman)
-    (def:player 'ThirdPlayer  'agent PublicGoodsGameAgentPlayerAlwaysNo)
+  (builder:addDefContext
+    (def:context PublicGoodsGameContext))
+    
+  (builder:addDefPlayers
+    (def:player (pnames 0) (ptypes 0) (pclasses 0))
+    (def:player (pnames 1) (ptypes 1) (pclasses 1))
+    (def:player (pnames 2) (ptypes 2) (pclasses 2))
+    (def:player (pnames 3) (ptypes 3) (pclasses 3)))
 
-    ;; (def:players *agent-players* 'agent CompanyPlayer)
-    ;; (def:players *human-players* 'human CompanyPlayer)
-
-
-  (def:round
-    (def:stage 'init-stage
-      (def:task 'FirstPlayer 'init)
-      (def:task 'SecondPlayer 'init))
-    (def:stage 'decide-stage
-      (def:task 'FirstPlayer 'agent:decide)
-      (def:task 'SecondPlayer 'human:decide)
-      (def:task 'ThirdPlayer 'agent:decide))
-    (def:stage 'pay-stage
-      (def:players-task *players* 'pay))
-    (def:stage 'clearing-stage
-      (def:task 'clearing)))
-      
-  (def:rounds 5
-    (def:stage 'status-stage
-      (def:task 'SecondPlayer 'status))
-    (def:restage 'decide-stage)
-    (def:restage 'pay-stage)
-    (def:restage 'clearing-stage)))
-      
+  (builder:addDefRounds
+    (def:round
+      (def:stage 'init-stage
+        (def:players-task (builder:getPlayerNames) 'init)))
+    (def:rounds 5
+      (def:stage 'status-stage
+        (def:players-task (builder:getPlayerNames) 'status))
+      (def:stage 'decide-stage
+        (def:players-task (builder:getPlayerNames) 'decide))
+      (def:stage 'pay-stage
+        (def:players-task (builder:getPlayerNames) 'pay))
+      (def:stage 'clearing-stage
+        (def:task 'clearing)))
+    (def:round
+      (def:restage 'status-stage))))
 
 
-(define (pay ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
-  (self:payToFunds ctx))
 
-(define (init ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
-  (self:init ctx))
-
-(define (status ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
-  (manager:show-message self:name (self:history:tabulate)))
-
-(define (agent:decide ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
-  (self:decide ctx))
-
-(define (human:decide ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
-  (manager:sync-request-to-input self:name
-      (ui:form  (to-string (<h1> "ラウンド" ctx:roundnum ": お金出" "しますか？" ))
-        (ui:number "共同基金への出資金額" 'money 1000 (make Min 0) (make Max self:account)))
-      (lambda (money ::number)
-        (set! self:investment money)
-        (manager:show-message self:name (to-string "あなたの出資金額は" self:investment "円です．")))))
+;;(define (human:decide ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
+;;  (self:syncRequestForInput 
+;;      (ui:form  (to-string (<h1> "ラウンド" ctx:roundnum ": お金出" "しますか？" ))
+;;        (ui:number "共同基金への出資金額" 'money 1000 (make Min 0) (make Max self:account) (make Required)))
+;;      (lambda (money ::number)
+;;        (set! self:investment money)
+;;        (self:showMessage (to-string "あなたの出資金額は" self:investment "円です．")))))
 
 
-(define (clearing ctx ::PublicGoodsGameContext)
-  (ctx:clearing))

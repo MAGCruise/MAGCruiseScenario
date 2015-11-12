@@ -1,7 +1,5 @@
 package org.magcruise.gaming.scenario.croquette.player;
 
-import gnu.mapping.Symbol;
-
 import java.util.List;
 
 import org.magcruise.gaming.lang.Properties;
@@ -9,6 +7,8 @@ import org.magcruise.gaming.model.Attribute;
 import org.magcruise.gaming.model.History;
 import org.magcruise.gaming.model.MessageBox;
 import org.magcruise.gaming.model.Player;
+
+import gnu.mapping.Symbol;
 
 public class Shop extends Player {
 
@@ -34,23 +34,23 @@ public class Shop extends Player {
 	@Attribute(name = "来店者数")
 	public int demand;
 
-	@Attribute(name = "発注個数のデフォルト値")
+	// @Attribute(name = "発注個数のデフォルト値")
 	public List<Number> defaultOrders;
-	@Attribute(name = "販売価格のデフォルト値")
+	// @Attribute(name = "販売価格のデフォルト値")
 	public List<Number> defaultPrices;
 
 	public Shop(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, MessageBox msgbox, History history) {
-		super(playerName, playerType, operatorId, props, msgbox, history);
+			Properties props, History history, MessageBox msgbox) {
+		super(playerName, playerType, operatorId, props, history, msgbox);
+		this.stock = 600;
 	}
 
 	public Shop(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, MessageBox msgbox, History history,
+			Properties props, History history, MessageBox msgbox,
 			List<Number> prices, List<Number> orders) {
-		super(playerName, playerType, operatorId, props, msgbox, history);
+		this(playerName, playerType, operatorId, props, history, msgbox);
 		this.defaultPrices = prices;
 		this.defaultOrders = orders;
-		this.stock = 600;
 	}
 
 	public void refresh() {

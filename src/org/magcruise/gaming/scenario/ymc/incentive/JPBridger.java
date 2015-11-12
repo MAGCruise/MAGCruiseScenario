@@ -11,9 +11,9 @@ public class JPBridger extends Player {
 
 	public String revisedSentence = "";
 
-	public JPBridger(Symbol playerName, Symbol playerType, String operatorId, Properties props, MessageBox msgbox,
-			History history) {
-		super(playerName, playerType, operatorId, props, msgbox, history);
+	public JPBridger(Symbol playerName, Symbol playerType, String operatorId,
+			Properties props, History history, MessageBox msgbox) {
+		super(playerName, playerType, operatorId, props, history, msgbox);
 	}
 
 	public void init() {
