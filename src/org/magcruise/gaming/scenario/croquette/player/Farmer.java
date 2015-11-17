@@ -1,23 +1,19 @@
 package org.magcruise.gaming.scenario.croquette.player;
 
-import org.magcruise.gaming.lang.Properties;
-import org.magcruise.gaming.model.Attribute;
-import org.magcruise.gaming.model.History;
-import org.magcruise.gaming.model.MessageBox;
-import org.magcruise.gaming.model.Player;
+import org.magcruise.gaming.model.game.Attribute;
+import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.scenario.croquette.Market;
 
 import gnu.mapping.SimpleSymbol;
-import gnu.mapping.Symbol;
 
 public class Farmer extends Player {
 
 	@Attribute
 	public Number receivedOrderOfPotato;
 
-	public Farmer(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, History history, MessageBox msgbox) {
-		super(playerName, playerType, operatorId, props, history, msgbox);
+	public Farmer(DefaultPlayerParameter playerParameter) {
+		super(playerParameter);
 	}
 
 	public void receiveOrder(int order) {

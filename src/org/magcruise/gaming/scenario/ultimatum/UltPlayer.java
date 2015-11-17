@@ -1,12 +1,8 @@
 package org.magcruise.gaming.scenario.ultimatum;
 
-import org.magcruise.gaming.lang.Properties;
-import org.magcruise.gaming.model.Attribute;
-import org.magcruise.gaming.model.History;
-import org.magcruise.gaming.model.MessageBox;
-import org.magcruise.gaming.model.Player;
-
-import gnu.mapping.Symbol;
+import org.magcruise.gaming.model.game.Attribute;
+import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 
 public class UltPlayer extends Player {
 
@@ -22,15 +18,7 @@ public class UltPlayer extends Player {
 	@Attribute(name = "<ruby><rb>今回</rb><rp>(</rp><rt>こんかい</rt><rp>)</rp>手に入れたお金")
 	public int acquisition;
 
-	@Attribute(name = "test")
-	public MessageBox[] ps = new MessageBox[2];
-
-	public UltPlayer(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, History history, MessageBox msgbox) {
-		super(playerName, playerType, operatorId, props, history, msgbox);
-		ps[0] = new MessageBox();
-		ps[1] = new MessageBox();
-
+	public UltPlayer(DefaultPlayerParameter playerParameter) {
+		super(playerParameter);
 	}
-
 }

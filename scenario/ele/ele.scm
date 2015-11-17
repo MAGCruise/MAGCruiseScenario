@@ -1,11 +1,6 @@
 (define-alias CompanyPlayer org.magcruise.gaming.scenario.ele.CompanyPlayer)
 (define-alias MarketContext org.magcruise.gaming.scenario.ele.MarketContext)
 
-(define-namespace player "player")
-(define-namespace agent "agent")
-(define-namespace human "human")
-(define-namespace market "market")
-
 
 (define (def:setup-game-builder game-builder ::GameBuilder)
   (define *human-players*  (list 'A ))
@@ -72,12 +67,12 @@
 (define (vote ctx ::MarketContext self ::CompanyPlayer)
   (if (self:isAgent)
       (self:vote ctx)
-      (human:vote ctx self)))
+      (human-vote ctx self)))
 
-(define (agent:vote ctx ::MarketContext self ::CompanyPlayer)
+(define (agent-vote ctx ::MarketContext self ::CompanyPlayer)
   (self:vote ctx))
 
-(define (human:vote ctx ::MarketContext self ::CompanyPlayer)
+(define (human-vote ctx ::MarketContext self ::CompanyPlayer)
   (self:syncRequestForInput 
     (ui:form (to-string "あなたは" self:type "です．" "必要量は" self:demand "です．" "留保価格をいくらにしますか？")
       (ui:number "金額(円/kWh)" 'reservation self:reservation))

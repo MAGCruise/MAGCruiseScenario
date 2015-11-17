@@ -1,10 +1,10 @@
 package org.magcruise.gaming.scenario.ymc.incentive;
 
 import org.magcruise.gaming.lang.Properties;
-import org.magcruise.gaming.model.Context;
-import org.magcruise.gaming.model.History;
-import org.magcruise.gaming.model.MessageBox;
-import org.magcruise.gaming.model.Players;
+import org.magcruise.gaming.model.game.Context;
+import org.magcruise.gaming.model.game.History;
+import org.magcruise.gaming.model.game.MessageBox;
+import org.magcruise.gaming.model.game.Players;
 
 public class YMCContext extends Context {
 

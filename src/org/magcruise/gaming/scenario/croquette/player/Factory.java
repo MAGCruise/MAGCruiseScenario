@@ -4,12 +4,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.magcruise.gaming.lang.Properties;
-import org.magcruise.gaming.model.Attribute;
-import org.magcruise.gaming.model.Context;
-import org.magcruise.gaming.model.History;
-import org.magcruise.gaming.model.MessageBox;
-import org.magcruise.gaming.model.Player;
+import org.magcruise.gaming.model.game.Attribute;
+import org.magcruise.gaming.model.game.Context;
+import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.scenario.croquette.msg.CroquetteOrder;
 
 import gnu.mapping.SimpleSymbol;
@@ -49,15 +47,13 @@ public class Factory extends Player {
 	@Attribute(name = "発注個数のデフォルト値")
 	public List<Number> defaultOrdersToFarmer;
 
-	public Factory(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, History history, MessageBox msgbox) {
-		super(playerName, playerType, operatorId, props, history, msgbox);
+	public Factory(DefaultPlayerParameter playerParameter) {
+		super(playerParameter);
 	}
 
-	public Factory(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, History history, MessageBox msgbox,
+	public Factory(DefaultPlayerParameter playerParameter,
 			List<Number> ordersToFarmer) {
-		super(playerName, playerType, operatorId, props, history, msgbox);
+		super(playerParameter);
 		this.defaultOrdersToFarmer = ordersToFarmer;
 	}
 

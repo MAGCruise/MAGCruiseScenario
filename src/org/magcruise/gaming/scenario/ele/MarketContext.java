@@ -5,10 +5,10 @@ import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.magcruise.gaming.lang.Properties;
-import org.magcruise.gaming.model.Context;
-import org.magcruise.gaming.model.History;
-import org.magcruise.gaming.model.MessageBox;
-import org.magcruise.gaming.model.Players;
+import org.magcruise.gaming.model.game.Context;
+import org.magcruise.gaming.model.game.History;
+import org.magcruise.gaming.model.game.MessageBox;
+import org.magcruise.gaming.model.game.Players;
 
 public class MarketContext extends Context {
 

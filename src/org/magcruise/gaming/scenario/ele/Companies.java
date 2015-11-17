@@ -3,8 +3,8 @@ package org.magcruise.gaming.scenario.ele;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.magcruise.gaming.model.Context;
-import org.magcruise.gaming.model.Player;
+import org.magcruise.gaming.model.game.Context;
+import org.magcruise.gaming.model.game.Player;
 
 public class Companies {
 	private List<CompanyPlayer> companies = new ArrayList<>();

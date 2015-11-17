@@ -2,13 +2,9 @@ package org.magcruise.gaming.scenario.croquette.player;
 
 import java.util.List;
 
-import org.magcruise.gaming.lang.Properties;
-import org.magcruise.gaming.model.Attribute;
-import org.magcruise.gaming.model.History;
-import org.magcruise.gaming.model.MessageBox;
-import org.magcruise.gaming.model.Player;
-
-import gnu.mapping.Symbol;
+import org.magcruise.gaming.model.game.Attribute;
+import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 
 public class Shop extends Player {
 
@@ -39,16 +35,14 @@ public class Shop extends Player {
 	// @Attribute(name = "販売価格のデフォルト値")
 	public List<Number> defaultPrices;
 
-	public Shop(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, History history, MessageBox msgbox) {
-		super(playerName, playerType, operatorId, props, history, msgbox);
+	public Shop(DefaultPlayerParameter playerParameter) {
+		super(playerParameter);
 		this.stock = 600;
 	}
 
-	public Shop(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, History history, MessageBox msgbox,
-			List<Number> prices, List<Number> orders) {
-		this(playerName, playerType, operatorId, props, history, msgbox);
+	public Shop(DefaultPlayerParameter playerParameter, List<Number> prices,
+			List<Number> orders) {
+		super(playerParameter);
 		this.defaultPrices = prices;
 		this.defaultOrders = orders;
 	}

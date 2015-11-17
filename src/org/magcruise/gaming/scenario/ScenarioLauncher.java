@@ -1,6 +1,11 @@
 package org.magcruise.gaming.scenario;
 
-import org.magcruise.gaming.ui.swing.LocalGUILauncher;
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+
+import org.magcruise.gaming.lang.SExpression;
+import org.magcruise.gaming.ui.swing.GameExecutorLauncherWithSwingGui;
 
 public class ScenarioLauncher {
 
@@ -19,13 +24,30 @@ public class ScenarioLauncher {
 		// String scenario = "scenario/ultimatum-game/ultimatum-game.scm";
 		// String scenario =
 		// "scenario/ultimatum-game/ultimatum-game-simple.scm";
-		String scenario = "scenario/otsuka-2015/otsuka.scm";
+		String scenario = "./scenario/otsuka-2015/otsuka.scm";
 
-		LocalGUILauncher launcher = new LocalGUILauncher(scenario);
+		// GameExecutorLauncherWithSwingGui launcher = new
+		// GameExecutorLauncherWithSwingGui(
+		// "../MAGCruiseCore", "./", toSExpression(scenario));
+
+		GameExecutorLauncherWithSwingGui launcher = new GameExecutorLauncherWithSwingGui(
+				"../MAGCruiseCore", "./", new SExpression(
+						"(load \"./scenario/otsuka-2015/otsuka.scm\")"));
 
 		// launcher.setInitScript("scenario/croquette/init.scm");
 
-		launcher.setTestMode(false);
-		launcher.run();
+		launcher.runInExternalProcess();
+		// launcher.runInSameProcess();
+	}
+
+	private static SExpression toSExpression(String scenario) {
+
+		try {
+			return new SExpression(String.join("\n",
+					Files.readAllLines(new File(scenario).toPath())));
+		} catch (IOException e) {
+			e.printStackTrace();
+			return null;
+		}
 	}
 }

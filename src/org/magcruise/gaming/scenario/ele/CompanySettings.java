@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
-import org.magcruise.gaming.model.Context;
+import org.magcruise.gaming.model.game.Context;
 
 import com.orangesignal.csv.CsvConfig;
 import com.orangesignal.csv.manager.CsvEntityManager;

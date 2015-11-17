@@ -29,8 +29,8 @@ public class Trade implements SConvertible {
 	}
 
 	@Override
-	public String toSExpression() {
-		return SExpressionUtils.toSExpression(this, partner, price, amount);
+	public String toConstructorInSExpression() {
+		return SExpressionUtils.toConstructorInSExpression(this, partner, price, amount);
 	}
 
 	public Symbol getPartner() {

@@ -1,11 +1,7 @@
 package org.magcruise.gaming.scenario.ymc.incentive;
 
-import org.magcruise.gaming.lang.Properties;
-import org.magcruise.gaming.model.History;
-import org.magcruise.gaming.model.MessageBox;
-import org.magcruise.gaming.model.Player;
-
-import gnu.mapping.Symbol;
+import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 
 public class VTYouth extends Player {
 
@@ -20,9 +16,8 @@ public class VTYouth extends Player {
 	boolean[] thanksMessageTimings = { true, false };
 	boolean[] failureMessageTimings = { true, false };
 
-	public VTYouth(Symbol playerName, Symbol playerType, String operatorId,
-			Properties props, History history, MessageBox msgbox) {
-		super(playerName, playerType, operatorId, props, history, msgbox);
+	public VTYouth(DefaultPlayerParameter playerParameter) {
+		super(playerParameter);
 	}
 
 	public void init(int roundnum) {

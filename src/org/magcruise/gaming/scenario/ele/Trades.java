@@ -30,8 +30,8 @@ public class Trades implements SConvertible {
 	}
 
 	@Override
-	public String toSExpression() {
-		return SExpressionUtils.toSExpression(this, trades);
+	public String toConstructorInSExpression() {
+		return SExpressionUtils.toConstructorInSExpression(this, trades);
 	}
 
 	public List<Trade> getTrades() {
