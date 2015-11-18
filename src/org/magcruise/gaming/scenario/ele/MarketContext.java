@@ -4,17 +4,13 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.magcruise.gaming.lang.Properties;
 import org.magcruise.gaming.model.game.Context;
-import org.magcruise.gaming.model.game.History;
-import org.magcruise.gaming.model.game.MessageBox;
-import org.magcruise.gaming.model.game.Players;
+import org.magcruise.gaming.model.game.DefaultContextParameter;
 
 public class MarketContext extends Context {
 
-	public MarketContext(int roundnum, Properties props, History history,
-			MessageBox msgbox, Players players, String scenarioHome) {
-		super(roundnum, props, history, msgbox, players, scenarioHome);
+	public MarketContext(DefaultContextParameter contextParameter) {
+		super(contextParameter);
 	}
 
 	public void init() {

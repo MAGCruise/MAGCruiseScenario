@@ -2,12 +2,13 @@ package org.magcruise.gaming.scenario.ele;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.magcruise.gaming.lang.SConvertible;
+import org.magcruise.gaming.lang.SConstructive;
+import org.magcruise.gaming.lang.SExpression;
 import org.magcruise.gaming.util.SExpressionUtils;
 
 import gnu.mapping.Symbol;
 
-public class Trade implements SConvertible {
+public class Trade implements SConstructive {
 
 	private Symbol partner;
 	private int price;
@@ -29,8 +30,8 @@ public class Trade implements SConvertible {
 	}
 
 	@Override
-	public String toConstructorInSExpression() {
-		return SExpressionUtils.toConstructorInSExpression(this, partner, price, amount);
+	public SExpression toConstructor() {
+		return SExpressionUtils.toConstructor(this, partner, price, amount);
 	}
 
 	public Symbol getPartner() {

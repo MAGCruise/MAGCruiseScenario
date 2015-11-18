@@ -5,10 +5,11 @@ import java.util.List;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.magcruise.gaming.lang.SConvertible;
+import org.magcruise.gaming.lang.SConstructive;
+import org.magcruise.gaming.lang.SExpression;
 import org.magcruise.gaming.util.SExpressionUtils;
 
-public class Trades implements SConvertible {
+public class Trades implements SConstructive {
 
 	private List<Trade> trades = new ArrayList<>();
 
@@ -30,8 +31,8 @@ public class Trades implements SConvertible {
 	}
 
 	@Override
-	public String toConstructorInSExpression() {
-		return SExpressionUtils.toConstructorInSExpression(this, trades);
+	public SExpression toConstructor() {
+		return SExpressionUtils.toConstructor(this, trades);
 	}
 
 	public List<Trade> getTrades() {

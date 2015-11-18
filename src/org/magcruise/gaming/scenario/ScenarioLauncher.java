@@ -40,7 +40,7 @@ public class ScenarioLauncher {
 		// launcher.runInSameProcess();
 	}
 
-	private static SExpression toSExpression(String scenario) {
+	protected static SExpression toSExpression(String scenario) {
 
 		try {
 			return new SExpression(String.join("\n",
