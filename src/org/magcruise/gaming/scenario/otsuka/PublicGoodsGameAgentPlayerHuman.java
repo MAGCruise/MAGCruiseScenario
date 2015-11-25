@@ -23,7 +23,7 @@ public class PublicGoodsGameAgentPlayerHuman
 		formBuilder.setInput(new NumberInput("共同基金への出資金額", "money", 1000,
 				new Min(0), new Max(account), new Required()));
 
-		syncRequestForInput(formBuilder.build(), params -> {
+		syncRequestToInput(formBuilder.build(), params -> {
 			this.investment = params.getInt("money");
 			showMessage("あなたの出資金額は" + investment + "円です");
 		});

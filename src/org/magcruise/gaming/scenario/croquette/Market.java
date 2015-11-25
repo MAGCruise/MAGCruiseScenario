@@ -46,7 +46,7 @@ public class Market extends Context {
 	}
 
 	public Shop getOther(Shop shop) {
-		if (shop.name.toString().equals("Shop1")) {
+		if (shop.getName().toString().equals("Shop1")) {
 			return (Shop) getPlayer(new SimpleSymbol("Shop2"));
 		} else {
 			return (Shop) getPlayer(new SimpleSymbol("Shop1"));

@@ -1,14 +1,15 @@
 package org.magcruise.gaming.scenario.otsuka;
 
-import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.Player;
 
 import gnu.mapping.SimpleSymbol;
 
 public class PublicGoodsGameAgentPlayerAlwaysNo
 		extends PublicGoodsGameAgentPlayer {
 
-	public PublicGoodsGameAgentPlayerAlwaysNo(DefaultPlayerParameter playerParameter) {
+	public PublicGoodsGameAgentPlayerAlwaysNo(
+			DefaultPlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 

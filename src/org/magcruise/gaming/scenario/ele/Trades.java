@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.magcruise.gaming.lang.SConstructive;
-import org.magcruise.gaming.lang.SExpression;
+import org.magcruise.gaming.lang.SConstructor;
 import org.magcruise.gaming.util.SExpressionUtils;
 
 public class Trades implements SConstructive {
@@ -31,8 +31,8 @@ public class Trades implements SConstructive {
 	}
 
 	@Override
-	public SExpression toConstructor() {
-		return SExpressionUtils.toConstructor(this, trades);
+	public SConstructor toConstructor() {
+		return SExpressionUtils.toConstructor(this.getClass(), trades);
 	}
 
 	public List<Trade> getTrades() {

@@ -1,27 +1,28 @@
-(define-alias PublicGoodsGameContext org.magcruise.gaming.scenario.otsuka.PublicGoodsGameContext)
-(define-alias PublicGoodsGameAgentPlayer org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayer)
-(define-alias PublicGoodsGameAgentPlayerHuman org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerHuman)
-(define-alias PublicGoodsGameAgentPlayerAlwaysPayAll org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerAlwaysPayAll)
-(define-alias PublicGoodsGameAgentPlayerAlwaysNo org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerAlwaysNo)
-(define-alias PublicGoodsGameAgentPlayerTFT org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerTFT)
-(define-alias PublicGoodsGameAgentPlayerConditional org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerConditional)
-(define-alias PublicGoodsGameAgentPlayerRandom org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerRandom)
+(define-private-alias game-classes-dir-zip "https://www.dropbox.com/sh/2ue5e20uk0iy74q/AABdEE9OOn-LhNViv6MQi4Qfa?dl=1")
 
-(define-namespace agent "agent")
-(define-namespace human "human")
+(define-private-alias PublicGoodsGameContext org.magcruise.gaming.scenario.otsuka.PublicGoodsGameContext)
+(define-private-alias PublicGoodsGameAgentPlayer org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayer)
+(define-private-alias PublicGoodsGameAgentPlayerHuman org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerHuman)
+(define-private-alias PublicGoodsGameAgentPlayerAlwaysPayAll org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerAlwaysPayAll)
+(define-private-alias PublicGoodsGameAgentPlayerAlwaysNo org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerAlwaysNo)
+(define-private-alias PublicGoodsGameAgentPlayerTFT org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerTFT)
+(define-private-alias PublicGoodsGameAgentPlayerConditional org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerConditional)
+(define-private-alias PublicGoodsGameAgentPlayerRandom org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerRandom)
 
+(define-private-namespace agent "agent")
+(define-private-namespace human "human")
 
 (define (def:setup-game-builder builder ::GameBuilder)
   (define pnames    (list 'FirstPlayer 'SecondPlayer 'ThirdPlayer 'FourthPlayer))
   (define ptypes    (list 'agent 'agent 'agent 'human))
-  (define pclasses  (list PublicGoodsGameAgentPlayerAlwaysPayAll
+  (define pclasses  (list PublicGoodsGameAgentPlayerTFT
                           PublicGoodsGameAgentPlayerTFT
-                          PublicGoodsGameAgentPlayerConditional
+                          PublicGoodsGameAgentPlayerTFT
                           PublicGoodsGameAgentPlayerHuman))
 
   (builder:addDefContext
     (def:context PublicGoodsGameContext))
-    
+
   (builder:addDefPlayers
     (def:player (pnames 0) (ptypes 0) (pclasses 0))
     (def:player (pnames 1) (ptypes 1) (pclasses 1))
@@ -32,7 +33,7 @@
     (def:round
       (def:stage 'init-stage
         (def:players-task (builder:getPlayerNames) 'init)))
-    (def:rounds 5
+    (def:rounds 10
       (def:stage 'status-stage
         (def:players-task (builder:getPlayerNames) 'status))
       (def:stage 'decide-stage
@@ -42,16 +43,31 @@
       (def:stage 'clearing-stage
         (def:task 'clearing)))
     (def:round
-      (def:restage 'status-stage))))
+      (def:restage 'status-stage)
+      (def:stage 'ranking-stage
+       (def:players-task (builder:getPlayerNames) 'ranking))
+       )))
 
 
 
-;;(define (human:decide ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
-;;  (self:syncRequestForInput 
-;;      (ui:form  (to-string (<h1> "ラウンド" ctx:roundnum ": お金出" "しますか？" ))
-;;        (ui:number "共同基金への出資金額" 'money 1000 (make Min 0) (make Max self:account) (make Required)))
-;;      (lambda (money ::number)
-;;        (set! self:investment money)
-;;        (self:showMessage (to-string "あなたの出資金額は" self:investment "円です．")))))
+(define (status ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
+  (self:showMessage (self:tabulateHistory))
+  (self:showMessage (to-string ctx:predistribution "円を受け取りました！")))
 
+(define (decide ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
+  (if (self:isAgent)
+      (self:decide ctx)
+      (human:decide ctx self)))
+
+
+(define (human:decide ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
+  (self:syncRequestToInput
+      (ui:form  (to-string (<h1> "ラウンド" ctx:roundnum ": 出資金額を決定してください" "<p>口座残高 : "self:account "<p>前回の投資額" self:investment "<p>前回の分配金 : " ctx:predistribution "円"))
+        (ui:number "共同基金への出資金額" 'money 0 (make Min 0) (make Max self:account)))
+      (lambda (money ::number)
+        (set! self:investment money)
+        (self:showMessage (to-string "あなたの出資金額は" self:investment "円です．")))))
+
+(define (ranking ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
+  (self:showMessage (ctx:ranking)))
 

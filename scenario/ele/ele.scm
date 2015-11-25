@@ -1,5 +1,8 @@
-(define-alias CompanyPlayer org.magcruise.gaming.scenario.ele.CompanyPlayer)
-(define-alias MarketContext org.magcruise.gaming.scenario.ele.MarketContext)
+(define-private-alias CompanyPlayer org.magcruise.gaming.scenario.ele.CompanyPlayer)
+(define-private-alias MarketContext org.magcruise.gaming.scenario.ele.MarketContext)
+
+(define-private-namespace agent "agent")
+(define-private-namespace human "human")
 
 
 (define (def:setup-game-builder game-builder ::GameBuilder)
@@ -31,17 +34,22 @@
     (def:round 
       (def:restage 'status))))
 
-;; (load framework)                            MAGCruiseフレームワークのロード
+;; (load framework.csm)                            MAGCruiseフレームワークのロード
 ;;
 ;; (load your-game.class)                      ゲームで使われるクラスのロード 【ゲーム開発者がJavaを記述】
 ;; (load your-game-scenario.scm)               ゲームシナリオで使われる関数とGameBuilder設定の定義．【ゲーム開発者がschemeを記述】
 ;;
-;; game-builder <- (def:setup-game-builder)    GameBuilderの設定．
+;;
+;; game-builder <- (def:setup-game-builder)    GameBuilderの設定．直前に(def:before-setup-game-builder game-builder)が呼ばれる
 ;; game <- (game-builder:build)                Gameの作成  ．直後に(def:after-build-game game)が呼ばれる．
 ;; manager <- (create-manager game)            GameManagerの作成 
 ;; (manager:kickGame)                          Gameの開始 ．
 ;; (manager:requestToJoin)                     参加者の募集  ．直前に(def:before-start-game context)が呼ばれる
 ;; (manager:start-round)                       最初のラウンドの実行  ．直前に(def:before-start-first-round cotext)が呼ばれる．
+
+
+;; (define (def:before-setup-game-builder game-builder ::GameBuilder)
+;; (define (def:setup-game-builder game-builder ::GameBuilder)
 
 ;; Gameが作られた直後に呼び出される．この後に，game が GameManagerに渡されて，起動される．
 (define (def:after-build-game game ::Game)
@@ -67,13 +75,13 @@
 (define (vote ctx ::MarketContext self ::CompanyPlayer)
   (if (self:isAgent)
       (self:vote ctx)
-      (human-vote ctx self)))
+      (human:vote ctx self)))
 
-(define (agent-vote ctx ::MarketContext self ::CompanyPlayer)
+(define (agent:vote ctx ::MarketContext self ::CompanyPlayer)
   (self:vote ctx))
 
-(define (human-vote ctx ::MarketContext self ::CompanyPlayer)
-  (self:syncRequestForInput 
+(define (human:vote ctx ::MarketContext self ::CompanyPlayer)
+  (self:syncRequestToInput 
     (ui:form (to-string "あなたは" self:type "です．" "必要量は" self:demand "です．" "留保価格をいくらにしますか？")
       (ui:number "金額(円/kWh)" 'reservation self:reservation))
     (lambda (inputPrice ::integer)
