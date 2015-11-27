@@ -3,13 +3,16 @@ package org.magcruise.gaming.scenario.otsuka;
 import java.util.ArrayList;
 import java.util.Collections;
 
+import org.magcruise.gaming.model.game.Attribute;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.DefaultContextParameter;
 import org.magcruise.gaming.model.game.Player;
 
 public class PublicGoodsGameContext extends Context {
 
+	@Attribute(name = "ファンド総額")
 	public int funds = 0;
+	@Attribute(name = "前回の分配金")
 	public int predistribution = 0;
 	public ArrayList<Integer> array = new ArrayList<Integer>();
 	public int[] rank = new int[100];

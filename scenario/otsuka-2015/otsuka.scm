@@ -62,7 +62,9 @@
 
 (define (human:decide ctx ::PublicGoodsGameContext self ::PublicGoodsGameAgentPlayer)
   (self:syncRequestToInput
-      (ui:form  (to-string (<h1> "ラウンド" ctx:roundnum ": 出資金額を決定してください" "<p>口座残高 : "self:account "<p>前回の投資額" self:investment "<p>前回の分配金 : " ctx:predistribution "円"))
+      (ui:form  (to-string
+                  (<h1> "ラウンド" ctx:roundnum ": 出資金額を決定してください"
+                  "<br>口座残高 : "self:account "円<br>前回の投資額 : " self:investment "円<br>前回の分配金 : " ctx:predistribution "円"))
         (ui:number "共同基金への出資金額" 'money 0 (make Min 0) (make Max self:account)))
       (lambda (money ::number)
         (set! self:investment money)

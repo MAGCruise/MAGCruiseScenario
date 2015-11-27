@@ -1,11 +1,14 @@
 package org.magcruise.gaming.scenario.otsuka;
 
+import org.magcruise.gaming.model.game.Attribute;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 
 public class PublicGoodsGameAgentPlayerTFT extends PublicGoodsGameAgentPlayer {
 
-	double prepredistribution = 0; // 前々回の分配金
-	double predictedValue = 0; // 予想金額
+	@Attribute(name = "前々回の分配金")
+	public double prepredistribution = 0;
+	@Attribute(name = "予想金額")
+	public double predictedValue = 0;
 
 	public PublicGoodsGameAgentPlayerTFT(
 			DefaultPlayerParameter playerParameter) {
