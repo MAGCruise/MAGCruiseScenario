@@ -1,23 +1,22 @@
-(define meta:game-classes-dir-zip "https://www.dropbox.com/sh/2ue5e20uk0iy74q/AABdEE9OOn-LhNViv6MQi4Qfa?dl=1")
+(define-alias PublicGoodsGameContext org.magcruise.gaming.scenario.otsuka.PublicGoodsGameContext)
+(define-alias PublicGoodsGameAgentPlayer org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayer)
+(define-alias PublicGoodsGameAgentPlayerHuman org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerHuman)
+(define-alias PublicGoodsGameAgentPlayerAlwaysPayAll org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerAlwaysPayAll)
+(define-alias PublicGoodsGameAgentPlayerAlwaysNo org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerAlwaysNo)
+(define-alias PublicGoodsGameAgentPlayerTFT org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerTFT)
+(define-alias PublicGoodsGameAgentPlayerConditional org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerConditional)
+(define-alias PublicGoodsGameAgentPlayerRandom org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerRandom)
 
-(define-private-alias PublicGoodsGameContext org.magcruise.gaming.scenario.otsuka.PublicGoodsGameContext)
-(define-private-alias PublicGoodsGameAgentPlayer org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayer)
-(define-private-alias PublicGoodsGameAgentPlayerHuman org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerHuman)
-(define-private-alias PublicGoodsGameAgentPlayerAlwaysPayAll org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerAlwaysPayAll)
-(define-private-alias PublicGoodsGameAgentPlayerAlwaysNo org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerAlwaysNo)
-(define-private-alias PublicGoodsGameAgentPlayerTFT org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerTFT)
-(define-private-alias PublicGoodsGameAgentPlayerConditional org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerConditional)
-(define-private-alias PublicGoodsGameAgentPlayerRandom org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayerRandom)
+(define-namespace agent "agent")
+(define-namespace human "human")
 
-(define-private-namespace agent "agent")
-(define-private-namespace human "human")
 
 (define (def:setup-game-builder builder ::GameBuilder)
   (define pnames    (list 'FirstPlayer 'SecondPlayer 'ThirdPlayer 'FourthPlayer))
-  (define ptypes    (list 'agent 'agent 'agent 'human))
+  (define ptypes    (list 'agent 'agent 'human 'human))
   (define pclasses  (list PublicGoodsGameAgentPlayerTFT
                           PublicGoodsGameAgentPlayerTFT
-                          PublicGoodsGameAgentPlayerTFT
+                          PublicGoodsGameAgentPlayerHuman
                           PublicGoodsGameAgentPlayerHuman))
 
   (builder:addDefContext

@@ -31,8 +31,8 @@ public class ScenarioLauncher {
 
 		// launcher.setInitScript("scenario/croquette/init.scm");
 
-		launcher.runOnExternalProcess();
-		// launcher.runOnCurrentProcess();
+		// launcher.runOnExternalProcess();
+		launcher.runOnCurrentProcess();
 	}
 
 }

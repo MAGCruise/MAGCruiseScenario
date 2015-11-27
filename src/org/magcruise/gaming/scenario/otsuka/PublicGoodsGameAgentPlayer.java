@@ -30,9 +30,4 @@ public abstract class PublicGoodsGameAgentPlayer extends Player {
 		account -= investment;
 	}
 
-	public void status(PublicGoodsGameContext ctx) {
-		showMessage(tabulateHistory());
-		showMessage(ctx.predistribution + "円を受けとりました");
-	}
-
 }
