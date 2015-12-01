@@ -4,6 +4,13 @@
 (define-private-namespace agent "agent")
 (define-private-namespace human "human")
 
+;; (define (def:setup-game-system-properties-builder builder ::GameSystemPropertiesBuilder)
+;;     ;;system-tmpdir
+;;     (builder:setProperties
+;;         (def:game-log-db-path (current-path) "magcruise-game")
+;;         (def:game-classes-dir-zip (path "https://www.dropbox.com/sh/x8275gvqnqm42oj/AABTMkXhjlOEKmQu-MjEJcD8a?dl=1"))))
+
+
 
 (define (def:setup-game-builder game-builder ::GameBuilder)
   (define *human-players*  (list 'A ))
@@ -31,15 +38,19 @@
     (def:round 
       (def:restage 'status))))
 
+;; ゲーム実行環境のセットアップ
 ;; (load framework.csm)                            MAGCruiseフレームワークのロード
-;;
+;; (def:setup-game-system-properties-builder builder ::GameSystemPropertiesBuilder) 実行環境の準備
+
+;; ゲームのセットアップ
+;; (load framework.csm)
 ;; (load your-game.class)                      ゲームで使われるクラスのロード 【ゲーム開発者がJavaを記述】
 ;; (load your-game-scenario.scm)               ゲームシナリオで使われる関数とGameBuilder設定の定義．【ゲーム開発者がschemeを記述】
-;;
-;;
 ;; game-builder <- (def:setup-game-builder)    GameBuilderの設定．直前に(def:before-setup-game-builder game-builder)が呼ばれる
 ;; game <- (game-builder:build)                Gameの作成  ．直後に(def:after-build-game game)が呼ばれる．
 ;; manager <- (create-manager game)            GameManagerの作成 
+;;
+;; ゲームの開始
 ;; (manager:kickGame)                          Gameの開始 ．
 ;; (manager:requestToJoin)                     参加者の募集  ．直前に(def:before-start-game context)が呼ばれる
 ;; (manager:start-round)                       最初のラウンドの実行  ．直前に(def:before-start-first-round cotext)が呼ばれる．
