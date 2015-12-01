@@ -14,15 +14,17 @@
 (define *JP-Expert* ::JPExpert #!null)
 
 
+(define (def:setup-game-builder builder ::GameBuilder)
+  (builder:setDefContext
+    (def:context YMCContext))
 
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (def:setup-game-builder game-builder ::GameBuilder)
-    (def:context YMCContext)
+  (builder:addDefPlayers
     (def:player 'JP-Expert 'agent JPExpert)
     (def:player 'JP-Bridger 'human JPBridger)
     (def:player 'VT-Bridger 'agent VTBridger)
-    (def:player 'VT-Youth 'human VTYouth)
+    (def:player 'VT-Youth 'human VTYouth))
 
+  (builder:addDefRounds
     (def:rounds 2
         (def:stage 'init
             (def:task 'initialize)
@@ -35,12 +37,12 @@
             (def:task 'JP-Bridger 'jp-bridger:bridge-jp-en)
             (def:task 'VT-Bridger 'vt-bridger:bridge-en-vt))
         (def:stage 'feedback
-            (def:task 'VT-Youth 'vt-youth:decide-feedback))))
+            (def:task 'VT-Youth 'vt-youth:decide-feedback)))))
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (define (jp-bridger:init ctx ::YMCContext self ::JPBridger)
     (when (eqv? ctx:roundnum 0)
-        (manager:show-message self:name *instruction-message*)))
+        (self:showMessage *instruction-message*)))
 
 (define (vt-youth:init ctx ::YMCContext self ::VTYouth)
     (self:init ctx:roundnum))
@@ -49,7 +51,8 @@
     (self:init ctx:roundnum))
 
 (define (jp-bridger:bridge-jp-en ctx ::YMCContext self ::JPBridger)
-    (manager:show-message self:name
+    (self:showMessage
+        (to-string 
         (<div-class> "panel panel-warning"
             (<div-class> "panel-heading"
                 (<h4-attr> '(("class ""panel-title")) "No. " ctx:roundnum " : Question (for demo)"))
@@ -57,11 +60,11 @@
         (<div-class> "panel panel-warning"
             (<div-class> "panel-heading"
                 (<h4-attr> '(("class ""panel-title")) "No. " ctx:roundnum " : Answer (ORIGINAL sentences translated by MT) (for demo)"))
-            (<div-class> "panel-body"  (translation "ja" "en" *JP-Expert*:answer))))
+            (<div-class> "panel-body"  (translation "ja" "en" *JP-Expert*:answer)))))
 
         
     (define (rewrite self ::JPBridger ctx ::YMCContext prev-revised-text)
-        (self:syncRequestForInput 
+        (self:syncRequestToInput 
             (ui:form 
                 (<div> 
                     (<div-class> "panel panel-success"
@@ -77,13 +80,14 @@
             (lambda (revised-sentence)
                 (set! self:revisedSentence revised-sentence)))
 
-        (manager:show-message self:name
+        (self:showMessage
+          (to-string
             (<div-class> "panel panel-warning"
                 (<div-class> "panel-heading"
                     (<h4-attr> '(("class ""panel-title")) "No. " ctx:roundnum " : Answer (REVISED sentences translated by MT) (for demo)"))
-                (<div-class> "panel-body" (translation "ja" "en" self:revisedSentence))))
+                (<div-class> "panel-body" (translation "ja" "en" self:revisedSentence)))))
         
-         (self:syncRequestForInput 
+         (self:syncRequestToInput 
             (ui:form 
                 (<div>
                      (<p> "No. " ctx:roundnum " : Question")(<pre> *VT-Youth*:question)
@@ -102,7 +106,7 @@
     (rewrite self ctx  *JP-Expert*:answer))
 
 (define (vt-youth:decide-feedback ctx ::YMCContext self ::VTYouth)
-    (self:syncRequestForInput 
+    (self:syncRequestToInput 
         (ui:form 
             (<div> 
                 (<div-class> "panel panel-warning"
@@ -123,7 +127,7 @@
         (lambda (yes-or-no)
             (when
                 (equal? yes-or-no "Yes")
-                (manager:show-message *JP-Bridger*:name *thanks-message*)))))
+                (*JP-Bridger*:showMessage *thanks-message*)))))
 
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

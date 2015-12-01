@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.magcruise.gaming.model.game.Attribute;
+import org.magcruise.gaming.model.game.MainProperty;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
@@ -15,36 +15,36 @@ import gnu.mapping.Symbol;
 
 public class Factory extends Player {
 
-	@Attribute(name = "価格")
+	@MainProperty(name = "価格")
 	public static int price = 60;
 
-	@Attribute(name = "発注個数(じゃがいも)")
+	@MainProperty(name = "発注個数(じゃがいも)")
 	public int orderOfPotato;
-	@Attribute(name = "納品個数(じゃがいも)")
+	@MainProperty(name = "納品個数(じゃがいも)")
 	public int deliveredPotato;
-	@Attribute(name = "生産個数")
+	@MainProperty(name = "生産個数")
 	public int production;
-	@Attribute(name = "在庫個数")
+	@MainProperty(name = "在庫個数")
 	public int stock = 0;
-	@Attribute(name = "加工費")
+	@MainProperty(name = "加工費")
 	public int machiningCost;
-	@Attribute(name = "材料費")
+	@MainProperty(name = "材料費")
 	public int materialCost;
-	@Attribute(name = "在庫費")
+	@MainProperty(name = "在庫費")
 	public int inventoryCost;
-	@Attribute(name = "売上個数")
+	@MainProperty(name = "売上個数")
 	public int sales;
-	@Attribute(name = "売上高")
+	@MainProperty(name = "売上高")
 	public int earnings;
-	@Attribute(name = "利益")
+	@MainProperty(name = "利益")
 	public int profit;
-	@Attribute(name = "納品希望数")
+	@MainProperty(name = "納品希望数")
 	public int demand;
 
-	@Attribute(name = "受注内容")
+	@MainProperty(name = "受注内容")
 	public Map<Symbol, Number> orders = new HashMap<>();
 
-	@Attribute(name = "発注個数のデフォルト値")
+	@MainProperty(name = "発注個数のデフォルト値")
 	public List<Number> defaultOrdersToFarmer;
 
 	public Factory(DefaultPlayerParameter playerParameter) {

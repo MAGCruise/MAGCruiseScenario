@@ -1,15 +1,15 @@
 package org.magcruise.gaming.scenario.otsuka;
 
-import org.magcruise.gaming.model.game.Attribute;
+import org.magcruise.gaming.model.game.MainProperty;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.model.game.Player;
 
 public abstract class PublicGoodsGameAgentPlayer extends Player {
 
-	@Attribute(name = "口座")
+	@MainProperty(name = "口座")
 	public int account = 1000;
 
-	@Attribute(name = "出資金額")
+	@MainProperty(name = "出資金額")
 	public int investment = 0;
 
 	public PublicGoodsGameAgentPlayer(DefaultPlayerParameter playerParameter) {

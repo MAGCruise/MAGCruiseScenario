@@ -1,6 +1,6 @@
 package org.magcruise.gaming.scenario.croquette.player;
 
-import org.magcruise.gaming.model.game.Attribute;
+import org.magcruise.gaming.model.game.MainProperty;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.scenario.croquette.Market;
@@ -9,7 +9,7 @@ import gnu.mapping.SimpleSymbol;
 
 public class Farmer extends Player {
 
-	@Attribute
+	@MainProperty
 	public Number receivedOrderOfPotato;
 
 	public Farmer(DefaultPlayerParameter playerParameter) {

@@ -7,6 +7,8 @@ import org.apache.commons.lang.builder.ToStringStyle;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.DefaultContextParameter;
 
+import gnu.mapping.SimpleSymbol;
+
 public class MarketContext extends Context {
 
 	public MarketContext(DefaultContextParameter contextParameter) {
@@ -16,7 +18,8 @@ public class MarketContext extends Context {
 	public void init() {
 		List<CompanySetting> settings = CompanySettings.readSettings(this);
 		for (CompanySetting setting : settings) {
-			CompanyPlayer player = (CompanyPlayer) players.get(setting.name);
+			CompanyPlayer player = (CompanyPlayer) players
+					.get(new SimpleSymbol(setting.name));
 			player.init(setting);
 		}
 	}

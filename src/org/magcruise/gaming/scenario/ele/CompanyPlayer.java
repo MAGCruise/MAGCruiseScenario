@@ -2,30 +2,30 @@ package org.magcruise.gaming.scenario.ele;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.magcruise.gaming.model.game.Attribute;
-import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.MainProperty;
+import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.ui.model.Form;
 
 public class CompanyPlayer extends Player {
 
-	@Attribute(name = "売手/買手")
+	@MainProperty(name = "売手/買手")
 	public String type;
-	@Attribute(name = "エリア")
+	@MainProperty(name = "エリア")
 	public String area;
 
-	@Attribute(name = "需要(初期)")
+	@MainProperty(name = "需要(初期)")
 	public int demand;
-	@Attribute(name = "需要(残り)")
+	@MainProperty(name = "需要(残り)")
 	public int remaindDemand;
 
-	@Attribute(name = "入力価格")
+	@MainProperty(name = "入力価格")
 	public int inputPrice;
 
-	@Attribute(name = "留保価格")
+	@MainProperty(name = "留保価格")
 	public int reservation;
 
-	@Attribute(name = "売買")
+	@MainProperty(name = "売買")
 	public Trades trades;
 
 	public CompanyPlayer(DefaultPlayerParameter playerParameter) {
@@ -52,7 +52,7 @@ public class CompanyPlayer extends Player {
 	}
 
 	public void voteByHuman(MarketContext ctx, Form form) {
-		messenger.syncRequestForInput(name, form, params -> {
+		syncRequestToInput(name, form, params -> {
 			System.out.println(params);
 		});
 

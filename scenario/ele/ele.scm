@@ -10,14 +10,11 @@
   (define *agent-players* (list 'B 'C 'D 'E 'F 'G 'H))
   (define *all-players* (append *human-players* *agent-players*))
 
-  (game-builder:addDefContext
-    (def:context MarketContext))
 
-  (game-builder:addDefPlayers
+  (game-builder:addGameDefinitions
+    (def:context MarketContext)
     (def:players *agent-players* 'agent CompanyPlayer)
-    (def:players *human-players* 'human CompanyPlayer))
-
-  (game-builder:addDefRounds
+    (def:players *human-players* 'human CompanyPlayer)
     (def:round 
       (def:stage 'init
         (def:task 'init))

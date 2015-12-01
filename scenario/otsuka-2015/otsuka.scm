@@ -1,4 +1,4 @@
-(define meta:game-classes-dir-zip "https://www.dropbox.com/sh/2ue5e20uk0iy74q/AABdEE9OOn-LhNViv6MQi4Qfa?dl=1")
+;;(define meta:game-classes-dir-zip "https://www.dropbox.com/sh/2ue5e20uk0iy74q/AABdEE9OOn-LhNViv6MQi4Qfa?dl=1")
 
 (define-private-alias PublicGoodsGameContext org.magcruise.gaming.scenario.otsuka.PublicGoodsGameContext)
 (define-private-alias PublicGoodsGameAgentPlayer org.magcruise.gaming.scenario.otsuka.PublicGoodsGameAgentPlayer)
@@ -12,6 +12,22 @@
 (define-private-namespace agent "agent")
 (define-private-namespace human "human")
 
+
+(define (def:game-classes-dir-zip zip-file ::path) ::DefGameSystemProperty
+  (make org.magcruise.gaming.model.def.sys.DefGameClassesDirZip zip-file))
+
+(define (def:game-log-db-path dir ::path relative-path ::string) ::DefGameSystemProperty
+  (make org.magcruise.gaming.model.def.sys.DefGameLogDbPath dir relative-path))
+
+
+
+(define (def:setup-game-system-properties-builder builder ::GameSystemPropertiesBuilder)
+    ;;system-tmpdir
+    (builder:setProperties
+        (def:game-log-db-path (current-path) "magcruise-game")
+        (def:game-classes-dir-zip (path "https://www.dropbox.com/sh/x8275gvqnqm42oj/AABTMkXhjlOEKmQu-MjEJcD8a?dl=1")))
+)
+
 (define (def:setup-game-builder builder ::GameBuilder)
   (define pnames    (list 'FirstPlayer 'SecondPlayer 'ThirdPlayer 'FourthPlayer))
   (define ptypes    (list 'agent 'agent 'agent 'human))
@@ -20,7 +36,7 @@
                           PublicGoodsGameAgentPlayerTFT
                           PublicGoodsGameAgentPlayerHuman))
 
-  (builder:addDefContext
+  (builder:setDefContext
     (def:context PublicGoodsGameContext))
 
   (builder:addDefPlayers

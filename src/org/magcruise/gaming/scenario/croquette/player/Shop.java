@@ -2,32 +2,32 @@ package org.magcruise.gaming.scenario.croquette.player;
 
 import java.util.List;
 
-import org.magcruise.gaming.model.game.Attribute;
+import org.magcruise.gaming.model.game.MainProperty;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 
 public class Shop extends Player {
 
-	@Attribute(name = "在庫個数")
+	@MainProperty(name = "在庫個数")
 	public int stock;
 
-	@Attribute(name = "発注個数")
+	@MainProperty(name = "発注個数")
 	public int order;
-	@Attribute(name = "納品個数")
+	@MainProperty(name = "納品個数")
 	public int delivery;
-	@Attribute(name = "販売価格")
+	@MainProperty(name = "販売価格")
 	public int price;
-	@Attribute(name = "在庫費")
+	@MainProperty(name = "在庫費")
 	public int inventoryCost;
-	@Attribute(name = "仕入費")
+	@MainProperty(name = "仕入費")
 	public int materialCost;
-	@Attribute(name = "売上個数")
+	@MainProperty(name = "売上個数")
 	public int sales;
-	@Attribute(name = "売上高")
+	@MainProperty(name = "売上高")
 	public int earnings;
-	@Attribute(name = "利益")
+	@MainProperty(name = "利益")
 	public int profit;
-	@Attribute(name = "来店者数")
+	@MainProperty(name = "来店者数")
 	public int demand;
 
 	// @Attribute(name = "発注個数のデフォルト値")

@@ -22,8 +22,9 @@ public class CompanySettings {
 			CsvEntityManager manager = new CsvEntityManager(cfg);
 
 			companies = manager.load(CompanySetting.class)
-					.from(new File(ctx.getScenarioHome() + File.separator
-							+ "scenario/ele/companies.csv"));
+					.from(new File(ctx.getGameSystemProperties()
+							.getScenarioHome().toFile(),
+					"scenario/ele/companies.csv"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
