@@ -1,6 +1,6 @@
 package org.magcruise.gaming.scenario;
 
-import org.magcruise.gaming.util.GameProcessLauncher;
+import org.magcruise.gaming.manager.GameProcessLauncher;
 
 public class ScenarioLauncher {
 
