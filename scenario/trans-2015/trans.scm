@@ -1,10 +1,9 @@
 (define-private-alias TranslationGameContext org.magcruise.gaming.scenario.trans.TranslationGameContext)
 (define-private-alias TranslationGamePlayer org.magcruise.gaming.scenario.trans.TranslationGamePlayer)
 
-(define (def:setup-game-system-properties-builder builder ::GameSystemPropertiesBuilder)
-    (builder:setProperties
-        ;;(def:game-log-db-path (system-tmpdir) "magcruise-game")
-        (def:game-log-db-path (current-path) "magcruise-game")))
+;;(define (def:setup-game-system-properties-builder builder ::GameSystemPropertiesBuilder)
+;;    (builder:setProperties
+;;        (def:game-classes-dir (path "https://www.dropbox.com/sh/x8275gvqnqm42oj/AABTMkXhjlOEKmQu-MjEJcD8a?dl=1"))))
 
 (define (def:setup-game-builder builder ::GameBuilder)
 
