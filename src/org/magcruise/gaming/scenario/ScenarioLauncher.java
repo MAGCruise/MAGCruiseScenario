@@ -1,7 +1,7 @@
 package org.magcruise.gaming.scenario;
 
-import java.io.File;
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.magcruise.gaming.manager.GameProcessLauncher;
 import org.magcruise.gaming.model.def.GameBuilder;
@@ -24,7 +24,7 @@ public class ScenarioLauncher {
 		// String scenario =
 		// "scenario/ultimatum-game/ultimatum-game-simple.scm";
 		// Path scenario = new File("scenario/otsuka-2015/otsuka.scm").toPath();
-		Path scenario = new File("scenario/trans-2015/trans.scm").toPath();
+		Path scenario = Paths.get("scenario/trans-2015/trans.scm");
 		// String scenario = "scenario/cc-2015/ymc.scm";
 		// String scenario = "scenario/ele/ele.scm";
 

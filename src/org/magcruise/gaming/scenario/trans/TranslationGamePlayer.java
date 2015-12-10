@@ -3,6 +3,7 @@ package org.magcruise.gaming.scenario.trans;
 import java.util.Arrays;
 import java.util.List;
 
+import org.magcruise.gaming.langrid.AccessConfigFactory;
 import org.magcruise.gaming.langrid.client.TranslationClient;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.model.game.MainProperty;
@@ -12,8 +13,18 @@ import org.magcruise.gaming.ui.model.attr.Max;
 import org.magcruise.gaming.ui.model.attr.Min;
 import org.magcruise.gaming.ui.model.attr.Required;
 import org.magcruise.gaming.ui.model.input.NumberInput;
+import org.magcruise.gaming.ui.model.input.RadioInput;
 
 public class TranslationGamePlayer extends Player {
+
+	public static void main(String[] args) {
+
+		TranslationClient client = new TranslationClient(
+				AccessConfigFactory.create(), "GoogleTranslate");
+
+		log.debug(client.translate("ja", "en", "こんにちは"));
+
+	}
 
 	@MainProperty(name = "口座(トークン)")
 	public int account = 0;
@@ -35,8 +46,6 @@ public class TranslationGamePlayer extends Player {
 	}
 
 	public void beforeRound(TranslationGameContext ctx) {
-		showMessage("前のラウンドまでのまとめです．" + tabulateHistory());
-
 		account += 100;
 		investment = 0;
 		rightOfUse = 0;
@@ -44,16 +53,17 @@ public class TranslationGamePlayer extends Player {
 	}
 
 	public void afterRound(TranslationGameContext ctx) {
-		TranslationClient client = new TranslationClient("GoogleTranslate");
+		TranslationClient client = new TranslationClient(
+				AccessConfigFactory.create(), "GoogleTranslate");
 		String sentence;
 		if (ctx.getRoundnum() <= 15) {
 			sentence = client.translate("ja", "vi",
 					getScentence(ctx.getRoundnum()));
 		} else if (ctx.getRoundnum() <= 20) {
-			if (ctx.funds <= 200) {
+			if (ctx.funds < 200) {
 				sentence = client.translate("ja", "zh",
 						getScentence(ctx.getRoundnum()));
-			} else if (ctx.funds <= 300) {
+			} else if (ctx.funds < 300) {
 				sentence = client.translate("ja", "en",
 						getScentence(ctx.getRoundnum()));
 			} else {
@@ -63,10 +73,10 @@ public class TranslationGamePlayer extends Player {
 		} else {
 			if (ctx.funds == 0) {
 				sentence = getScentence(ctx.getRoundnum());
-			} else if (ctx.funds <= 200) {
+			} else if (ctx.funds < 200) {
 				sentence = client.translate("ja", "zh",
 						getScentence(ctx.getRoundnum()));
-			} else if (ctx.funds <= 300) {
+			} else if (ctx.funds < 300) {
 				sentence = client.translate("ja", "en",
 						getScentence(ctx.getRoundnum()));
 			} else {
@@ -75,9 +85,10 @@ public class TranslationGamePlayer extends Player {
 			}
 		}
 
-		showMessagesOfRound(sentence);
+		showMessagesOfRound(ctx.getRoundnum(), sentence);
 
 		account += rightOfUse;
+		account -= investment;
 		sumOfScore += score;
 
 	}
@@ -93,15 +104,17 @@ public class TranslationGamePlayer extends Player {
 
 		if (ctx.getRoundnum() <= 5) {
 			builder.addLabel("このラウンドで寄付できるのは0トークンか，100トークンです．");
-			builder.setInput(new NumberInput("寄付金(トークン)", "token", 100,
-					new Min(0), new Max(100), new Required()));
+			builder.setInput(new RadioInput("寄付金(トークン)", "token", "0",
+					Arrays.asList(new String[] { "0トークン", "100トークン" }),
+					Arrays.asList(new String[] { "0", "100" }),
+					new Required()));
 			syncRequestToInput(builder.build(), params -> {
 				this.investment = params.getInt("token");
 			});
 		} else if (ctx.getRoundnum() <= 25) {
-			builder.addLabel("このラウンドで寄付できるのは，任意のトークンです．");
+			builder.addLabel("このラウンドで寄付できトークン数は，0以上100以下の任意の整数です．");
 			builder.setInput(new NumberInput("寄付金(トークン)", "token", 100,
-					new Min(0), new Max(account), new Required()));
+					new Min(0), new Max(100), new Required()));
 			syncRequestToInput(builder.build(), params -> {
 				this.investment = params.getInt("token");
 			});
@@ -115,10 +128,11 @@ public class TranslationGamePlayer extends Player {
 		return sentences.get((roundnum - 1) % 10);
 	}
 
-	private void showMessagesOfRound(String sentence) {
+	private void showMessagesOfRound(int roundnum, String sentence) {
 		showMessage("寄付金として，" + investment + "トークンを寄付しました．");
 		showMessage("利用権として，" + rightOfUse + "トークンを獲得しました．");
 		showMessage("受けとった翻訳文は，「" + sentence + "」です．");
+		showMessage("このラウンドのまとめです．" + tabulateCurrentStateAndHistory(roundnum));
 	}
 
 	private List<String> sentences = Arrays.asList(new String[] {

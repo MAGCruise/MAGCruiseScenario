@@ -23,17 +23,37 @@ public class TranslationGameContext extends Context {
 			funds += player.investment;
 		});
 
-		final double rightOfUse;
-
-		if (getRoundnum() <= 10) {
-			rightOfUse = 200;
-		} else {
-			rightOfUse = funds * 2 / players.size();
-		}
-
 		players.forEach(p -> {
 			TranslationGamePlayer player = (TranslationGamePlayer) p;
+
+			double rightOfUse;
+			if (getRoundnum() <= 10) {
+				rightOfUse = 200;
+			} else {
+				rightOfUse = funds * 2 / players.size();
+			}
 			player.rightOfUse = (int) rightOfUse;
+
+			if (15 <= getRoundnum() && getRoundnum() <= 19) {
+				if (funds < 200) {
+					player.score = 1;
+				} else if (funds < 300) {
+					player.score = 2;
+				} else if (funds < 400) {
+					player.score = 3;
+				}
+			} else if (20 <= getRoundnum()) {
+				if (funds == 0) {
+					player.score = 0;
+				} else if (funds < 200) {
+					player.score = 1;
+				} else if (funds < 300) {
+					player.score = 2;
+				} else if (funds < 400) {
+					player.score = 3;
+				}
+			}
+
 		});
 	}
 
