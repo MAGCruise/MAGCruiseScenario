@@ -1,6 +1,10 @@
 package org.magcruise.gaming.scenario;
 
+import java.io.File;
+import java.nio.file.Path;
+
 import org.magcruise.gaming.manager.GameProcessLauncher;
+import org.magcruise.gaming.model.def.GameBuilder;
 
 public class ScenarioLauncher {
 
@@ -19,20 +23,16 @@ public class ScenarioLauncher {
 		// String scenario = "scenario/ultimatum-game/ultimatum-game.scm";
 		// String scenario =
 		// "scenario/ultimatum-game/ultimatum-game-simple.scm";
-		String scenario = "scenario/otsuka-2015/otsuka.scm";
+		// Path scenario = new File("scenario/otsuka-2015/otsuka.scm").toPath();
+		Path scenario = new File("scenario/trans-2015/trans.scm").toPath();
 		// String scenario = "scenario/cc-2015/ymc.scm";
 		// String scenario = "scenario/ele/ele.scm";
+
 		GameProcessLauncher launcher = new GameProcessLauncher(
-				"../MAGCruiseCore", "./", scenario);
-
-		// GameExecutorLauncherWithSwingGui launcher = new
-		// GameExecutorLauncherWithSwingGui(
-		// "../MAGCruiseCore", "./", new SExpression(
-		// "(load \"./scenario/otsuka-2015/otsuka.scm\")"));
-
-		// launcher.setInitScript("scenario/croquette/init.scm");
+				new GameBuilder().setGameDefinition(scenario));
 
 		// launcher.runOnExternalProcess();
+
 		launcher.runOnCurrentProcess();
 	}
 
