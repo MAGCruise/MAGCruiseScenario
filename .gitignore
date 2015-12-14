@@ -2,3 +2,4 @@
 /bin
 *.class
 *.log
+/config/langrid-conf.json

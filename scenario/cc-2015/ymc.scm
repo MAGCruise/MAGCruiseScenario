@@ -132,8 +132,8 @@
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (translation src_lang target_lang src_text)
-    (define client ::TranslationWithTemporalDictionaryService
-         (langrid:make-client TranslationWithTemporalDictionaryService
+    (define client ::jp.go.nict.langrid.service_1_2.translation.TranslationWithTemporalDictionaryService
+         (langrid:make-client jp.go.nict.langrid.service_1_2.translation.TranslationWithTemporalDictionaryService
             "TranslationCombinedWithBilingualDictionaryWithLongestMatchSearch"
              '(("TranslationPL" "KyotoUJServer")
                 ("BilingualDictionaryWithLongestMatchSearchPL"

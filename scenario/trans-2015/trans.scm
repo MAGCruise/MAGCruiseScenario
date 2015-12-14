@@ -26,6 +26,7 @@
       (def:parallel-stage 
         (def:players-task (builder:getPlayerNames) 'beforeRound))
       (def:parallel-stage 
+        (def:task 'Player1 'decide)
         (def:players-task (builder:getPlayerNames) 'decide))
       (def:stage 
         (def:task 'clearing)
