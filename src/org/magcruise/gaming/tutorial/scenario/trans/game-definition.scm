@@ -1,6 +1,7 @@
 (define (def:setup-bootstrap-builder builder ::BootstrapBuilder)
-    (builder:addProperties
-        (def:jar (path "https://www.dropbox.com/s/xq3kx1oxrwo7apx/MAGCruiseScenario.jar?dl=1"))
+    (builder:setDefBootstrap
+        ;;(def:game-classes-path "https://www.dropbox.com/s/xq3kx1oxrwo7apx/MAGCruiseScenario.jar?dl=1")
+        (def:game-classes-path "bin/")
         (def:game-launcher "org.magcruise.gaming.tutorial.scenario.trans.TranslationGameLauncher")))
 
 (define (def:setup-game-builder builder ::GameBuilder)
