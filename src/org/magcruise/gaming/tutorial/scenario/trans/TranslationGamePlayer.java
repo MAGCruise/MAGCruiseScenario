@@ -53,9 +53,7 @@ public class TranslationGamePlayer extends Player {
 	}
 
 	public void afterRound(TranslationGameContext ctx) {
-		if (ctx.roundnum > -10) {
-			return;
-		}
+
 		TranslationClient client = new TranslationClient(
 				AccessConfigFactory.create(), "GoogleTranslate");
 		String sentence;
