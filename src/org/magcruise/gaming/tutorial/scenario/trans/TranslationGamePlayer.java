@@ -18,11 +18,12 @@ import org.magcruise.gaming.ui.model.input.RadioInput;
 public class TranslationGamePlayer extends Player {
 
 	public static void main(String[] args) {
+		AccessConfigFactory
+				.setPath(new TranslationGamePlayer(new DefaultPlayerParameter())
+						.getResource("langrid-conf.json"));
+		TranslationClient client = new TranslationClient("KyotoUJServer");
 
-		TranslationClient client = new TranslationClient(
-				AccessConfigFactory.create(), "GoogleTranslate");
-
-		log.debug(client.translate("ja", "en", "こんにちは"));
+		log.debug(client.translate("ja", "ko", "こんにちは"));
 
 	}
 
@@ -35,10 +36,10 @@ public class TranslationGamePlayer extends Player {
 	@HistoricalField(name = "利用権(トークン)")
 	public int rightOfUse = 0;
 
-	@HistoricalField(name = "スコア(点)")
+	@HistoricalField(name = "スコア(点)", visible = false)
 	public int score = 0;
 
-	@HistoricalField(name = "スコア(合計点)")
+	@HistoricalField(name = "スコア(合計点)", visible = false)
 	public int sumOfScore = 0;
 
 	public TranslationGamePlayer(DefaultPlayerParameter playerParameter) {
@@ -49,16 +50,19 @@ public class TranslationGamePlayer extends Player {
 		account += 100;
 		investment = 0;
 		rightOfUse = 0;
-
+		showMessage(
+				"次の文章を翻訳します: <br>「" + getScentence(ctx.getRoundnum()) + "」");
 	}
 
 	public void afterRound(TranslationGameContext ctx) {
+		AccessConfigFactory
+				.setPath(new TranslationGamePlayer(new DefaultPlayerParameter())
+						.getResource("langrid-conf.json"));
+		TranslationClient client = new TranslationClient("KyotoUJServer");
 
-		TranslationClient client = new TranslationClient(
-				AccessConfigFactory.create(), "GoogleTranslate");
 		String sentence;
 		if (ctx.getRoundnum() <= 15) {
-			sentence = client.translate("ja", "vi",
+			sentence = client.translate("ja", "ko",
 					getScentence(ctx.getRoundnum()));
 		} else if (ctx.getRoundnum() <= 20) {
 			if (ctx.funds < 200) {
@@ -68,8 +72,9 @@ public class TranslationGamePlayer extends Player {
 				sentence = client.translate("ja", "en",
 						getScentence(ctx.getRoundnum()));
 			} else {
-				sentence = client.translate("ja", "vi",
+				sentence = client.translate("ja", "ko",
 						getScentence(ctx.getRoundnum()));
+
 			}
 		} else {
 			if (ctx.funds == 0) {
@@ -81,7 +86,7 @@ public class TranslationGamePlayer extends Player {
 				sentence = client.translate("ja", "en",
 						getScentence(ctx.getRoundnum()));
 			} else {
-				sentence = client.translate("ja", "vi",
+				sentence = client.translate("ja", "ko",
 						getScentence(ctx.getRoundnum()));
 			}
 		}
@@ -95,7 +100,22 @@ public class TranslationGamePlayer extends Player {
 	}
 
 	public void initialize(TranslationGameContext ctx) {
-		showMessage("ゲームのはじまりです．");
+		showMessage("ゲームを開始します.");
+	}
+
+	// 最終的な結果を出力する
+	public void end(TranslationGameContext ctx) {
+		if (sumOfScore <= 5) {
+			account += 0;
+		} else if (sumOfScore <= 10) {
+			account += 1000;
+		} else if (sumOfScore <= 20) {
+			account += 5000;
+		} else if (sumOfScore <= 30) {
+			account += 10000;
+		}
+		showMessage("最終的な結果．" + tabulateHistory());
+		showMessage("スコア :" + sumOfScore);
 	}
 
 	public void decide(TranslationGameContext ctx) {
@@ -130,10 +150,10 @@ public class TranslationGamePlayer extends Player {
 	}
 
 	private void showMessagesOfRound(int roundnum, String sentence) {
-		showMessage("寄付金として，" + investment + "トークンを寄付しました．");
-		showMessage("利用権として，" + rightOfUse + "トークンを獲得しました．");
-		showMessage("受けとった翻訳文は，「" + sentence + "」です．");
-		showMessage("このラウンドのまとめです．" + tabulateCurrentStateAndHistory(roundnum));
+		showMessage("前回までのラウンドのまとめです．" + tabulateHistory());
+		showMessage("今回のラウンドで寄付金として，" + investment + "トークンを寄付しました．");
+		showMessage("今回のラウンドで利用権として，" + rightOfUse + "トークンを獲得しました．");
+		showMessage("今回のラウンドで受けとった翻訳文 : <br>「" + sentence + "」");
 	}
 
 	private List<String> sentences = Arrays.asList(new String[] {

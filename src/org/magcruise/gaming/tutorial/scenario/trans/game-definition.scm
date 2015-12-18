@@ -1,9 +1,3 @@
-(define (def:setup-bootstrap-builder builder ::BootstrapBuilder)
-    (builder:setDefBootstrap
-        ;;(def:game-classes-path "https://www.dropbox.com/s/xq3kx1oxrwo7apx/MAGCruiseScenario.jar?dl=1")
-        (def:game-classes-path "bin/")
-        (def:game-launcher "org.magcruise.gaming.tutorial.scenario.trans.TranslationGameLauncher")))
-
 (define (def:setup-game-builder builder ::GameBuilder)
 
   (define-private-alias TranslationGameContext org.magcruise.gaming.tutorial.scenario.trans.TranslationGameContext)
@@ -14,7 +8,8 @@
 
   (builder:addDefPlayers
     (def:players
-      (list 'Player1 'Player2 'Player3 'Player4)
+      ;;(list 'Player1 'Player2 'Player3 'Player4)
+      (list 'Player1)
       'human
        TranslationGamePlayer))
 
@@ -30,7 +25,9 @@
       (def:parallel-stage
         (def:players-task (builder:getPlayerNames) 'decide))
       (def:stage
-        (def:task 'clearing)
+        (def:task 'clearing))
       (def:parallel-stage
-        (def:players-task (builder:getPlayerNames) 'afterRound))))))
-
+        (def:players-task (builder:getPlayerNames) 'afterRound)))
+    (def:round
+      (def:stage
+        (def:players-task (builder:getPlayerNames) 'end)))))
