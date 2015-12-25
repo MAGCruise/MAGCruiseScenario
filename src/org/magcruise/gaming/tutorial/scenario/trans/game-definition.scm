@@ -8,8 +8,8 @@
 
   (builder:addDefPlayers
     (def:players
-      ;;(list 'Player1 'Player2 'Player3 'Player4)
-      (list 'Player1)
+      (list 'Player1 'Player2 'Player3 'Player4)
+      ;;(list 'Player1)
       'human
        TranslationGamePlayer))
 
@@ -31,3 +31,4 @@
     (def:round
       (def:stage
         (def:players-task (builder:getPlayerNames) 'end)))))
+
