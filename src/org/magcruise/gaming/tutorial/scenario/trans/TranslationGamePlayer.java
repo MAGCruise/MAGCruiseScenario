@@ -20,7 +20,7 @@ public class TranslationGamePlayer extends Player {
 	public static void main(String[] args) {
 		AccessConfigFactory
 				.setPath(new TranslationGamePlayer(new DefaultPlayerParameter())
-						.getResource("langrid-conf.json"));
+						.getResource("resource/langrid-conf.json"));
 		TranslationClient client = new TranslationClient("KyotoUJServer");
 
 		log.debug(client.translate("ja", "ko", "こんにちは"));
@@ -57,7 +57,7 @@ public class TranslationGamePlayer extends Player {
 	public void afterRound(TranslationGameContext ctx) {
 		AccessConfigFactory
 				.setPath(new TranslationGamePlayer(new DefaultPlayerParameter())
-						.getResource("langrid-conf.json"));
+						.getResource("resource/langrid-conf.json"));
 		TranslationClient client = new TranslationClient("KyotoUJServer");
 
 		String sentence;
