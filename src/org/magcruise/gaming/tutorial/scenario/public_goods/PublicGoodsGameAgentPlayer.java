@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.otsuka;
+package org.magcruise.gaming.tutorial.scenario.public_goods;
 
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;

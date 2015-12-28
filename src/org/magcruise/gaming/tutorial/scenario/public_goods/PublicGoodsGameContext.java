@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.otsuka;
+package org.magcruise.gaming.tutorial.scenario.public_goods;
 
 import java.util.ArrayList;
 import java.util.Collections;

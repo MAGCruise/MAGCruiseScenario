@@ -13,6 +13,10 @@
       'human
        TranslationGamePlayer))
 
+  (builder:addDefAssignRequests
+    (def:assign-request 'Player1 "nkjm")
+    (def:assign-request 'Player2 "admin"))
+
   (builder:addDefRounds
     (def:round
       (def:stage
