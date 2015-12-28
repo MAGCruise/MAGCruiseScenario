@@ -1,29 +1,25 @@
-(define-namespace croquette "croquette")
-(define-namespace shop "shop")
-(define-namespace factory "factory")
-(define-namespace farmer "farmer")
+(define (def:setup-game-builder builder ::GameBuilder)
 
-(define *shop-names* '(Shop1 Shop2))
+  (define *shop-names* '(Shop1 Shop2))
 
-(define-alias CroquetteDelivery org.magcruise.gaming.scenario.croquette.msg.CroquetteDelivery)
-(define-alias CroquetteOrder org.magcruise.gaming.scenario.croquette.msg.CroquetteOrder)
-(define-alias PotatoOrder org.magcruise.gaming.scenario.croquette.msg.PotatoOrder)
-(define-alias PotatoDelivery org.magcruise.gaming.scenario.croquette.msg.PotatoDelivery)
-(define-alias Shop org.magcruise.gaming.scenario.croquette.player.Shop)
-(define-alias Farmer org.magcruise.gaming.scenario.croquette.player.Farmer)
-(define-alias Factory org.magcruise.gaming.scenario.croquette.player.Factory)
-(define-alias Market org.magcruise.gaming.scenario.croquette.Market)
+  (define-alias CroquetteDelivery org.magcruise.gaming.tutorial.scenario.croquette.msg.CroquetteDelivery)
+  (define-alias CroquetteOrder org.magcruise.gaming.tutorial.scenario.croquette.msg.CroquetteOrder)
+  (define-alias PotatoOrder org.magcruise.gaming.tutorial.scenario.croquette.msg.PotatoOrder)
+  (define-alias PotatoDelivery org.magcruise.gaming.tutorial.scenario.croquette.msg.PotatoDelivery)
+  (define-alias Shop org.magcruise.gaming.tutorial.scenario.croquette.player.Shop)
+  (define-alias Farmer org.magcruise.gaming.tutorial.scenario.croquette.player.Farmer)
+  (define-alias Factory org.magcruise.gaming.tutorial.scenario.croquette.player.Factory)
+  (define-alias Market org.magcruise.gaming.tutorial.scenario.croquette.Market)
 
-(define (croquette:assign ctx ::Context u1 u2 u3)
-  (def:assign ctx u1 'Factory)
-  (def:assign ctx u2 'Shop1)
-  (def:assign ctx u3 'Shop2))
+  (define-namespace croquette "croquette")
+  (define-namespace shop "shop")
+  (define-namespace factory "factory")
+  (define-namespace farmer "farmer")
 
-(define (def:setup-game-builder game-builder ::GameBuilder)
-  (game-builder:addDefContext
+  (builder:addDefContext
     (def:context Market))
 
-  (game-builder:addDefPlayers
+  (builder:addDefPlayers
     (def:player 'Farmer 'agent Farmer)
     (def:player 'Factory 'human Factory
       (list 300 300 300 300 300 300 300 300 300 300 300))
@@ -35,7 +31,7 @@
         (list 150 150 150 150 150 150 150 150 150 150 150)
         (list 150 150 150 150 150 150 150 150 150 150 150)))
 
-  (game-builder:addDefRounds
+  (builder:addDefRounds
     (def:round
       (def:parallel-stage 'init
         (def:task 'Factory 'factory:init)
@@ -52,7 +48,7 @@
         (def:task 'Factory 'factory:closing)
         (def:players-task *shop-names* 'shop:closing))))
 
-  (game-builder:addDefRounds
+  (builder:addDefRounds
     (def:round
       (def:parallel-stage 'refresh
         (def:players-task *shop-names* 'shop:refresh)
@@ -65,7 +61,7 @@
       (def:restage 'factory-receive-order)
       (def:restage 'closing)))
 
-  (game-builder:addDefRounds
+  (builder:addDefRounds
     (def:rounds 6
       (def:restage 'refresh)
       (def:stage 'factory-delivery
@@ -76,7 +72,7 @@
       (def:restage 'factory-receive-order)
       (def:restage 'closing)))
 
-  (game-builder:addDefRounds
+  (builder:addDefRounds
     (def:round 
       (def:restage 'refresh)
       (def:restage 'factory-delivery)
@@ -85,7 +81,7 @@
         (def:players-task *shop-names* 'shop:pricing))
       (def:restage 'closing)))
 
-  (game-builder:addDefRounds
+  (builder:addDefRounds
     (def:round 
       (def:restage 'refresh)
       (def:restage 'factory-delivery)
@@ -95,11 +91,19 @@
       (def:restage 'refresh))))
 
 
+
+(define (croquette:assign ctx ::Context u1 u2 u3)
+  (def:assign ctx u1 'Factory)
+  (def:assign ctx u2 'Shop1)
+  (def:assign ctx u3 'Shop2))
+
+
+
 (define (shop:refresh ctx ::Market self ::Shop)
   (define other ::Shop (ctx:getOther self))
   (define sale-msg (to-string "コロッケを1個" self:price "円で販売しました．" "お店にはお客さんが" self:demand "人来ました．"
                               self:sales "個が売れました．" "売り上げは" self:earnings "円です．"))
-  (manager:show-message self:name
+  (self:showMessage
     (<div-class> "alert alert-info"
       (to-string
         (<h4> (- ctx:roundnum 1) "日目が終わりました．")
@@ -126,15 +130,15 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'materialCost 'inventoryCost 'earnings 'profit))))
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了")
                          (<p> "次の日に進みます．")))
     (lambda () #t))
-  (manager:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
+  (self:showMessage (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
   (self:refresh))
 
 (define (factory:refresh ctx ::Market self ::Factory)
-  (manager:show-message self:name
+  (self:showMessage
     (<div-class> "alert alert-info"
       (to-string
         (<h4> (- ctx:roundnum 1) "日目が終わりました．")
@@ -163,11 +167,11 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'inventoryCost 'materialCost 'machiningCost 'earnings 'profit))))
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了")
                          (<p> "次の日に進みます．")))
     (lambda () #t))
-  (manager:show-message self:name (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
+  (self:showMessage (<div-class> "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
   (self:refresh)
 )
 
@@ -177,8 +181,8 @@
         (to-string (<h4> ctx:roundnum "日目がはじまりました．")
                    "初日(0日目)に発注した冷凍コロッケは翌々日(2日目)に納品され，その日から販売できます．<br>"
                    "現在の冷凍コロッケの在庫は" self:stock "個です．")))
-  (self:syncRequestForInput  (ui:form msg) (lambda () #t))
-  (manager:show-message self:name msg))
+  (self:syncRequestToInput  (ui:form msg) (lambda () #t))
+  (self:showMessage msg))
 
 (define (factory:init ctx ::Market self ::Factory)
   (define msg
@@ -187,8 +191,8 @@
                    "初日(0日目)に受ける注文は翌々日(2日目)開始時に納品しなくてはなりません．<br>"
                    "初日(0日目)にじゃがいもを発注すると，翌日(1日目)に農家から納品されて冷凍コロッケを生産し，翌々日(2日目)にへショップへ納品できます．<br>"
                    "現在の冷凍コロッケの在庫は" self:stock "個です．")))
-  (self:syncRequestForInput  (ui:form msg) (lambda () #t))
-  (manager:show-message self:name msg))
+  (self:syncRequestToInput  (ui:form msg) (lambda () #t))
+  (self:showMessage msg))
 
 
 (define (factory:closing ctx ::Market self ::Factory)
@@ -199,22 +203,22 @@
 
 
 (define (shop:order ctx ::Market self ::Shop)
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form
       (to-string  (<h4> ctx:roundnum "日目の発注") self:name "さん，コロッケ工場へ発注して下さい．発注したものは，翌々日の販売前に納品される予定です．")
       (ui:number "個数(冷凍コロッケ)" 'num-of-croquette (self:defaultOrders ctx:roundnum) (Min 0) (Max 1000)))
     (lambda (num-of-croquette ::number)
       (self:order num-of-croquette)
-      (manager:show-message self:name (<div-class> "alert alert-success" (to-string "冷凍コロッケを" num-of-croquette "個発注しました．翌々日に納品されます．")))
-      (manager:send-message 'Factory (make CroquetteOrder self:name num-of-croquette)))))
+      (self:showMessage (<div-class> "alert alert-success" (to-string "冷凍コロッケを" num-of-croquette "個発注しました．翌々日に納品されます．")))
+      (self:sendMessage (make CroquetteOrder self:name 'Factory num-of-croquette)))))
 
 (define (shop:pricing ctx ::Market self ::Shop)
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form
           (to-string (<h4> ctx:roundnum "日目の販売価格") self:name "さん，今日のコロッケの販売価格を決定して下さい．")
       (ui:number "販売価格(コロッケ)" 'price (self:defaultPrices ctx:roundnum) (Min 50) (Max 200)))
     (lambda (price-of-croquette ::number)
-      (manager:show-message self:name (<div-class> "alert alert-success" (to-string "コロッケ1個の販売価格を" price-of-croquette "円に決めました．")))
+      (self:showMessage (<div-class> "alert alert-success" (to-string "コロッケ1個の販売価格を" price-of-croquette "円に決めました．")))
       (self:price price-of-croquette))))
 
 (define (shop:order-and-pricing ctx ::Market self ::Player)
@@ -222,9 +226,9 @@
   (shop:pricing ctx self))
 
 (define (shop:receive-delivery ctx ::Market self ::Shop)
-  (define msg ::CroquetteDelivery (self:msgbox:pop))
+  (define msg ::CroquetteDelivery (self:takeMessage))
   (self:receiveDelivery msg:num)
-  (manager:show-message self:name 
+  (self:showMessage 
     (<div-class> "alert alert-info"
       (to-string "冷凍コロッケが" msg:num "個納品されました．在庫数は" self:stock "個になりました．"))))
 
@@ -233,18 +237,18 @@
   (for-each
     (lambda (msg ::CroquetteOrder)
       (self:receiveOrder msg))
-    (self:msgbox:popAll)))
+    (self:takeAllMessages)))
 
 
 (define (factory:order ctx ::Market self ::Factory)
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form
       (to-string (<h4> ctx:roundnum "日目の発注") self:name "さん，農場へじゃがいもを発注して下さい．発注したものは，翌日に納品されます．")
       (ui:number "個数(ジャガイモ)" 'potato (self:defaultOrdersToFarmer ctx:roundnum) (Min 0) (Max 1000)))
     (lambda (potato ::number)
       (self:order potato)
-      (manager:show-message self:name (<div-class> "alert alert-success" (to-string "じゃがいもを" potato "個発注しました．翌日に納品されます．")))
-      (manager:send-message 'Farmer (make PotatoOrder self:name potato)))))
+      (self:showMessage (<div-class> "alert alert-success" (to-string "じゃがいもを" potato "個発注しました．翌日に納品されます．")))
+      (self:sendMessage (make PotatoOrder self:name 'Farmer potato)))))
 
 (define (factory:delivery ctx ::Market self ::Factory)
   (define stock-before-delivery self:stock)
@@ -253,25 +257,25 @@
     (lambda (shop-name ::symbol)
       (define delivery (self:delivery ctx shop-name stock-before-delivery))
       (set! msg (to-string msg (to-string shop-name "に冷凍コロッケ" delivery "個を納品しました．")))
-      (manager:send-message shop-name (make CroquetteDelivery self:name delivery)))
+      (self:sendMessage (make CroquetteDelivery self:name shop-name delivery)))
     *shop-names*)
-  (manager:show-message self:name
+  (self:showMessage
       (<div-class> "alert alert-info" msg "在庫は" self:stock "個になりました．")))
 
 (define (factory:receive-delivery ctx ::Market self ::Factory)
-  (define msg ::PotatoDelivery (self:msgbox:pop))
+  (define msg ::PotatoDelivery (self:takeMessage))
   (self:receiveDeliveryAndProduce msg:num)
-  (manager:show-message self:name
+  (self:showMessage
     (<div-class> "alert alert-info"
       (to-string "じゃがいも" msg:num "個が納品され，" self:production "個の冷凍コロッケを生産しました．在庫は" self:stock "個になりました．"))))
 
   
 (define (farmer:receive-order ctx ::Market self ::Farmer)
-  (define msg ::PotatoOrder (self:msgbox:pop))
+  (define msg ::PotatoOrder (self:takeMessage))
   (self:receiveOrder msg:num))
 
 (define (farmer:delivery ctx ::Market self ::Farmer)
-  (manager:send-message 'Factory (make PotatoDelivery self:name (self:delivery ctx))))
+  (self:sendMessage (make PotatoDelivery self:name  'Factory (self:delivery ctx))))
 
 (define (farmer:refresh ctx ::Market self ::Farmer)
   (self:refresh))

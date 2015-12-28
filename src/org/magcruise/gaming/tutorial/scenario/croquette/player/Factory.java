@@ -47,10 +47,6 @@ public class Factory extends Player {
 	@HistoricalField(name = "発注個数のデフォルト値")
 	public List<Number> defaultOrdersToFarmer;
 
-	public Factory(DefaultPlayerParameter playerParameter) {
-		super(playerParameter);
-	}
-
 	public Factory(DefaultPlayerParameter playerParameter,
 			List<Number> ordersToFarmer) {
 		super(playerParameter);

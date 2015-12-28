@@ -100,7 +100,7 @@
     (client:translate src_lang target_lang src_text (make Translation[]) target_lang))
 
 (define (japanese-bridger-behavior self ::Player ctx ::Context question-orig-text answer-orig-text prev-revised-text)
-    (self:syncRequestForInput 
+    (self:syncRequestToInput 
       (make Form (to-string
                     "質問文"
                     (number->string ctx:roundnum)
@@ -114,7 +114,7 @@
 
     (let* ((translated-sentence (translation "ja" "en" self:revisedSentence))
            (back-translated-sentence (translation "en" "ja" translated-sentence)))
-        (self:syncRequestForInput 
+        (self:syncRequestToInput 
             (make Form
               (to-string
                   "質問文" (number->string ctx:roundnum)

@@ -102,7 +102,7 @@
 
 
 (define (shop:status ctx ::Context self ::Player)
-  (manager:show-message self:name 
+  (self:showMessage 
     (self:history:tabulate
       (cons "発注個数" 'order-of-potato-croquette)
       (cons "納品個数" 'deliverly-of-potato-croquette)
@@ -117,7 +117,7 @@
 )
 
 (define (factory:status ctx ::Context self ::Player)
-  (manager:show-message self:name 
+  (self:showMessage 
     (self:history:tabulate
       (cons "発注個数(じゃがいも)" 'order-of-potato)
       (cons "納品個数(じゃがいも)" 'deliverly-of-potato)
@@ -136,7 +136,7 @@
 (define (shop:init ctx ::Context self ::Player)
   (define stock *shop-init-stock*)
   (self:set 'stock-of-potato-croquette stock)
-  (manager:show-message self:name 
+  (self:showMessage 
     "<div class=\"alert-danger\">" "ゲームのはじまりです！"
     "<ul>"
       "<li>発注：" "初日(0日目)と翌日(1日目)にそれぞれ100個の冷凍コロッケが届くように発注済みです．"
@@ -148,7 +148,7 @@
 (define (factory:init ctx ::Context self ::Player)
   (define stock *factory-init-stock*)
   (self:set 'stock-of-potato-croquette stock)
-  (manager:show-message self:name 
+  (self:showMessage 
     "<div class=\"alert-danger\">" "ゲームのはじまりです！"
     "<ul>"
       "<li>受注：" "ショップ1，ショップ2から，それぞれ" *factory-init-deliver* "個ずつの冷凍コロッケを初日(0日目)と翌日(1日目)に納品するように注文を受けています．"
@@ -180,7 +180,7 @@
 
   (define order-of-potato-croquette (sum (map (lambda (shop-name ::symbol) (self:get (cons shop-name 'order-of-potato-croquette))) *shop-names*)))
 
-  (manager:show-message self:name 
+  (self:showMessage 
     "<div class=\"alert-danger\">" self:name "の" ctx:roundnum "日目の決算です．"
     "<ul>"
       "<li>発注：" order "個のじゃがいもを発注しました．</li>"
@@ -229,7 +229,7 @@
 
   (define profit ::number (- earnings (sum (list inventory-cost material-cost))))
 
-  (manager:show-message self:name
+  (self:showMessage
     "<div class=\"alert-danger\">" self:name "の" ctx:roundnum "日目の決算です．"
     "<ul>"
       "<li>発注：" order "個の冷凍コロッケを発注しました．この冷凍コロッケは明後日に納品予定です．</li>"
@@ -253,7 +253,7 @@
 
 (define (shop:order ctx ::Context self ::Player)
   (define shop-order ((if (eqv? self:name 'Shop1) *shop1-orders* *shop2-orders*) ctx:roundnum))
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form
       (to-string ctx:roundnum "日目です．" self:name "さん，コロッケ工場へ発注して下さい．発注したものは，明後日に納品されます．")
       (ui:number "個数(冷凍コロッケ)" 'num-of-potato-croquette shop-order))
@@ -264,7 +264,7 @@
 
 (define (shop:pricing ctx ::Context self ::Player)
   (define shop-price ((if (eqv? self:name 'Shop1) *shop1-prices* *shop2-prices*) ctx:roundnum))
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form
           (to-string ctx:roundnum "日目です．" self:name "さん，今日のコロッケの販売価格を決定して下さい．")
       (ui:number "販売価格(コロッケ)" 'price-of-potato-croquette shop-price))
@@ -282,7 +282,7 @@
   (self:setAll
     (cons 'deliverly-of-potato-croquette delivered)
     (cons 'stock-of-potato-croquette (+ stock delivered)))
-  (manager:show-message self:name 
+  (self:showMessage 
      ctx:roundnum "日目です．" "冷凍コロッケが" delivered "個納品されました．"))
 
 
@@ -290,12 +290,12 @@
   (for-each
     (lambda (msg ::Message)
       (self:set (cons msg:from 'order-of-potato-croquette) (msg:get 'num-of-potato-croquette))
-      (manager:show-message self:name ctx:roundnum "日目です．" msg:from "から冷凍コロッケ" (msg:get 'num-of-potato-croquette) "個の注文を受けました．"))
+      (self:showMessage ctx:roundnum "日目です．" msg:from "から冷凍コロッケ" (msg:get 'num-of-potato-croquette) "個の注文を受けました．"))
     (self:msgbox:popAll)))
 
 
 (define (factory:order ctx ::Context self ::Player)
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form
       (to-string
         ctx:roundnum "日目です．" self:name "さん，農場へじゃがいもを発注して下さい．発注したものは，明日に納品されます．")
@@ -318,7 +318,7 @@
       (self:set 'stock-of-potato-croquette (- stock delivery))
       (set! factory:demand (+ factory:demand order))
       (set! factory:sales (+ factory:sales delivery))
-      (manager:show-message self:name
+      (self:showMessage
         ctx:roundnum "日目です．" shop-name "に冷凍コロッケ" delivery "個を納品しました．")
       (manager:send-message shop-name (self:makeMessage 'delivery (cons 'num-of-delivery delivery))))
     *shop-names*)
@@ -329,13 +329,13 @@
   (define msg ::Message (self:msgbox:pop))
   (define delivered-potato (msg:get 'num-of-delivery))
   (self:set 'deliverly-of-potato delivered-potato)
-  (manager:show-message self:name ctx:roundnum "日目です．" "じゃがいも" delivered-potato "個が納品されました．"))
+  (self:showMessage ctx:roundnum "日目です．" "じゃがいも" delivered-potato "個が納品されました．"))
 
 (define (farmer:receive-order ctx ::Context self ::Player)
   (define msg ::Message (self:msgbox:pop))
   (define order (msg:get 'order-of-potato))
   (self:set 'received-order-of-potato order)
-  (manager:show-message self:name  ctx:roundnum "日目です．" "じゃがいも" order "個の注文を受けました．"))
+  (self:showMessage  ctx:roundnum "日目です．" "じゃがいも" order "個の注文を受けました．"))
 
 (define (farmer:delivery ctx ::Context self ::Player)
   (define (farmer:delivery-aux order)

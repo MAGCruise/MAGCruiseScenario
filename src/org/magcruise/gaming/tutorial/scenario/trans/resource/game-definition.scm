@@ -1,7 +1,7 @@
 (define (def:setup-game-builder builder ::GameBuilder)
 
-  (define-private-alias TranslationGameContext org.magcruise.gaming.tutorial.scenario.trans.TranslationGameContext)
-  (define-private-alias TranslationGamePlayer org.magcruise.gaming.tutorial.scenario.trans.TranslationGamePlayer)
+  (define-alias TranslationGameContext org.magcruise.gaming.tutorial.scenario.trans.TranslationGameContext)
+  (define-alias TranslationGamePlayer org.magcruise.gaming.tutorial.scenario.trans.TranslationGamePlayer)
 
   (builder:setDefContext
     (def:context TranslationGameContext))

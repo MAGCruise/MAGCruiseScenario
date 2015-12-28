@@ -1,21 +1,15 @@
 package org.magcruise.gaming.tutorial.scenario.croquette.msg;
 
-import org.magcruise.gaming.model.game.message.SimpleGameMessage;
+import org.magcruise.gaming.model.game.message.GameMessage;
 
-import gnu.mapping.SimpleSymbol;
 import gnu.mapping.Symbol;
 
-public class PotatoOrder extends SimpleGameMessage {
+public class PotatoOrder extends GameMessage {
 
 	public int num;
 
-	public PotatoOrder(Symbol name) {
-		super(name);
-	}
-
-	public PotatoOrder(Symbol from, int orderOfPotato) {
-		super(new SimpleSymbol(PotatoOrder.class.getSimpleName()));
-		this.from = from;
+	public PotatoOrder(Symbol from, Symbol to, int orderOfPotato) {
+		super(from, to);
 		this.num = orderOfPotato;
 	}
 }

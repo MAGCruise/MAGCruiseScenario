@@ -19,7 +19,6 @@
         <file path="/MAGCruiseScenario/.project"/>
         <folder path="/MAGCruiseScenario/scenario"/>
         <file path="/MAGCruiseScenario/README.md"/>
-        <folder path="/MAGCruiseScenario/config"/>
         <folder path="/MAGCruiseScenario/lib"/>
     </selectedElements>
 </jardesc>

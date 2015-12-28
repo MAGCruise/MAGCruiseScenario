@@ -14,7 +14,7 @@
 (define items '("アイテムX" "アイテムY"))
 
 (define (vote ctx ::Context self ::Player)
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form
       "1000円のアイテムXと100円のアイテムYがあります．
       あなたの他に2人プレーヤがいて，他のプレーヤと異なるアイテムを選べば，そのアイテムを貰うことができます．

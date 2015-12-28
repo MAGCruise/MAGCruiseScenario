@@ -11,7 +11,7 @@
                  (<p> "画像の挿入も出来ます．")
                  (<img> "http://www.magcruise.org/jp/wp-content/themes/magcruise/img/logo.png"))))
 
-   (self:syncRequestForInput 
+   (self:syncRequestToInput 
      (ui:form "プレーヤには複数の項目を入力させることが出来ます．<br>あなたの食べ物の好みについて教えて下さい．"
        (ui:text "名前" 'name "MAGCruise 太郎")
        (ui:number "年齢" 'age 20)

@@ -81,7 +81,7 @@
   (manager:send-scenario-event 'Fisherman1 (manager:make-scenario-event 'start-stage)))
 
 (define (fisher:negotiation ctx ::Context self ::Player)
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form "相手に伝えたいことを入力して下さい．"
       (ui:text "何も無ければENDと入力して下さい．" 'text "END"))
     (lambda (text ::string)

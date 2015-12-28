@@ -42,25 +42,25 @@
     (def:restage 'bridge-eval)))
 
 (define (bridger:init ctx ::YMCContext self ::Bridger)
-  (manager:show-message self:name (<div-class> "notification_of_exp" "Bridgerであるあなたの日本文の書き換えサービスによって，翻訳文の品質が改善されます．")))
+  (self:showMessage (<div-class> "notification_of_exp" "Bridgerであるあなたの日本文の書き換えサービスによって，翻訳文の品質が改善されます．")))
 
 (define (evaluator:init ctx ::YMCContext self ::Evaluator)
-  (manager:show-message self:name "評価する文章が到着するまでお待ち下さい．"))
+  (self:showMessage "評価する文章が到着するまでお待ち下さい．"))
 
 (define (bridger:receive-eval ctx ::YMCContext self ::Bridger)
   (define evaluator ::Evaluator (ctx:getPlayer 'Evaluator))
-  (manager:show-message self:name (to-string "原文の評価値は" (*a-orig-scores*:get ctx:roundnum) "でした．" "修正した文章の評価値は" evaluator:averageScore "になりました．")))
+  (self:showMessage (to-string "原文の評価値は" (*a-orig-scores*:get ctx:roundnum) "でした．" "修正した文章の評価値は" evaluator:averageScore "になりました．")))
 
 (define (bridger:edit ctx ::YMCContext self ::Bridger)
   (define a-orig-text (*a-orig-texts*:get ctx:roundnum))
   (define prev-revised-text a-orig-text)
 
-  (manager:show-message self:name
+  (self:showMessage
     "原文" ctx:roundnum "の修正をはじめて下さい．")
   (bridger:edit-aux ctx self a-orig-text prev-revised-text))
   
 (define (bridger:edit-aux ctx ::YMCContext self ::Bridger a-orig-text prev-revised-text)
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (make Form
       (<div>
         (<p> "原文" ctx:roundnum) (<blockquote> a-orig-text)
@@ -78,7 +78,7 @@
       (<p> "原文" ctx:roundnum "は以下です．")(<blockquote> a-orig-text)
       (<p> "修正した文章は以下です．")(<blockquote> self:revisedSentence)))
 
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (make Form (make-msg)
       (make RadioInput 
           (<strong> "これで修正を終えますか？") 'again-or-finish "AGAIN" (list "再修正" "修正完了") (list "AGAIN" "FINISH")))
@@ -88,7 +88,7 @@
 
 (define (evaluator:evaluate ctx ::YMCContext self ::Evaluator)
   (define bridger ::Bridger (ctx:getPlayer 'Bridger))
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (make Form (<p> bridger:revisedSentence)
       (make RadioInput 
           (<strong> "Aさん，この文章は分かりやすいですか？") '_scoreA "3" (String[] "1 (悪い) " "2" "3" "4" "5 (良い)") (String[] "1" "2" "3" "4" "5"))
@@ -98,4 +98,4 @@
           (<strong> "Cさん，この文章は分かりやすいですか？") '_scoreC "3" (String[] "1 (悪い) " "2" "3" "4" "5 (良い)") (String[] "1" "2" "3" "4" "5")))
     (lambda (_scoreA _scoreB _scoreC)
       (self:setAverageScore _scoreA _scoreB _scoreC)
-      (manager:show-message self:name "評価する次の文章が到着するまでお待ち下さい．"))))
+      (self:showMessage "評価する次の文章が到着するまでお待ち下さい．"))))

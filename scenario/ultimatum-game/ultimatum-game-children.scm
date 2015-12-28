@@ -46,14 +46,14 @@
   (set! self:account 0))
 
 (define (status cxt ::Context self ::UltPlayer)
-  (manager:show-message self:name (self:tabulateHistory 'proposition 'yesOrNo 'acquisition 'account)))
+  (self:showMessage (self:tabulateHistory 'proposition 'yesOrNo 'acquisition 'account)))
 
 (define proposition 0)
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 通牒者プレーヤ(BigBear)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 (define (first-player context ::Context self ::UltPlayer)
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form 
       (to-string
         "おおぐま君，<br>あなたは" provided-val "円を" (<ruby> "受" "う") "けとりました．こぐま君にいくらを" (<ruby> "分" "わ") "けますか？"
@@ -73,7 +73,7 @@
 (define (second-player context ::Context self ::UltPlayer)
   (define rec-msg (self:msgbox:pop))
   (log:debug rec-msg)
-  (self:syncRequestForInput 
+  (self:syncRequestToInput 
     (ui:form (to-string "こぐま君，<br>おおぐま君は" provided-val "円を" (<ruby> "受" "う") "け取り，あなたに"
                 (rec-msg:get 'proposition) "円を" (<ruby> "分" "わ") "けると言いました．" (<ruby> "受" "う") "けとりますか？"
                 (<div-class> "pull-right" (<img> "http://res.nkjmlab.org/www/img/WASEDA_BEAR_SMALL.png")))
