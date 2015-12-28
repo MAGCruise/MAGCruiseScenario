@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.trans;
+package org.magcruise.gaming.tutorial.scenario.trans.actor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +20,7 @@ public class TranslationGamePlayer extends Player {
 	public static void main(String[] args) {
 		AccessConfigFactory
 				.setPath(new TranslationGamePlayer(new DefaultPlayerParameter())
-						.getResource("resource/langrid-conf.json"));
+						.getResource("../resource/langrid-conf.json"));
 		TranslationClient client = new TranslationClient("KyotoUJServer");
 
 		log.debug(client.translate("ja", "ko", "こんにちは"));
@@ -57,7 +57,7 @@ public class TranslationGamePlayer extends Player {
 	public void afterRound(TranslationGameContext ctx) {
 		AccessConfigFactory
 				.setPath(new TranslationGamePlayer(new DefaultPlayerParameter())
-						.getResource("resource/langrid-conf.json"));
+						.getResource("../resource/langrid-conf.json"));
 		TranslationClient client = new TranslationClient("KyotoUJServer");
 
 		String sentence;

@@ -1,8 +1,7 @@
-package org.magcruise.gaming.tutorial.scenario.croquette;
+package org.magcruise.gaming.tutorial.scenario.croquette.actor;
 
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.DefaultContextParameter;
-import org.magcruise.gaming.tutorial.scenario.croquette.player.Shop;
 
 import gnu.mapping.SimpleSymbol;
 

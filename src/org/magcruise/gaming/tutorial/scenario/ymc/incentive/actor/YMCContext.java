@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.ymc.incentive;
+package org.magcruise.gaming.tutorial.scenario.ymc.incentive.actor;
 
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.DefaultContextParameter;

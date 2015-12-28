@@ -6,10 +6,10 @@
   (define-alias CroquetteOrder org.magcruise.gaming.tutorial.scenario.croquette.msg.CroquetteOrder)
   (define-alias PotatoOrder org.magcruise.gaming.tutorial.scenario.croquette.msg.PotatoOrder)
   (define-alias PotatoDelivery org.magcruise.gaming.tutorial.scenario.croquette.msg.PotatoDelivery)
-  (define-alias Shop org.magcruise.gaming.tutorial.scenario.croquette.actor.Shop)
-  (define-alias Farmer org.magcruise.gaming.tutorial.scenario.croquette.actor.Farmer)
-  (define-alias Factory org.magcruise.gaming.tutorial.scenario.croquette.actor.Factory)
-  (define-alias Market org.magcruise.gaming.tutorial.scenario.croquette.actor.Market)
+  (define-alias Shop org.magcruise.gaming.tutorial.scenario.croquette.player.Shop)
+  (define-alias Farmer org.magcruise.gaming.tutorial.scenario.croquette.player.Farmer)
+  (define-alias Factory org.magcruise.gaming.tutorial.scenario.croquette.player.Factory)
+  (define-alias Market org.magcruise.gaming.tutorial.scenario.croquette.Market)
 
   (define-namespace croquette "croquette")
   (define-namespace shop "shop")
@@ -39,10 +39,10 @@
       (def:parallel-stage 'shop-order-and-pricing-factory-order
         (def:players-task *shop-names* 'shop:order)
         (def:players-task *shop-names* 'shop:pricing)
-        (def:stage 'factory-order
+        (def:stage 'factory-order 
           (def:task 'Factory 'factory:order)
           (def:task 'Farmer 'farmer:receive-order)))
-      (def:stage 'factory-receive-order
+      (def:stage 'factory-receive-order 
         (def:task 'Factory 'factory:receive-order))
       (def:parallel-stage 'closing
         (def:task 'Factory 'factory:closing)
@@ -73,7 +73,7 @@
       (def:restage 'closing)))
 
   (builder:addDefRounds
-    (def:round
+    (def:round 
       (def:restage 'refresh)
       (def:restage 'factory-delivery)
       (def:restage 'farmer-delivery)
@@ -82,12 +82,12 @@
       (def:restage 'closing)))
 
   (builder:addDefRounds
-    (def:round
+    (def:round 
       (def:restage 'refresh)
       (def:restage 'factory-delivery)
       (def:restage 'shop-pricing)
       (def:restage 'closing))
-    (def:round
+    (def:round 
       (def:restage 'refresh))))
 
 
@@ -130,7 +130,7 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'materialCost 'inventoryCost 'earnings 'profit))))
-  (self:syncRequestToInput
+  (self:syncRequestToInput 
     (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了")
                          (<p> "次の日に進みます．")))
     (lambda () #t))
@@ -167,7 +167,7 @@
         (self:tabulateHistory 'price 'sales 'earnings 'demand)
         (<h4> "収支表")
         (self:tabulateHistory 'inventoryCost 'materialCost 'machiningCost 'earnings 'profit))))
-  (self:syncRequestToInput
+  (self:syncRequestToInput 
     (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了")
                          (<p> "次の日に進みます．")))
     (lambda () #t))
@@ -203,7 +203,7 @@
 
 
 (define (shop:order ctx ::Market self ::Shop)
-  (self:syncRequestToInput
+  (self:syncRequestToInput 
     (ui:form
       (to-string  (<h4> ctx:roundnum "日目の発注") self:name "さん，コロッケ工場へ発注して下さい．発注したものは，翌々日の販売前に納品される予定です．")
       (ui:number "個数(冷凍コロッケ)" 'num-of-croquette (self:defaultOrders ctx:roundnum) (Min 0) (Max 1000)))
@@ -213,7 +213,7 @@
       (self:sendMessage (make CroquetteOrder self:name 'Factory num-of-croquette)))))
 
 (define (shop:pricing ctx ::Market self ::Shop)
-  (self:syncRequestToInput
+  (self:syncRequestToInput 
     (ui:form
           (to-string (<h4> ctx:roundnum "日目の販売価格") self:name "さん，今日のコロッケの販売価格を決定して下さい．")
       (ui:number "販売価格(コロッケ)" 'price (self:defaultPrices ctx:roundnum) (Min 50) (Max 200)))
@@ -228,7 +228,7 @@
 (define (shop:receive-delivery ctx ::Market self ::Shop)
   (define msg ::CroquetteDelivery (self:takeMessage))
   (self:receiveDelivery msg:num)
-  (self:showMessage
+  (self:showMessage 
     (<div-class> "alert alert-info"
       (to-string "冷凍コロッケが" msg:num "個納品されました．在庫数は" self:stock "個になりました．"))))
 
@@ -241,7 +241,7 @@
 
 
 (define (factory:order ctx ::Market self ::Factory)
-  (self:syncRequestToInput
+  (self:syncRequestToInput 
     (ui:form
       (to-string (<h4> ctx:roundnum "日目の発注") self:name "さん，農場へじゃがいもを発注して下さい．発注したものは，翌日に納品されます．")
       (ui:number "個数(ジャガイモ)" 'potato (self:defaultOrdersToFarmer ctx:roundnum) (Min 0) (Max 1000)))
@@ -269,7 +269,7 @@
     (<div-class> "alert alert-info"
       (to-string "じゃがいも" msg:num "個が納品され，" self:production "個の冷凍コロッケを生産しました．在庫は" self:stock "個になりました．"))))
 
-
+  
 (define (farmer:receive-order ctx ::Market self ::Farmer)
   (define msg ::PotatoOrder (self:takeMessage))
   (self:receiveOrder msg:num))

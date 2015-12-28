@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.croquette.player;
+package org.magcruise.gaming.tutorial.scenario.croquette.actor;
 
 import java.util.List;
 

@@ -1,8 +1,7 @@
-package org.magcruise.gaming.tutorial.scenario.croquette.player;
+package org.magcruise.gaming.tutorial.scenario.croquette.actor;
 
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
-import org.magcruise.gaming.tutorial.scenario.croquette.Market;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 
 import gnu.mapping.SimpleSymbol;

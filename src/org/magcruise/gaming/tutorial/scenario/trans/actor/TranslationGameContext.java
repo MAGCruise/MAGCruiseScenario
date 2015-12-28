@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.trans;
+package org.magcruise.gaming.tutorial.scenario.trans.actor;
 
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.DefaultContextParameter;

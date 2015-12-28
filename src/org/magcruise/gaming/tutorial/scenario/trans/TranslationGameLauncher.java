@@ -10,8 +10,8 @@ public class TranslationGameLauncher {
 		// System.out.println(l.getRevertCodePath(4));
 		// l.testTerminateAndRevert(7);
 		// l.run();
-		l.runOnExternalProcess();
-		// l.run();
+		// l.runOnExternalProcess();
+		l.run();
 	}
 
 }
