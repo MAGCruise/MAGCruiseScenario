@@ -1,8 +1,8 @@
-package org.magcruise.gaming.tutorial.scenario.ultimatum;
+package org.magcruise.gaming.tutorial.scenario.ultimatum.actor;
 
+import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 
 public class UltPlayer extends Player {
 
@@ -20,5 +20,16 @@ public class UltPlayer extends Player {
 
 	public UltPlayer(DefaultPlayerParameter playerParameter) {
 		super(playerParameter);
+		account = 0;
+	}
+
+	public void status(UltContext ctx) {
+		showMessage(tabulateHistory());
+	}
+
+	public void paid(int money) {
+		this.acquisition = money;
+		this.account += acquisition;
+
 	}
 }
