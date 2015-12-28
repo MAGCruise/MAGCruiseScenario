@@ -1,21 +1,21 @@
+(define-alias CroquetteDelivery org.magcruise.gaming.tutorial.scenario.croquette.msg.CroquetteDelivery)
+(define-alias CroquetteOrder org.magcruise.gaming.tutorial.scenario.croquette.msg.CroquetteOrder)
+(define-alias PotatoOrder org.magcruise.gaming.tutorial.scenario.croquette.msg.PotatoOrder)
+(define-alias PotatoDelivery org.magcruise.gaming.tutorial.scenario.croquette.msg.PotatoDelivery)
+(define-alias Shop org.magcruise.gaming.tutorial.scenario.croquette.actor.Shop)
+(define-alias Farmer org.magcruise.gaming.tutorial.scenario.croquette.actor.Farmer)
+(define-alias Factory org.magcruise.gaming.tutorial.scenario.croquette.actor.Factory)
+(define-alias Market org.magcruise.gaming.tutorial.scenario.croquette.actor.Market)
+
+(define-namespace croquette "croquette")
+(define-namespace shop "shop")
+(define-namespace factory "factory")
+(define-namespace farmer "farmer")
+
+(define *shop-names* '(Shop1 Shop2))
+
 (define (def:setup-game-builder builder ::GameBuilder)
-
-  (define *shop-names* '(Shop1 Shop2))
-
-  (define-alias CroquetteDelivery org.magcruise.gaming.tutorial.scenario.croquette.msg.CroquetteDelivery)
-  (define-alias CroquetteOrder org.magcruise.gaming.tutorial.scenario.croquette.msg.CroquetteOrder)
-  (define-alias PotatoOrder org.magcruise.gaming.tutorial.scenario.croquette.msg.PotatoOrder)
-  (define-alias PotatoDelivery org.magcruise.gaming.tutorial.scenario.croquette.msg.PotatoDelivery)
-  (define-alias Shop org.magcruise.gaming.tutorial.scenario.croquette.actor.Shop)
-  (define-alias Farmer org.magcruise.gaming.tutorial.scenario.croquette.actor.Farmer)
-  (define-alias Factory org.magcruise.gaming.tutorial.scenario.croquette.actor.Factory)
-  (define-alias Market org.magcruise.gaming.tutorial.scenario.croquette.actor.Market)
-
-  (define-namespace croquette "croquette")
-  (define-namespace shop "shop")
-  (define-namespace factory "factory")
-  (define-namespace farmer "farmer")
-
+  
   (builder:addDefContext
     (def:context Market))
 
