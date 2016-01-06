@@ -8,6 +8,7 @@ import org.magcruise.gaming.langrid.client.TranslationClient;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.tutorial.scenario.trans.resource.ResourceLoader;
 import org.magcruise.gaming.ui.model.FormBuilder;
 import org.magcruise.gaming.ui.model.attr.Max;
 import org.magcruise.gaming.ui.model.attr.Min;
@@ -19,8 +20,7 @@ public class TranslationGamePlayer extends Player {
 
 	public static void main(String[] args) {
 		AccessConfigFactory
-				.setPath(new TranslationGamePlayer(new DefaultPlayerParameter())
-						.getResource("../resource/langrid-conf.json"));
+				.setPath(new ResourceLoader().getResource("langrid-conf.json"));
 		TranslationClient client = new TranslationClient("KyotoUJServer");
 
 		log.debug(client.translate("ja", "ko", "こんにちは"));
@@ -56,8 +56,7 @@ public class TranslationGamePlayer extends Player {
 
 	public void afterRound(TranslationGameContext ctx) {
 		AccessConfigFactory
-				.setPath(new TranslationGamePlayer(new DefaultPlayerParameter())
-						.getResource("../resource/langrid-conf.json"));
+				.setPath(new ResourceLoader().getResource("langrid-conf.json"));
 		TranslationClient client = new TranslationClient("KyotoUJServer");
 
 		String sentence;

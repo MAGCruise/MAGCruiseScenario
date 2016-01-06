@@ -1,6 +1,6 @@
 package org.magcruise.gaming.tutorial.scenario.croquette;
 
-import org.magcruise.gaming.developer.GameLauncher;
+import org.magcruise.gaming.model.sys.GameLauncher;
 
 public class CroquetteGameLauncher {
 
