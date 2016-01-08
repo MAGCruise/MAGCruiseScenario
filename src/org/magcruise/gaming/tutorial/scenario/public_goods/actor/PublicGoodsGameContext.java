@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.public_goods;
+package org.magcruise.gaming.tutorial.scenario.public_goods.actor;
 
 import java.util.ArrayList;
 import java.util.Collections;

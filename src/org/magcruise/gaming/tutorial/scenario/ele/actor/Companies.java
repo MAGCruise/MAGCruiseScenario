@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.ele;
+package org.magcruise.gaming.tutorial.scenario.ele.actor;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.ele;
+package org.magcruise.gaming.tutorial.scenario.ele.actor;
 
 import java.util.List;
 
@@ -6,6 +6,8 @@ import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.DefaultContextParameter;
+import org.magcruise.gaming.tutorial.scenario.ele.resource.CompanySetting;
+import org.magcruise.gaming.tutorial.scenario.ele.resource.CompanySettings;
 
 import gnu.mapping.SimpleSymbol;
 

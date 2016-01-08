@@ -50,6 +50,10 @@ public class TranslationGamePlayer extends Player {
 		account += 100;
 		investment = 0;
 		rightOfUse = 0;
+		showMessage("rd. " + ctx.getRoundnum() + " の開始です．");
+		if (ctx.getRoundnum() != 0) {
+			showMessage("前回までのラウンドのまとめです．" + tabulateHistory());
+		}
 		showMessage(
 				"次の文章を翻訳します: <br>「" + getScentence(ctx.getRoundnum()) + "」");
 	}
@@ -149,7 +153,6 @@ public class TranslationGamePlayer extends Player {
 	}
 
 	private void showMessagesOfRound(int roundnum, String sentence) {
-		showMessage("前回までのラウンドのまとめです．" + tabulateHistory());
 		showMessage("今回のラウンドで寄付金として，" + investment + "トークンを寄付しました．");
 		showMessage("今回のラウンドで利用権として，" + rightOfUse + "トークンを獲得しました．");
 		showMessage("今回のラウンドで受けとった翻訳文 : <br>「" + sentence + "」");

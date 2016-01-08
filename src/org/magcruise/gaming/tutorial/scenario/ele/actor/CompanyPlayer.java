@@ -1,10 +1,11 @@
-package org.magcruise.gaming.tutorial.scenario.ele;
+package org.magcruise.gaming.tutorial.scenario.ele.actor;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.tutorial.scenario.ele.resource.CompanySetting;
 import org.magcruise.gaming.ui.model.Form;
 
 public class CompanyPlayer extends Player {

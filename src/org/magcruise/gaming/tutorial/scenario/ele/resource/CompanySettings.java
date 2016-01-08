@@ -1,6 +1,5 @@
-package org.magcruise.gaming.tutorial.scenario.ele;
+package org.magcruise.gaming.tutorial.scenario.ele.resource;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.List;
 
@@ -21,8 +20,8 @@ public class CompanySettings {
 			cfg.setIgnoreTrailingWhitespaces(true);
 			CsvEntityManager manager = new CsvEntityManager(cfg);
 
-			companies = manager.load(CompanySetting.class)
-					.from(new File("scenario/ele/companies.csv"));
+			companies = manager.load(CompanySetting.class).from(
+					new ResourceLoader().getResourceAsStream("companies.csv"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

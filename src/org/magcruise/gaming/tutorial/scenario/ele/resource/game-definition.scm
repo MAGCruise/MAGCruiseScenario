@@ -1,28 +1,21 @@
-(define-private-alias CompanyPlayer org.magcruise.gaming.scenario.ele.CompanyPlayer)
-(define-private-alias MarketContext org.magcruise.gaming.scenario.ele.MarketContext)
+(define-private-alias CompanyPlayer org.magcruise.gaming.tutorial.scenario.ele.actor.CompanyPlayer)
+(define-private-alias MarketContext org.magcruise.gaming.tutorial.scenario.ele.actor.MarketContext)
 
 (define-private-namespace agent "agent")
 (define-private-namespace human "human")
 
-;; (define (def:setup-game-system-properties-builder builder ::GameSystemPropertiesBuilder)
-;;     ;;system-tmpdir
-;;     (builder:setProperties
-;;         (def:game-log-db-path (current-path) "magcruise-game")
-;;         (def:game-classes-dir-zip (path "https://www.dropbox.com/sh/x8275gvqnqm42oj/AABTMkXhjlOEKmQu-MjEJcD8a?dl=1"))))
-
-
-
-(define (def:setup-game-builder game-builder ::GameBuilder)
+(define (def:setup-game-builder builder ::GameBuilder)
   (define *human-players*  (list 'A ))
   (define *agent-players* (list 'B 'C 'D 'E 'F 'G 'H))
   (define *all-players* (append *human-players* *agent-players*))
 
 
-  (game-builder:addGameDefinitions
-    (def:context MarketContext)
+  (builder:addDefContext (def:context MarketContext))
+  (builder:addDefPlayers
     (def:players *agent-players* 'agent CompanyPlayer)
-    (def:players *human-players* 'human CompanyPlayer)
-    (def:round 
+    (def:players *human-players* 'human CompanyPlayer))
+  (builder:addDefRounds
+    (def:round
       (def:stage 'init
         (def:task 'init))
       (def:parallel-stage 'vote
@@ -35,7 +28,7 @@
       (def:restage 'init)
       (def:restage 'vote)
       (def:restage 'auction))
-    (def:round 
+    (def:round
       (def:restage 'status))))
 
 ;; ゲーム実行環境のセットアップ
@@ -48,7 +41,7 @@
 ;; (load your-game-scenario.scm)               ゲームシナリオで使われる関数とGameBuilder設定の定義．【ゲーム開発者がschemeを記述】
 ;; game-builder <- (def:setup-game-builder)    GameBuilderの設定．直前に(def:before-setup-game-builder game-builder)が呼ばれる
 ;; game <- (game-builder:build)                Gameの作成  ．直後に(def:after-build-game game)が呼ばれる．
-;; manager <- (create-manager game)            GameManagerの作成 
+;; manager <- (create-manager game)            GameManagerの作成
 ;;
 ;; ゲームの開始
 ;; (manager:kickGame)                          Gameの開始 ．
@@ -89,7 +82,7 @@
   (self:vote ctx))
 
 (define (human:vote ctx ::MarketContext self ::CompanyPlayer)
-  (self:syncRequestToInput 
+  (self:syncRequestToInput
     (ui:form (to-string "あなたは" self:type "です．" "必要量は" self:demand "です．" "留保価格をいくらにしますか？")
       (ui:number "金額(円/kWh)" 'reservation self:reservation))
     (lambda (inputPrice ::integer)

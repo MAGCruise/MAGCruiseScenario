@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.ele;
+package org.magcruise.gaming.tutorial.scenario.ele.actor;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;

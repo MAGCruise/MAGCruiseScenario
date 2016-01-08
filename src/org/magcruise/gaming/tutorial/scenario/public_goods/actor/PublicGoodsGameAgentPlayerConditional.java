@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.scenario.public_goods;
+package org.magcruise.gaming.tutorial.scenario.public_goods.actor;
 
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 
