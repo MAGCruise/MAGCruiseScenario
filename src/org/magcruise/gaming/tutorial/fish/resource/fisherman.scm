@@ -56,7 +56,7 @@
   (self:syncRequestToInput
     (ui:form "他の漁師に伝えたいメッセージを入力して下さい．"
       (ui:text "何も無ければENDと入力して下さい．それ移行，このラウンド中は発言できなくなります．" 'text "END"))
-    (lambda (text ::string)
+    (lambda (text ::String)
       (self:set 'text text)
       (ctx:showMessageToAll (to-string self:name ": " (html:p text)))))
   (unless (equal? (self:get 'text) "END") (fisher:comment ctx self)))

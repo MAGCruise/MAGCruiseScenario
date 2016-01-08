@@ -39,7 +39,8 @@
 ;; (load framework.csm)
 ;; (load your-game.class)                      ゲームで使われるクラスのロード 【ゲーム開発者がJavaを記述】
 ;; (load your-game-scenario.scm)               ゲームシナリオで使われる関数とGameBuilder設定の定義．【ゲーム開発者がschemeを記述】
-;; game-builder <- (def:setup-game-builder)    GameBuilderの設定．直前に(def:before-setup-game-builder game-builder)が呼ばれる
+;; game-builder <- (def:setup-game-builder)    GameBuilderの設定．直前に(def:before-setup-game-builder game-builder)が呼ばれる．
+;;                                             また直後に(def:after-setup-game-builder game-builder)が呼ばれる．
 ;; game <- (game-builder:build)                Gameの作成  ．直後に(def:after-build-game game)が呼ばれる．
 ;; manager <- (create-manager game)            GameManagerの作成
 ;;

@@ -7,12 +7,12 @@ public class MiscGameLauncher {
 
 	public static void main(String[] args) {
 
-		ResourceLoader resourceLoader = new org.magcruise.gaming.tutorial.misc.resource.ResourceLoader();
+		ResourceLoader loader = new org.magcruise.gaming.tutorial.misc.resource.ResourceLoader();
 		// resourceLoader.addGameDefinitionInResource("gui-test.scm");
 		// resourceLoader.addGameDefinitionInResource("sample-workflow-game.scm");
-		resourceLoader.addGameDefinitionInResource("sample-workflow.scm");
-		GameLauncher l = new GameLauncher(resourceLoader);
-		l.run();
+		loader.addGameDefinitionInResource("sample-workflow.scm");
+		GameLauncher launcher = new GameLauncher(loader);
+		launcher.run();
 
 	}
 

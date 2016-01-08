@@ -7,13 +7,13 @@ public class FishGameLauncher {
 
 	public static void main(String[] args) {
 
-		ResourceLoader resourceLoader = new org.magcruise.gaming.tutorial.fish.resource.ResourceLoader();
-		resourceLoader.addGameDefinitionInResource("fisherman.scm");
+		ResourceLoader loader = new org.magcruise.gaming.tutorial.fish.resource.ResourceLoader();
+		loader.addGameDefinitionInResource("fisherman.scm");
 		// resourceLoader.addGameDefinitionInResource("fish.scm");
-		resourceLoader.addGameDefinitionInResource(
+		loader.addGameDefinitionInResource(
 				"fish-game-by-interaction-protocol.scm");
-		GameLauncher l = new GameLauncher(resourceLoader);
-		l.run();
+		GameLauncher launcher = new GameLauncher(loader);
+		launcher.run();
 
 	}
 
