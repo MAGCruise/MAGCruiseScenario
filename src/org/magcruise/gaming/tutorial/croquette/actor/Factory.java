@@ -4,11 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Context;
+import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.tutorial.croquette.msg.CroquetteOrder;
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.tutorial.croquette.msg.PotatoDelivery;
+import org.magcruise.gaming.util.SExpressionUtils;
 
 import gnu.mapping.SimpleSymbol;
 import gnu.mapping.Symbol;
@@ -66,8 +68,11 @@ public class Factory extends Player {
 		this.orders.clear();
 	}
 
-	public void receiveOrder(CroquetteOrder msg) {
-		this.orders.put(msg.from, new Integer(msg.num));
+	public void receiveOrder(Market ctx) {
+		takeAllMessages(CroquetteOrder.class).forEach((msg) -> {
+			CroquetteOrder cmsg = (CroquetteOrder) msg;
+			this.orders.put(cmsg.from, new Integer(cmsg.num));
+		});
 	}
 
 	public int getTotalOrder(Context ctx) {
@@ -100,6 +105,19 @@ public class Factory extends Player {
 		this.demand += order;
 		this.sales += delivery;
 		return delivery;
+	}
+
+	public void receiveDelivery(Market ctx) {
+		takeAllMessages(PotatoDelivery.class).forEach((msg) -> {
+			receiveDeliveryAndProduce(msg.num);
+			try {
+				showMessage((String) SExpressionUtils.applyProcedure(
+						"factory:receive-delivery-msg", msg.num, production,
+						stock));
+			} catch (Exception e) {
+				log.error(e, e);
+			}
+		});
 	}
 
 	public void receiveDeliveryAndProduce(int potato) {

@@ -16,10 +16,10 @@
 
 (define (def:setup-game-builder builder ::GameBuilder)
 
-  ;;(croquette:def-assign builder "user1" "user2" "admin")
+  (croquette:def-assign builder "user1" "user2" "admin")
 
   (builder:addDefContext (def:context Market))
-  
+
   (builder:addDefPlayers
     (def:player 'Farmer 'agent Farmer)
     (def:player 'Factory 'human Factory
@@ -42,9 +42,9 @@
         (def:players-task *shop-names* 'shop:pricing)
         (def:stage 'factory-order
           (def:task 'Factory 'factory:order)
-          (def:task 'Farmer 'farmer:receive-order)))
+          (def:task 'Farmer 'receiveOrder)))
       (def:stage 'factory-receive-order
-        (def:task 'Factory 'factory:receive-order))
+        (def:task 'Factory 'receiveOrder))
       (def:parallel-stage 'closing
         (def:task 'Factory 'factory:closing)
         (def:players-task *shop-names* 'shop:closing))))
@@ -54,10 +54,10 @@
       (def:parallel-stage 'refresh
         (def:players-task *shop-names* 'shop:refresh)
         (def:task 'Factory 'factory:refresh)
-        (def:task 'Farmer 'farmer:refresh))
+        (def:task 'Farmer 'refresh))
       (def:stage 'farmer-delivery
-        (def:task 'Farmer 'farmer:delivery)
-        (def:task 'Factory 'factory:receive-delivery))
+        (def:task 'Farmer 'delivery)
+        (def:task 'Factory 'receiveDelivery))
       (def:restage 'shop-order-and-pricing-factory-order)
       (def:restage 'factory-receive-order)
       (def:restage 'closing)))
@@ -235,13 +235,6 @@
       (to-string "冷凍コロッケが" msg:num "個納品されました．在庫数は" self:stock "個になりました．"))))
 
 
-(define (factory:receive-order ctx ::Market self ::Factory)
-  (for-each
-    (lambda (msg ::CroquetteOrder)
-      (self:receiveOrder msg))
-    (self:takeAllMessages)))
-
-
 (define (factory:order ctx ::Market self ::Factory)
   (self:syncRequestToInput
     (ui:form
@@ -264,20 +257,13 @@
   (self:showMessage
       (<div-class> "alert alert-info" msg "在庫は" self:stock "個になりました．")))
 
-(define (factory:receive-delivery ctx ::Market self ::Factory)
-  (define msg ::PotatoDelivery (self:takeMessage))
-  (self:receiveDeliveryAndProduce msg:num)
-  (self:showMessage
-    (<div-class> "alert alert-info"
-      (to-string "じゃがいも" msg:num "個が納品され，" self:production "個の冷凍コロッケを生産しました．在庫は" self:stock "個になりました．"))))
+(define (factory:receive-delivery-msg num production stock) ::String
+  (<div-class> "alert alert-info"
+    (to-string "じゃがいも" num "個が納品され，" production "個の冷凍コロッケを生産しました．在庫は" stock "個になりました．")))
 
 
-(define (farmer:receive-order ctx ::Market self ::Farmer)
-  (define msg ::PotatoOrder (self:takeMessage))
-  (self:receiveOrder msg:num))
+
 
 (define (farmer:delivery ctx ::Market self ::Farmer)
   (self:sendMessage (make PotatoDelivery self:name  'Factory (self:delivery ctx))))
 
-(define (farmer:refresh ctx ::Market self ::Farmer)
-  (self:refresh))
