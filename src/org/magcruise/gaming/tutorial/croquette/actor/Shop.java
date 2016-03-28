@@ -12,7 +12,7 @@ public class Shop extends Player {
 	public int stock;
 
 	@HistoricalField(name = "発注個数")
-	public int order;
+	public int numOfOrder;
 	@HistoricalField(name = "納品個数")
 	public int delivery;
 	@HistoricalField(name = "販売価格")
@@ -44,7 +44,7 @@ public class Shop extends Player {
 	}
 
 	public void refresh() {
-		this.order = 0;
+		this.numOfOrder = 0;
 		this.delivery = 0;
 		this.price = 0;
 		this.inventoryCost = 0;
@@ -56,7 +56,7 @@ public class Shop extends Player {
 	}
 
 	public void order(int orderOfCroquette) {
-		this.order = orderOfCroquette;
+		this.numOfOrder = orderOfCroquette;
 	}
 
 	public void price(int price) {
