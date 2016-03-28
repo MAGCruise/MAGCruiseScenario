@@ -15,10 +15,11 @@
 (define *shop-names* '(Shop1 Shop2))
 
 (define (def:setup-game-builder builder ::GameBuilder)
-  
-  (builder:addDefContext
-    (def:context Market))
 
+  ;;(croquette:def-assign builder "user1" "user2" "admin")
+
+  (builder:addDefContext (def:context Market))
+  
   (builder:addDefPlayers
     (def:player 'Farmer 'agent Farmer)
     (def:player 'Factory 'human Factory
@@ -92,10 +93,11 @@
 
 
 
-(define (croquette:assign ctx ::Context u1 u2 u3)
-  (def:assign ctx u1 'Factory)
-  (def:assign ctx u2 'Shop1)
-  (def:assign ctx u3 'Shop2))
+(define (croquette:def-assign builder ::GameBuilder u1 ::string u2 ::string u3 ::string)
+  (builder:addDefAssignRequests
+    (def:assign-request 'Factory u1)
+    (def:assign-request 'Shop1 u2)
+    (def:assign-request 'Shop2 u3)))
 
 
 
