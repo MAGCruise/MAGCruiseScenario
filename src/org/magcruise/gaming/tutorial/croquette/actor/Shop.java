@@ -35,6 +35,10 @@ public class Shop extends Player {
 	// @Attribute(name = "販売価格のデフォルト値")
 	public List<Number> defaultPrices;
 
+	public Shop(DefaultPlayerParameter playerParameter) {
+		super(playerParameter);
+	}
+
 	public Shop(DefaultPlayerParameter playerParameter, List<Number> prices,
 			List<Number> orders) {
 		super(playerParameter);
