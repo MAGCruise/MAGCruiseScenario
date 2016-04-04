@@ -31,7 +31,7 @@ public class Trades implements SConstructive {
 	}
 
 	@Override
-	public SConstructor toConstructor() {
+	public SConstructor<? extends Trades> toConstructor() {
 		return SExpressionUtils.toConstructor(this.getClass(), trades);
 	}
 

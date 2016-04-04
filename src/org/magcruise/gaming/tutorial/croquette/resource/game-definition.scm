@@ -16,8 +16,7 @@
 
 (define (def:setup-game-builder builder ::GameBuilder)
 
-  (croquette:def-assign builder "user1" "user2" "admin")
-
+  ;;(croquette:def-assign builder 'user1 'user2 'admin)
   (builder:addDefContext (def:context Market))
 
   (builder:addDefPlayers
@@ -93,11 +92,11 @@
 
 
 
-(define (croquette:def-assign builder ::GameBuilder u1 ::string u2 ::string u3 ::string)
+(define (croquette:assign builder ::GameBuilder u1 ::symbol u2 ::symbol u3 ::symbol)
   (builder:addDefAssignRequests
-    (def:assign-request 'Factory u1)
-    (def:assign-request 'Shop1 u2)
-    (def:assign-request 'Shop2 u3)))
+    (def:assignment-request 'Factory (symbol->string u1))
+    (def:assignment-request 'Shop1 (symbol->string u2))
+    (def:assignment-request 'Shop2 (symbol->string u3))))
 
 
 

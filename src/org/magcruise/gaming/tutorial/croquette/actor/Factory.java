@@ -74,8 +74,7 @@ public class Factory extends Player {
 
 	public void receiveOrder(Market ctx) {
 		takeAllMessages(CroquetteOrder.class).forEach((msg) -> {
-			CroquetteOrder cmsg = (CroquetteOrder) msg;
-			this.orders.put(cmsg.from, new Integer(cmsg.num));
+			this.orders.put(msg.from, new Integer(msg.num));
 		});
 	}
 
@@ -84,6 +83,7 @@ public class Factory extends Player {
 			return 0;
 		}
 
+		@SuppressWarnings("unchecked")
 		Map<Symbol, Number> prevOrders = (Map<Symbol, Number>) getValueBefore(
 				new SimpleSymbol("orders"), 2);
 		int tmp = 0;
@@ -100,6 +100,7 @@ public class Factory extends Player {
 	public int delivery(Context ctx, Symbol shop, int stockBeforeDelivery) {
 		int totalOrder = getTotalOrder(ctx);
 
+		@SuppressWarnings("unchecked")
 		int order = ctx.roundnum < 2 ? 0
 				: Integer.valueOf(((Map<Symbol, Number>) getValueBefore(
 						new SimpleSymbol("orders"), 2)).get(shop).toString());

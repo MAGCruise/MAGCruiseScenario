@@ -1,9 +1,5 @@
 ;; 最後通牒ゲーム
 (define-namespace ult "ult")
-(define (ult:assign ctx ::Context u1 u2)
-  (def:assign ctx u1 'BigBear)
-  (def:assign ctx u2 'SmallBear))
-
 
 (define-alias UltPlayer org.magcruise.gaming.tutorial.ultimatum.actor.UltPlayer)
 (define-alias UltContext org.magcruise.gaming.tutorial.ultimatum.actor.UltContext)
@@ -11,8 +7,9 @@
 
 
 (define (def:setup-game-builder game-builder ::GameBuilder)
-  (game-builder:addDefContext
-    (def:context UltContext))
+
+
+  (game-builder:addDefContext (def:context UltContext))
 
   (game-builder:addDefPlayers
     (def:player 'BigBear 'human UltPlayer)
@@ -33,7 +30,11 @@
 
     (def:round
       (def:restage 'status))))
-
+    
+(define (ult:assign builder ::GameBuilder  u1 ::symbol u2 ::symbol)
+  (builder:addDefAssignRequests
+    (def:assignment-request 'BigBear (symbol->string u1))
+    (def:assignment-request 'SmallBear (symbol->string u1))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 通牒者プレーヤ(BigBear)のモデル

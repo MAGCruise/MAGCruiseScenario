@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
 <configuration status="OFF">
     <Properties>
         <property name="pattern_loc">%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %l %m%n

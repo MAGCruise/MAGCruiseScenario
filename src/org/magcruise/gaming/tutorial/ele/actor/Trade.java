@@ -30,7 +30,7 @@ public class Trade implements SConstructive {
 	}
 
 	@Override
-	public SConstructor toConstructor() {
+	public SConstructor<? extends Trade> toConstructor() {
 		return SExpressionUtils.toConstructor(this.getClass(), partner, price,
 				amount);
 	}
