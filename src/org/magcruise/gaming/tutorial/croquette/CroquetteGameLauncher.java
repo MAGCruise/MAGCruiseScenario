@@ -11,7 +11,7 @@ public class CroquetteGameLauncher {
 		GameLauncher launcher = new GameLauncher(loader);
 		// launcher.runOnExternalProcess();
 
-		// launcher.setAutoInputModeForInternalProcess(true);
+		launcher.setAutoInputModeForInternalProcess(true);
 		launcher.run();
 	}
 

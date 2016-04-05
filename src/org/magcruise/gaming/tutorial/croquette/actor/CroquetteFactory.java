@@ -133,8 +133,9 @@ public class CroquetteFactory extends Player {
 
 	public void delivery(Market ctx) {
 		List<String> msgs = new ArrayList<>();
+		int stockBeforeDelivery = this.stock;
 		ctx.players.getPlayers(Shop.class).forEach((Shop p) -> {
-			int d = delivery(ctx, p, this.stock);
+			int d = delivery(ctx, p, stockBeforeDelivery);
 			msgs.add(createMessage("factory:delivery-msg", p.name, d));
 			sendGameMessage(new CroquetteDelivery(name, p.name, d));
 		});
@@ -143,26 +144,21 @@ public class CroquetteFactory extends Player {
 	}
 
 	public int delivery(Context ctx, Shop shop, int stockBeforeDelivery) {
-		int totalOrder = getTotalOrder(ctx);
 
 		int order = 0;
-		if (ctx.roundnum >= 2) {
+		if (ctx.roundnum < 2) {
+			order = 0;
+		} else {
 			@SuppressWarnings("unchecked")
 			Map<Symbol, Number> tmp = (Map<Symbol, Number>) getValueBefore(
 					toSymbol("orders"), 2);
-			if (tmp == null) {
-				log.error(this);
-				throw new RuntimeException();
-			}
-			if (tmp.get(shop.name) == null) {
-				log.error(this);
-				throw new RuntimeException(this.history.toString());
-			}
 
 			order = tmp.get(shop.name).intValue();
 		}
+		int totalOrder = getTotalOrder(ctx);
 		int delivery = totalOrder <= stockBeforeDelivery ? order
-				: (int) Math.floor(stockBeforeDelivery * (order / totalOrder));
+				: (int) Math.floor(
+						stockBeforeDelivery * ((double) order / totalOrder));
 		this.stock -= delivery;
 		this.demand += order;
 		this.sales += delivery;
