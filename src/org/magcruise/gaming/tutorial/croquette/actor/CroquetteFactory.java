@@ -15,7 +15,7 @@ import org.magcruise.gaming.util.SExpressionUtils;
 import gnu.mapping.SimpleSymbol;
 import gnu.mapping.Symbol;
 
-public class Factory extends Player {
+public class CroquetteFactory extends Player {
 
 	@HistoricalField(name = "価格")
 	public static int price = 60;
@@ -49,11 +49,11 @@ public class Factory extends Player {
 	@HistoricalField(name = "発注個数のデフォルト値")
 	public List<Number> defaultOrdersToFarmer;
 
-	public Factory(DefaultPlayerParameter playerParameter) {
+	public CroquetteFactory(DefaultPlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 
-	public Factory(DefaultPlayerParameter playerParameter,
+	public CroquetteFactory(DefaultPlayerParameter playerParameter,
 			List<Number> ordersToFarmer) {
 		super(playerParameter);
 		this.defaultOrdersToFarmer = ordersToFarmer;

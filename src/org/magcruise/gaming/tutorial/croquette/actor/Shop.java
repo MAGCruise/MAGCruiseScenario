@@ -80,7 +80,7 @@ public class Shop extends Player {
 		this.stock -= sales;
 		this.earnings = sales * price; // 収入は売った個数*単価
 		this.inventoryCost = stock * 10; // 在庫費は売った後に計算．1個5円
-		this.materialCost = delivery * Factory.price; // 材料費．冷凍コロッケの購入費は1個60円
+		this.materialCost = delivery * CroquetteFactory.price; // 材料費．冷凍コロッケの購入費は1個60円
 		this.profit = earnings - (materialCost + inventoryCost); // 利益は収入から，材料費，在庫費を引いたもの．
 	}
 }

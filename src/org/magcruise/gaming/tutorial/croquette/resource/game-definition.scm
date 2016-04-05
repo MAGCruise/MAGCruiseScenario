@@ -4,7 +4,7 @@
 (define-alias PotatoDelivery org.magcruise.gaming.tutorial.croquette.msg.PotatoDelivery)
 (define-alias Shop org.magcruise.gaming.tutorial.croquette.actor.Shop)
 (define-alias Farmer org.magcruise.gaming.tutorial.croquette.actor.Farmer)
-(define-alias Factory org.magcruise.gaming.tutorial.croquette.actor.Factory)
+(define-alias Factory org.magcruise.gaming.tutorial.croquette.actor.CroquetteFactory)
 (define-alias Market org.magcruise.gaming.tutorial.croquette.actor.Market)
 
 (define-namespace croquette "croquette")
