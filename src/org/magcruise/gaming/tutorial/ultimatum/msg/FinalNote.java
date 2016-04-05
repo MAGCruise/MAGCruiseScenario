@@ -8,7 +8,7 @@ import gnu.mapping.Symbol;
 
 public class FinalNote extends GameMessage {
 
-	public int proposition;
+	public final int proposition;
 
 	public FinalNote(Symbol from, Symbol to, int proposition) {
 		super(from, to);

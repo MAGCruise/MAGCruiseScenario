@@ -6,12 +6,10 @@ import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.tutorial.croquette.msg.PotatoDelivery;
 import org.magcruise.gaming.tutorial.croquette.msg.PotatoOrder;
 
-import gnu.mapping.SimpleSymbol;
-
 public class Farmer extends Player {
 
 	@HistoricalField
-	public Number receivedOrderOfPotato = 0;
+	public volatile int receivedOrderOfPotato = 0;
 
 	public Farmer(DefaultPlayerParameter playerParameter) {
 		super(playerParameter);
@@ -34,11 +32,10 @@ public class Farmer extends Player {
 
 	public void delivery(Market ctx) {
 		int order = ctx.roundnum < 1 ? 0
-				: Integer.valueOf(
-						getLastValue(new SimpleSymbol("receivedOrderOfPotato"))
+				: Integer
+						.valueOf(getLastValue(toSymbol("receivedOrderOfPotato"))
 								.toString());
-		sendMessage(
-				new PotatoDelivery(name, new SimpleSymbol("Factory"), order));
+		sendGameMessage(new PotatoDelivery(name, toSymbol("Factory"), order));
 	}
 
 }

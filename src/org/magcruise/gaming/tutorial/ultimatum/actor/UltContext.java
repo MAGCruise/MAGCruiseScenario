@@ -7,7 +7,7 @@ import gnu.mapping.SimpleSymbol;
 
 public class UltContext extends Context {
 
-	public static int providedVal = 100000;
+	public final static int providedVal = 100000;
 
 	public UltContext(DefaultContextParameter contextParameter) {
 		super(contextParameter);

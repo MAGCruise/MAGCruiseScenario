@@ -8,7 +8,7 @@ import gnu.mapping.Symbol;
 
 public class CroquetteOrder extends GameMessage {
 
-	public int num;
+	public final int num;
 
 	public CroquetteOrder(Symbol from, Symbol to, int num) {
 		super(from, to);

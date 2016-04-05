@@ -2,33 +2,40 @@ package org.magcruise.gaming.tutorial.croquette.actor;
 
 import java.util.List;
 
+import org.magcruise.gaming.lang.SConstructor;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.tutorial.croquette.msg.CroquetteDelivery;
+import org.magcruise.gaming.tutorial.croquette.msg.CroquetteOrder;
+import org.magcruise.gaming.ui.model.Form;
+import org.magcruise.gaming.util.SExpressionUtils;
+
+import gnu.mapping.Symbol;
 
 public class Shop extends Player {
 
 	@HistoricalField(name = "在庫個数")
-	public int stock;
+	public volatile int stock;
 
 	@HistoricalField(name = "発注個数")
-	public int numOfOrder;
+	public volatile int numOfOrder;
 	@HistoricalField(name = "納品個数")
-	public int delivery;
+	public volatile int delivery;
 	@HistoricalField(name = "販売価格")
-	public int price;
+	public volatile int price;
 	@HistoricalField(name = "在庫費")
-	public int inventoryCost;
+	public volatile int inventoryCost;
 	@HistoricalField(name = "仕入費")
-	public int materialCost;
+	public volatile int materialCost;
 	@HistoricalField(name = "売上個数")
-	public int sales;
+	public volatile int sales;
 	@HistoricalField(name = "売上高")
-	public int earnings;
+	public volatile int earnings;
 	@HistoricalField(name = "利益")
-	public int profit;
+	public volatile int profit;
 	@HistoricalField(name = "来店者数")
-	public int demand;
+	public volatile int demand;
 
 	// @Attribute(name = "発注個数のデフォルト値")
 	public List<Number> defaultOrders;
@@ -47,6 +54,29 @@ public class Shop extends Player {
 		this.defaultOrders = orders;
 	}
 
+	@Override
+	public SConstructor<? extends Player> toConstructor() {
+		return SExpressionUtils.toConstructor(this.getClass(),
+				toDefaultPlayerParameter(), defaultPrices, defaultOrders);
+	}
+
+	public void init(Market ctx) {
+		String msg = (String) callProcedure("shop:init-msg", ctx, this);
+		syncRequestToInput(new Form(msg), (params) -> {
+			return;
+		});
+		showMessage(msg);
+	}
+
+	public void refresh(Market ctx) {
+		showMessage(createMessage("shop:refresh-msg", ctx, this,
+				ctx.getOther(this)));
+		syncRequestToInput(createForm("end-day-form", ctx), (param) -> {
+		});
+		showMessage(createMessage("start-day-msg", ctx));
+		refresh();
+	}
+
 	public void refresh() {
 		this.numOfOrder = 0;
 		this.delivery = 0;
@@ -59,21 +89,35 @@ public class Shop extends Player {
 		this.demand = 0;
 	}
 
-	public void order(int orderOfCroquette) {
-		this.numOfOrder = orderOfCroquette;
+	public void order(Market ctx) {
+		syncRequestToInput(createForm("shop:order-form", ctx, this),
+				(param) -> {
+					this.numOfOrder = param.getArgAsInt(0);
+					showMessage(
+							createMessage("shop:after-order-msg", ctx, this));
+					sendGameMessage(new CroquetteOrder(name,
+							Symbol.parse("Factory"), this.numOfOrder));
+				});
 	}
 
-	public void price(int price) {
-		this.price = price;
+	public void price(Market ctx) {
+		syncRequestToInput(createForm("shop:price-form", ctx, this),
+				(param) -> {
+					this.price = param.getArgAsInt(0);
+					showMessage(
+							createMessage("shop:after-price-msg", ctx, this));
+				});
+
 	}
 
-	public void receiveDelivery(int delivery) {
-		this.delivery = delivery;
+	public void receiveDelivery(Market ctx) {
+		this.delivery = ((CroquetteDelivery) takeMessage()).num;
 		this.stock += delivery;
+		showMessage(createMessage("shop:receive-delivery-msg", ctx, this));
 	}
 
-	public void closing(int demand) {
-		this.demand = demand;
+	public void closing(Market ctx) {
+		this.demand = ctx.distributeDemand(this);
 
 		this.sales = (stock >= demand) ? demand : stock; // 需要だけ売れる．上限は在庫量．
 

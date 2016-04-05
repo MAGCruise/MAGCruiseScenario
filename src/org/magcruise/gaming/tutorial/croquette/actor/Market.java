@@ -3,8 +3,6 @@ package org.magcruise.gaming.tutorial.croquette.actor;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.DefaultContextParameter;
 
-import gnu.mapping.SimpleSymbol;
-
 public class Market extends Context {
 
 	public Market(DefaultContextParameter contextParameter) {
@@ -46,9 +44,9 @@ public class Market extends Context {
 
 	public Shop getOther(Shop shop) {
 		if (shop.getName().toString().equals("Shop1")) {
-			return (Shop) getPlayer(new SimpleSymbol("Shop2"));
+			return (Shop) getPlayer(toSymbol("Shop2"));
 		} else {
-			return (Shop) getPlayer(new SimpleSymbol("Shop1"));
+			return (Shop) getPlayer(toSymbol("Shop1"));
 		}
 	}
 }

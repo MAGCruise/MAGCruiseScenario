@@ -10,7 +10,8 @@ public class CroquetteGameLauncher {
 		loader.setBootstrapInResource("bootstrap.scm");
 		GameLauncher launcher = new GameLauncher(loader);
 		// launcher.runOnExternalProcess();
-		// launcher.setAutoInputMode(true);
+
+		// launcher.setAutoInputModeForInternalProcess(true);
 		launcher.run();
 	}
 
