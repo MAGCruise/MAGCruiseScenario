@@ -1,18 +1,34 @@
 package org.magcruise.gaming.tutorial.croquette;
 
 import org.magcruise.gaming.model.sys.GameLauncher;
-import org.magcruise.gaming.model.sys.ResourceLoader;
+import org.magcruise.gaming.tutorial.croquette.resource.CroquetteGameResourceLoader;
+
+import gnu.kawa.io.Path;
 
 public class CroquetteGameLauncher {
 
 	public static void main(String[] args) {
-		ResourceLoader loader = new org.magcruise.gaming.tutorial.croquette.resource.ResourceLoader();
-		loader.setBootstrapInResource("bootstrap.scm");
-		GameLauncher launcher = new GameLauncher(loader);
-		// launcher.runOnExternalProcess();
+		GameLauncher launcher = new GameLauncher(
+				CroquetteGameResourceLoader.class);
+		launcher.setBootstrapInResource("bootstrap.scm");
 
+		Path revertCode = launcher.runAndGetRevertCode(3);
+
+		// revertTest(revertCode);
+
+		// launcher.setAutoInputModeForInternalProcess(true);
+		// launcher.run();
+	}
+
+	private static void revertTest(Path revertCode) {
+		GameLauncher launcher = new GameLauncher(
+				CroquetteGameResourceLoader.class);
+		launcher.setBootstrapInResource("bootstrap.scm");
+
+		launcher.addGameDefinition(revertCode);
 		launcher.setAutoInputModeForInternalProcess(true);
 		launcher.run();
+
 	}
 
 }

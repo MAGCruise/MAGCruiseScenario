@@ -1,6 +1,6 @@
 package org.magcruise.gaming.tutorial.fish.resource;
 
-public class ResourceLoader
+public class FishGameResourceLoader
 		extends org.magcruise.gaming.model.sys.ResourceLoader {
 
 }

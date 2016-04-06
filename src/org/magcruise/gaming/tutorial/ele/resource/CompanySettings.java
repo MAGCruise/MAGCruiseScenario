@@ -21,7 +21,7 @@ public class CompanySettings {
 			CsvEntityManager manager = new CsvEntityManager(cfg);
 
 			companies = manager.load(CompanySetting.class).from(
-					new ResourceLoader().getResourceAsStream("companies.csv"));
+					new EleGameResourceLoader().getResourceAsStream("companies.csv"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

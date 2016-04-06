@@ -1,17 +1,16 @@
 package org.magcruise.gaming.tutorial.misc;
 
 import org.magcruise.gaming.model.sys.GameLauncher;
-import org.magcruise.gaming.model.sys.ResourceLoader;
+import org.magcruise.gaming.tutorial.misc.resource.MiscGameResourceLoader;
 
 public class MiscGameLauncher {
 
 	public static void main(String[] args) {
 
-		ResourceLoader loader = new org.magcruise.gaming.tutorial.misc.resource.ResourceLoader();
-		// resourceLoader.addGameDefinitionInResource("gui-test.scm");
-		// resourceLoader.addGameDefinitionInResource("sample-workflow-game.scm");
-		loader.addGameDefinitionInResource("sample-workflow.scm");
-		GameLauncher launcher = new GameLauncher(loader);
+		GameLauncher launcher = new GameLauncher(MiscGameResourceLoader.class);
+		launcher.addGameDefinitionInResource("sample-workflow.scm");
+		// launcher.addGameDefinitionInResource("gui-test.scm");
+		// launcher.addGameDefinitionInResource("sample-workflow-game.scm");
 		launcher.run();
 
 	}

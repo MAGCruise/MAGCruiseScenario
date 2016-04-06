@@ -1,6 +1,6 @@
 package org.magcruise.gaming.tutorial.misc.resource;
 
-public class ResourceLoader
+public class MiscGameResourceLoader
 		extends org.magcruise.gaming.model.sys.ResourceLoader {
 
 }

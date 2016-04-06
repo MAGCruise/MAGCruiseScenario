@@ -1,14 +1,14 @@
 package org.magcruise.gaming.tutorial.public_goods;
 
 import org.magcruise.gaming.model.sys.GameLauncher;
-import org.magcruise.gaming.model.sys.ResourceLoader;
+import org.magcruise.gaming.tutorial.public_goods.resource.PublicGameResourceLoader;
 
 public class PublicGoodsGameLauncher {
 
 	public static void main(String[] args) {
-		ResourceLoader loader = new org.magcruise.gaming.tutorial.public_goods.resource.ResourceLoader();
-		loader.setBootstrapInResource("bootstrap.scm");
-		GameLauncher launcher = new GameLauncher(loader);
+		GameLauncher launcher = new GameLauncher(
+				PublicGameResourceLoader.class);
+		launcher.setBootstrapInResource("bootstrap.scm");
 		// launcher.runOnExternalProcess();
 		launcher.run();
 

@@ -1,14 +1,13 @@
 package org.magcruise.gaming.tutorial.ymc.incentive;
 
 import org.magcruise.gaming.model.sys.GameLauncher;
-import org.magcruise.gaming.model.sys.ResourceLoader;
+import org.magcruise.gaming.tutorial.ymc.incentive.resource.YmcGameResourceLoader;
 
 public class IncentiveGameLauncher {
 
 	public static void main(String[] args) {
-		ResourceLoader loader = new org.magcruise.gaming.tutorial.ymc.incentive.resource.ResourceLoader();
-		loader.setBootstrapInResource("bootstrap.scm");
-		GameLauncher launcher = new GameLauncher(loader);
+		GameLauncher launcher = new GameLauncher(YmcGameResourceLoader.class);
+		launcher.setBootstrapInResource("bootstrap.scm");
 		// launcher.runOnExternalProcess();
 		launcher.run();
 	}
