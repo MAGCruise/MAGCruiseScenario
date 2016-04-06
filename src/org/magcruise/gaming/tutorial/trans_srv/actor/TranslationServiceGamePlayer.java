@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.trans.actor;
+package org.magcruise.gaming.tutorial.trans_srv.actor;
 
 import java.util.Arrays;
 import java.util.List;
@@ -8,7 +8,7 @@ import org.magcruise.gaming.langrid.client.TranslationClient;
 import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
-import org.magcruise.gaming.tutorial.trans.resource.TranslationGameResourceLoader;
+import org.magcruise.gaming.tutorial.trans_srv.resource.TranslationServiceGameResourceLoader;
 import org.magcruise.gaming.ui.model.FormBuilder;
 import org.magcruise.gaming.ui.model.attr.Max;
 import org.magcruise.gaming.ui.model.attr.Min;
@@ -16,11 +16,11 @@ import org.magcruise.gaming.ui.model.attr.Required;
 import org.magcruise.gaming.ui.model.input.NumberInput;
 import org.magcruise.gaming.ui.model.input.RadioInput;
 
-public class TranslationGamePlayer extends Player {
+public class TranslationServiceGamePlayer extends Player {
 
 	public static void main(String[] args) {
-		AccessConfigFactory
-				.setPath(new TranslationGameResourceLoader().getResource("langrid-conf.json"));
+		AccessConfigFactory.setPath(new TranslationServiceGameResourceLoader()
+				.getResource("langrid-conf.json"));
 		TranslationClient client = new TranslationClient("KyotoUJServer");
 
 		log.debug(client.translate("ja", "ko", "こんにちは"));
@@ -28,25 +28,25 @@ public class TranslationGamePlayer extends Player {
 	}
 
 	@HistoricalField(name = "口座(トークン)")
-	public int account = 0;
+	public volatile int account = 0;
 
 	@HistoricalField(name = "寄付金(トークン)")
-	public int investment = 0;
+	public volatile int investment = 0;
 
 	@HistoricalField(name = "利用権(トークン)")
-	public int rightOfUse = 0;
+	public volatile int rightOfUse = 0;
 
 	@HistoricalField(name = "スコア(点)", visible = false)
-	public int score = 0;
+	public volatile int score = 0;
 
 	@HistoricalField(name = "スコア(合計点)", visible = false)
-	public int sumOfScore = 0;
+	public volatile int sumOfScore = 0;
 
-	public TranslationGamePlayer(DefaultPlayerParameter playerParameter) {
+	public TranslationServiceGamePlayer(DefaultPlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 
-	public void beforeRound(TranslationGameContext ctx) {
+	public void beforeRound(TranslationServiceGameContext ctx) {
 		account += 100;
 		investment = 0;
 		rightOfUse = 0;
@@ -58,9 +58,9 @@ public class TranslationGamePlayer extends Player {
 				"次の文章を翻訳します: <br>「" + getScentence(ctx.getRoundnum()) + "」");
 	}
 
-	public void afterRound(TranslationGameContext ctx) {
-		AccessConfigFactory
-				.setPath(new TranslationGameResourceLoader().getResource("langrid-conf.json"));
+	public void afterRound(TranslationServiceGameContext ctx) {
+		AccessConfigFactory.setPath(new TranslationServiceGameResourceLoader()
+				.getResource("langrid-conf.json"));
 		TranslationClient client = new TranslationClient("KyotoUJServer");
 
 		String sentence;
@@ -102,12 +102,12 @@ public class TranslationGamePlayer extends Player {
 
 	}
 
-	public void initialize(TranslationGameContext ctx) {
+	public void initialize(TranslationServiceGameContext ctx) {
 		showMessage("ゲームを開始します.");
 	}
 
 	// 最終的な結果を出力する
-	public void end(TranslationGameContext ctx) {
+	public void end(TranslationServiceGameContext ctx) {
 		if (sumOfScore <= 5) {
 			account += 0;
 		} else if (sumOfScore <= 10) {
@@ -121,7 +121,7 @@ public class TranslationGamePlayer extends Player {
 		showMessage("スコア :" + sumOfScore);
 	}
 
-	public void decide(TranslationGameContext ctx) {
+	public void decide(TranslationServiceGameContext ctx) {
 
 		FormBuilder builder = new FormBuilder(
 				"ラウンド" + ctx.getRoundnum() + ": 寄付金をいくらにしますか？<br>");

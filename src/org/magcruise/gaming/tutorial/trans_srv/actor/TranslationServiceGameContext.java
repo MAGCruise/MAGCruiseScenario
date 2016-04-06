@@ -1,15 +1,15 @@
-package org.magcruise.gaming.tutorial.trans.actor;
+package org.magcruise.gaming.tutorial.trans_srv.actor;
 
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.DefaultContextParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 
-public class TranslationGameContext extends Context {
+public class TranslationServiceGameContext extends Context {
 
 	@HistoricalField(name = "寄付金(トークン)")
-	public int funds = 0;
+	public volatile int funds = 0;
 
-	public TranslationGameContext(DefaultContextParameter contextParameter) {
+	public TranslationServiceGameContext(DefaultContextParameter contextParameter) {
 		super(contextParameter);
 	}
 
@@ -19,12 +19,11 @@ public class TranslationGameContext extends Context {
 
 	public void clearing() {
 		getPlayers().forEach(p -> {
-			TranslationGamePlayer player = (TranslationGamePlayer) p;
+			TranslationServiceGamePlayer player = (TranslationServiceGamePlayer) p;
 			funds += player.investment;
 		});
 
-		getPlayers().forEach(p -> {
-			TranslationGamePlayer player = (TranslationGamePlayer) p;
+		getPlayers().getPlayers(TranslationServiceGamePlayer.class).forEach(player -> {
 
 			double rightOfUse;
 			if (getRoundnum() <= 10) {
@@ -41,6 +40,8 @@ public class TranslationGameContext extends Context {
 					player.score = 2;
 				} else if (funds < 400) {
 					player.score = 3;
+				} else {
+					player.score = 4;
 				}
 			} else if (20 <= getRoundnum()) {
 				if (funds == 0) {
@@ -51,6 +52,8 @@ public class TranslationGameContext extends Context {
 					player.score = 2;
 				} else if (funds < 400) {
 					player.score = 3;
+				} else {
+					player.score = 4;
 				}
 			}
 

@@ -3,7 +3,7 @@ package org.magcruise.gaming.tutorial.ymc.incentive.actor;
 import org.magcruise.gaming.langrid.AccessConfigFactory;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.DefaultContextParameter;
-import org.magcruise.gaming.tutorial.trans.resource.TranslationGameResourceLoader;
+import org.magcruise.gaming.tutorial.trans_srv.resource.TranslationServiceGameResourceLoader;
 
 public class YMCContext extends Context {
 
@@ -13,7 +13,7 @@ public class YMCContext extends Context {
 
 	public void initialize() {
 		AccessConfigFactory
-				.setPath(new TranslationGameResourceLoader().getResource("langrid-conf.json"));
+				.setPath(new TranslationServiceGameResourceLoader().getResource("langrid-conf.json"));
 	}
 
 }
