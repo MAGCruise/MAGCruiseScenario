@@ -16,7 +16,8 @@ public class CroquetteGameLauncher {
 
 		// revertTest(revertCode);
 
-		launcher.setAutoInputModeForInternalProcess(true);
+		launcher.setAutoInputMode(true);
+		// launcher.runOnExternalProcess();
 		launcher.run();
 	}
 
@@ -26,7 +27,7 @@ public class CroquetteGameLauncher {
 		launcher.setBootstrapInResource("bootstrap.scm");
 
 		launcher.addGameDefinition(revertCode);
-		launcher.setAutoInputModeForInternalProcess(true);
+		launcher.setAutoInputMode(true);
 		launcher.run();
 
 	}
