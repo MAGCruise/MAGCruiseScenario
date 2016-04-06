@@ -12,12 +12,12 @@ public class CroquetteGameLauncher {
 				CroquetteGameResourceLoader.class);
 		launcher.setBootstrapInResource("bootstrap.scm");
 
-		Path revertCode = launcher.runAndGetRevertCode(3);
+		// Path revertCode = launcher.runAndGetRevertCode(3);
 
 		// revertTest(revertCode);
 
-		// launcher.setAutoInputModeForInternalProcess(true);
-		// launcher.run();
+		launcher.setAutoInputModeForInternalProcess(true);
+		launcher.run();
 	}
 
 	private static void revertTest(Path revertCode) {

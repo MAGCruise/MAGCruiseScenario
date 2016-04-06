@@ -14,9 +14,7 @@ public class Market extends Context {
 
 		int demand = 0;
 
-		if (shop.price < 60) {
-			demand = 0;
-		} else if (shop.price < 105) {
+		if (shop.price < 105) {
 			demand = 260;
 		} else if (shop.price < 115) {
 			demand = 250;
