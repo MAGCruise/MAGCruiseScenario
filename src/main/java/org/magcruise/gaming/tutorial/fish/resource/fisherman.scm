@@ -29,7 +29,7 @@
         (ocean:capture capture-count)
         (player:set 'capture-count capture-count)
         (ctx:showMessageToAll (to-string player:name "が，魚を" capture-count "匹とりました．")))
-     ctx:players:all)))
+     (ctx:players:asLList))))
 
 (define (cleanup-and-recover ctx ::Context)
   (set! decisions '())

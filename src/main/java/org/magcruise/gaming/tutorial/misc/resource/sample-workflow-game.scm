@@ -7,8 +7,6 @@
    (def:player 'HumanPlayer3 'human org.magcruise.gaming.model.game.SimplePlayer)
    (def:player 'HumanPlayer4 'human org.magcruise.gaming.model.game.SimplePlayer))
 
-  (define (c1 ctx ::Context) (eqv? ctx:roundnum 0))
-  (define (c2 ctx ::Context) (eqv? ctx:roundnum 1))
 
   ;; r1: (H1 → H2)  → (H1, H3, H2) → (H4)
   ;; r2: (H1 → H2)  → (H1) → (H4)
@@ -19,7 +17,7 @@
       (def:task 'HumanPlayer1 'vote)
       (def:task 'HumanPlayer2 'vote))
     (def:cond-stage 'vote
-      (list c1 c2)
+      (list 'c1 'c2)
       (def:parallel-stage 'h1_2
         (def:parallel-stage 'h1_3
           (def:task 'HumanPlayer1 'vote)
@@ -29,6 +27,9 @@
       (def:task 'HumanPlayer2 'vote))
     (def:stage 'dist
       (def:task 'distribution)))))
+
+(define (c1 ctx ::Context) (eqv? ctx:roundnum 0))
+(define (c2 ctx ::Context) (eqv? ctx:roundnum 1))
 
 (define items '("アイテムX" "アイテムY"))
 
@@ -51,8 +52,9 @@
     (lambda (item)
       #t))
 
-  (define select-first (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 0))) ctx:players:all))
-  (define select-second (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 1))) ctx:players:all))
+  (define select-first  (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 0))) (ctx:players:asLList)))
+  (define select-second (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 1))) (ctx:players:asLList)))
+
   (define minority
     (if (< (length select-first) (length select-second)) select-first select-second))
   (ctx:showMessageToAll
@@ -61,10 +63,10 @@
       (apply html:ul
         (map
           (lambda (p ::Player) (to-string p:name " → " (p:get 'item)))
-          ctx:players:all)))))
+          (ctx:players:values))))))
   (log:debug (ln) minority)
   (for-each
     (lambda (p ::Player)
-      (ctx:showMessageToAll (to-tring p:name "が" (p:get 'item) "を手に入れました．")))
+      (ctx:showMessageToAll (to-string p:name "が" (p:get 'item) "を手に入れました．")))
     minority)
   (ctx:showMessageToAll (to-string "ラウンド" ctx:roundnum "が終了しました")))

@@ -24,8 +24,8 @@
       (self:set 'item item))))
 
 (define (distribution ctx ::Context)
-  (define select-first (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 0))) ctx:players:all))
-  (define select-second (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 1))) ctx:players:all))
+  (define select-first (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 0))) (ctx:players:asLList)))
+  (define select-second (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 1))) (ctx:players:asLList)))
   (define minority
     (if (< (length select-first) (length select-second)) select-first select-second))
   (manager:show-message 'all
@@ -33,7 +33,7 @@
     (apply html:ul
       (map
         (lambda (p ::Player) (to-string p:name "→" (p:get 'item) ", "))
-        ctx:players:all))))
+        (ctx:players:asLList)))))
   (log:debug (ln) minority)
   (for-each
     (lambda (p ::Player)

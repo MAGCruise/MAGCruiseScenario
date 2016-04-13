@@ -1,3 +1,5 @@
+(define-alias SimpleContext org.magcruise.gaming.model.game.SimpleContext)
+
 (define (def:setup-game-builder builder ::GameBuilder)
   (builder:addDefContext (def:context org.magcruise.gaming.model.game.SimpleContext))
 
@@ -7,11 +9,10 @@
    (def:player 'HumanPlayer3 'human org.magcruise.gaming.model.game.SimplePlayer))
 
   (builder:addDefRounds
-  (def:rounds 2
+   (def:rounds 2
     (def:stage 'test
       (def:task 'HumanPlayer1 'vote1))
-    (def:exor-stage 'vote
-      (lambda (ctx ::Context) (eqv? ctx:roundnum 0))
+    (def:exor-stage 'vote 'first-round?
       (def:parallel-stage 'h1_2
         (def:parallel-stage 'h1_3
           (def:task 'HumanPlayer1 'vote2)
@@ -23,6 +24,7 @@
     (def:stage 'dist
       (def:task 'distribution)))))
 
+(define (first-round? ctx ::Context) (eqv? ctx:roundnum 0))
 
 (define (vote1 ctx ::Context self ::Player)
   (self:showMessage 1))

@@ -1,5 +1,3 @@
-(define-alias ScenarioEvent org.magcruise.gaming.model.game.message.ScenarioEvent)
-
 (define (def:setup-game-builder builder ::GameBuilder)
     (builder:addDefContext (def:context org.magcruise.gaming.model.game.SimpleContext))
 
@@ -17,68 +15,69 @@
       (def:task 'go-to-fishing)
       (def:task 'cleanup-and-recover)))))
 
+(define-namespace man1 "man1")
 
-(define (fish-test ctx ::Context self ::Player event ::ScenarioEvent)
+(define (man1:?start-stage ctx ::Context self ::Player event ::ScenarioEvent)
   (event:isNamed 'start-stage))
 
+(define (man1:?response ctx ::Context self ::Player event ::ScenarioEvent)
+  (event:isNamed 'response))
+
+(define (man1:?finish-negotiation ctx ::Context self ::Player event ::ScenarioEvent)
+  (event:isNamed 'finish-negotiation))
+
+(define (man1:!change-scene ctx ::Context self ::Player event ::ScenarioEvent)
+ (self:sendScenarioEvent 'Fisherman1 'notify))
+
+(define (man1:!negotiation ctx ::Context self ::Player event ::ScenarioEvent)
+  (fisher:negotiation ctx self)
+    (if (equal? (self:get 'text) "END")
+      (begin
+        (self:sendScenarioEvent 'Fisherman1 'finish-negotiation)
+        (self:sendScenarioEvent 'Fisherman2 'finish-negotiation))
+      (self:sendScenarioEvent 'Fisherman2 'negotiation)))
+
+(define (man1:!decide-target ctx ::Context self ::Player event ::ScenarioEvent)
+  (ctx:showMessageToAll (to-string event))
+  (fisher:decide-number-of-fish ctx self))
+
+
 (define (fisherman1-scenario)
-  (define (?start-stage ctx ::Context self ::Player event ::ScenarioEvent)
-    (event:isNamed 'start-stage))
-
-  (define (?response ctx ::Context self ::Player event ::ScenarioEvent)
-    (event:isNamed 'response))
-
-  (define (?finish-negotiation ctx ::Context self ::Player event ::ScenarioEvent)
-    (event:isNamed 'finish-negotiation))
-
-  (define (!change-scene ctx ::Context self ::Player event ::ScenarioEvent)
-   (self:sendScenarioEvent 'Fisherman1 'notify))
-
-  (define (!negotiation ctx ::Context self ::Player event ::ScenarioEvent)
-    (fisher:negotiation ctx self)
-      (if (equal? (self:get 'text) "END")
-        (begin
-          (self:sendScenarioEvent 'Fisherman1 'finish-negotiation)
-          (self:sendScenarioEvent 'Fisherman2 'finish-negotiation))
-        (self:sendScenarioEvent 'Fisherman2 'negotiation)))
-
-  (define (!decide-target ctx ::Context self ::Player event ::ScenarioEvent)
-    (ctx:showMessageToAll (to-string event))
-    (fisher:decide-number-of-fish ctx self))
-
   (def:player-scenario 'fisherman1
     (def:scene 'negotiation-scene
-      (def:behavior ?start-stage !negotiation 'negotiation-scene)
-      (def:behavior ?response !negotiation 'negotiation-scene)
-      (def:behavior ?finish-negotiation !change-scene 'decision-scene))
+      (def:behavior 'man1:?start-stage 'man1:!negotiation 'negotiation-scene)
+      (def:behavior 'man1:?response 'man1:!negotiation 'negotiation-scene)
+      (def:behavior 'man1:?finish-negotiation 'man1:!change-scene 'decision-scene))
     (def:scene 'decision-scene
-      (def:default-behavior !decide-target 'end-scene))))
+      (def:default-behavior 'man1:!decide-target 'end-scene))))
+
+(define-namespace man2 "man2")
+
+(define (man2:?negotiation ctx ::Context self ::Player event ::ScenarioEvent)
+  (event:isNamed 'negotiation))
+
+(define (man2:?finish-negotiation ctx ::Context self ::Player event ::ScenarioEvent)
+  (event:isNamed 'finish-negotiation))
+
+(define (man2:!change-scene ctx ::Context self ::Player event ::ScenarioEvent)
+ (self:sendScenarioEvent 'Fisherman2 'notify))
+
+(define (man2:!response ctx ::Context self ::Player event ::ScenarioEvent)
+  (fisher:negotiation ctx self)
+  (let* ((event 'response))
+    (self:sendScenarioEvent 'Fisherman1 event)))
+
+(define (man2:!decide-target ctx ::Context self ::Player event ::ScenarioEvent)
+  (ctx:showMessageToAll (to-string event))
+  (fisher:decide-number-of-fish ctx self))
 
 (define (fisherman2-scenario)
-  (define (?negotiation ctx ::Context self ::Player event ::ScenarioEvent)
-    (event:isNamed 'negotiation))
-
-  (define (?finish-negotiation ctx ::Context self ::Player event ::ScenarioEvent)
-    (event:isNamed 'finish-negotiation))
-
-  (define (!change-scene ctx ::Context self ::Player event ::ScenarioEvent)
-   (self:sendScenarioEvent 'Fisherman2 'notify))
-
-  (define (!response ctx ::Context self ::Player event ::ScenarioEvent)
-    (fisher:negotiation ctx self)
-    (let* ((event 'response))
-      (self:sendScenarioEvent 'Fisherman1 event)))
-
-  (define (!decide-target ctx ::Context self ::Player event ::ScenarioEvent)
-    (ctx:showMessageToAll (to-string event))
-    (fisher:decide-number-of-fish ctx self))
-
   (def:player-scenario 'fisherman2
     (def:scene 'negotiation-scene
-      (def:behavior ?finish-negotiation !change-scene 'decision-scene)
-      (def:behavior ?negotiation !response 'negotiation-scene))
+      (def:behavior 'man2:?finish-negotiation 'man2:!change-scene 'decision-scene)
+      (def:behavior 'man2:?negotiation 'man2:!response 'negotiation-scene))
     (def:scene 'decision-scene
-      (def:default-behavior !decide-target 'end-scene))))
+      (def:default-behavior 'man2:!decide-target 'end-scene))))
 
 (define (start-stage ctx ::Context)
   (ctx:sendScenarioEvent 'Fisherman1 'start-stage))
