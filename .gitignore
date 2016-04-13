@@ -3,3 +3,5 @@
 *.class
 *.log
 /src/org/magcruise/gaming/tutorial/trans_srv/resource/langrid-conf.json
+/target/
+/src/main/java/org/magcruise/gaming/tutorial/trans_srv/resource/langrid-conf.json
