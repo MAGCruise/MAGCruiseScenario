@@ -18,6 +18,7 @@ public class CroquetteGameLauncher {
 
 		launcher.setAutoInputMode(true);
 		// launcher.runOnExternalProcess();
+
 		launcher.run();
 	}
 
@@ -28,6 +29,7 @@ public class CroquetteGameLauncher {
 
 		launcher.addGameDefinition(revertCode);
 		launcher.setAutoInputMode(true);
+
 		launcher.run();
 
 	}
