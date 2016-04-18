@@ -35,7 +35,9 @@
       (begin
         (self:sendScenarioEvent 'Fisherman1 'finish-negotiation)
         (self:sendScenarioEvent 'Fisherman2 'finish-negotiation))
-      (self:sendScenarioEvent 'Fisherman2 'negotiation)))
+      (begin
+        (self:sendScenarioEvent 'Fisherman2 'negotiation)
+        (self:sendScenarioEvent 'Fisherman1 'response))))
 
 (define (man1:!decide-target ctx ::Context self ::Player event ::ScenarioEvent)
   (ctx:showMessageToAll (to-string event))
@@ -46,8 +48,8 @@
   (def:player-scenario 'fisherman1
     (def:scene 'negotiation-scene
       (def:behavior 'man1:?start-stage 'man1:!negotiation 'negotiation-scene)
-      (def:behavior 'man1:?response 'man1:!negotiation 'negotiation-scene)
-      (def:behavior 'man1:?finish-negotiation 'man1:!change-scene 'decision-scene))
+      (def:behavior 'man1:?finish-negotiation 'man1:!change-scene 'decision-scene)
+      (def:behavior 'man1:?response 'man1:!negotiation 'negotiation-scene))
     (def:scene 'decision-scene
       (def:default-behavior 'man1:!decide-target 'end-scene))))
 
@@ -65,7 +67,8 @@
 (define (man2:!response ctx ::Context self ::Player event ::ScenarioEvent)
   (fisher:negotiation ctx self)
   (let* ((event 'response))
-    (self:sendScenarioEvent 'Fisherman1 event)))
+    (self:sendScenarioEvent 'Fisherman1 event)
+    (self:sendScenarioEvent 'Fisherman2 'negotiation)))
 
 (define (man2:!decide-target ctx ::Context self ::Player event ::ScenarioEvent)
   (ctx:showMessageToAll (to-string event))
@@ -74,18 +77,20 @@
 (define (fisherman2-scenario)
   (def:player-scenario 'fisherman2
     (def:scene 'negotiation-scene
+      (def:behavior 'man1:?start-stage 'man1:!negotiation 'negotiation-scene)
       (def:behavior 'man2:?finish-negotiation 'man2:!change-scene 'decision-scene)
       (def:behavior 'man2:?negotiation 'man2:!response 'negotiation-scene))
     (def:scene 'decision-scene
       (def:default-behavior 'man2:!decide-target 'end-scene))))
 
 (define (start-stage ctx ::Context)
-  (ctx:sendScenarioEvent 'Fisherman1 'start-stage))
+  (ctx:sendScenarioEvent 'Fisherman1 'start-stage)
+  (ctx:sendScenarioEvent 'Fisherman2 'start-stage))
 
 (define (fisher:negotiation ctx ::Context self ::Player)
   (self:syncRequestToInput
     (ui:form "相手に伝えたいことを入力して下さい．"
-      (ui:text "何も無ければENDと入力して下さい．" 'text "END"))
+      (ui:text "何も無ければENDと入力して下さい．" 'text "END" (make SimpleSubmit)))
     (lambda (text ::String)
       (self:set 'text text)
       (ctx:showMessageToAll (to-string self:name ": " (html:p text))))))
