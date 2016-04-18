@@ -11,23 +11,23 @@ import org.magcruise.gaming.ui.model.Form;
 public class CompanyPlayer extends Player {
 
 	@HistoricalField(name = "売手/買手")
-	public String type;
+	public volatile String type;
 	@HistoricalField(name = "エリア")
-	public String area;
+	public volatile String area;
 
 	@HistoricalField(name = "需要(初期)")
-	public int demand;
+	public volatile int demand;
 	@HistoricalField(name = "需要(残り)")
-	public int remaindDemand;
+	public volatile int remaindDemand;
 
 	@HistoricalField(name = "入力価格")
-	public int inputPrice;
+	public volatile int inputPrice;
 
 	@HistoricalField(name = "留保価格")
 	public int reservation;
 
 	@HistoricalField(name = "売買")
-	public Trades trades;
+	public volatile Trades trades;
 
 	public CompanyPlayer(DefaultPlayerParameter playerParameter) {
 		super(playerParameter);

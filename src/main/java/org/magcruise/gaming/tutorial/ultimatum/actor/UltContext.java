@@ -3,8 +3,6 @@ package org.magcruise.gaming.tutorial.ultimatum.actor;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.DefaultContextParameter;
 
-import gnu.mapping.SimpleSymbol;
-
 public class UltContext extends Context {
 
 	public final static int providedVal = 100000;
@@ -14,9 +12,8 @@ public class UltContext extends Context {
 	}
 
 	public void paid() {
-		UltPlayer bigBear = (UltPlayer) getPlayer(new SimpleSymbol("BigBear"));
-		UltPlayer smallBear = (UltPlayer) getPlayer(
-				new SimpleSymbol("SmallBear"));
+		UltPlayer bigBear = (UltPlayer) getPlayer(toSymbol("BigBear"));
+		UltPlayer smallBear = (UltPlayer) getPlayer(toSymbol("SmallBear"));
 
 		smallBear.proposition = bigBear.proposition;
 		bigBear.yesOrNo = smallBear.yesOrNo;

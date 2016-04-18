@@ -15,14 +15,13 @@ public class CroquetteGameLauncher {
 		// Path revertCode = launcher.runAndGetRevertCode(3);
 
 		// revertTest(revertCode);
-
+		launcher.useSwingGui();
 		launcher.setAutoInputMode(true);
-		// launcher.runOnExternalProcess();
-
-		launcher.run();
+		launcher.runOnExternalProcess();
+		// launcher.run();
 	}
 
-	private static void revertTest(Path revertCode) {
+	public static void revertTest(Path revertCode) {
 		GameLauncher launcher = new GameLauncher(
 				CroquetteGameResourceLoader.class);
 		launcher.setBootstrapInResource("bootstrap.scm");

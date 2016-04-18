@@ -7,7 +7,7 @@ import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 
 public class Evaluator extends Player {
 
-	public String averageScore = "0.00";
+	public volatile String averageScore = "0.00";
 
 	public Evaluator(DefaultPlayerParameter playerParameter) {
 		super(playerParameter);

@@ -19,17 +19,7 @@
   ;;(croquette:def-assign builder 'user1 'user2 'admin)
   (builder:addDefContext (def:context Market))
 
-  (builder:addDefPlayers
-    (def:player 'Farmer 'agent Farmer)
-    (def:player 'Factory 'human Factory
-      (list 300 300 300 300 300 300 300 300 300 300 300))
-
-    (def:player 'Shop1 'human Shop
-        (list 100 100 100 100 100 100 100 100 100 100 100)
-        (list 400 400 400 400 400 400 400 400 400 400 400))
-    (def:player 'Shop2 'human Shop
-        (list 150 150 150 150 150 150 150 150 150 150 150)
-        (list 150 150 150 150 150 150 150 150 150 150 150)))
+  (setup-players builder)
 
   (builder:addDefRounds
     (def:round

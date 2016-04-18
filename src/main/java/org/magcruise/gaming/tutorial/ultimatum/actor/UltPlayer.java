@@ -30,6 +30,5 @@ public class UltPlayer extends Player {
 	public void paid(int money) {
 		this.acquisition = money;
 		this.account += acquisition;
-
 	}
 }

@@ -96,6 +96,7 @@ public class CroquetteFactory extends Player {
 		this.earnings = 0;
 		this.profit = 0;
 		this.demand = 0;
+		this.production = 0;
 		this.orders = new ConcurrentHashMap<>();
 	}
 

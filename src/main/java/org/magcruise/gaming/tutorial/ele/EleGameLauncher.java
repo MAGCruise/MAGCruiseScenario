@@ -8,7 +8,7 @@ public class EleGameLauncher {
 	public static void main(String[] args) {
 		GameLauncher launcher = new GameLauncher(EleGameResourceLoader.class);
 		launcher.setBootstrapInResource("bootstrap.scm");
-		launcher.setAutoInputMode(true);
+		// launcher.setAutoInputMode(true);
 		// launcher.runOnExternalProcess();
 		launcher.run();
 	}

@@ -1,7 +1,7 @@
 package org.magcruise.gaming.tutorial.ele.actor;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
@@ -11,7 +11,7 @@ import org.magcruise.gaming.util.SExpressionUtils;
 
 public class Trades implements SConstructive {
 
-	private List<Trade> trades = new ArrayList<>();
+	private volatile List<Trade> trades = new CopyOnWriteArrayList<>();
 
 	public Trades() {
 	}

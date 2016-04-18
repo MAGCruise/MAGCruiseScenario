@@ -1,15 +1,18 @@
-(define (def:setup-game-builder game-builder ::GameBuilder)
-  (def:player 'HumanPlayer1 'human SimplePlayer)
-  (def:player 'HumanPlayer2 'human SimplePlayer)
-  (def:player 'HumanPlayer3 'human SimplePlayer)
+(define (def:setup-game-builder builder ::GameBuilder)
+  (builder:addDefContext (def:context org.magcruise.gaming.model.game.SimpleContext))
+  (builder:addDefPlayers
+    (def:player 'HumanPlayer1 'human org.magcruise.gaming.model.game.SimplePlayer)
+    (def:player 'HumanPlayer2 'human org.magcruise.gaming.model.game.SimplePlayer)
+    (def:player 'HumanPlayer3 'human org.magcruise.gaming.model.game.SimplePlayer))
 
-  (def:rounds 2
-    (def:parallel-stage 'vote
-      (def:task 'HumanPlayer1 'vote)
-      (def:task 'HumanPlayer2 'vote)
-      (def:task 'HumanPlayer3 'vote))
-    (def:stage 'dist
-      (def:task 'distribution))))
+  (builder:addDefRounds
+    (def:rounds 2
+      (def:parallel-stage 'vote
+        (def:task 'HumanPlayer1 'vote)
+        (def:task 'HumanPlayer2 'vote)
+        (def:task 'HumanPlayer3 'vote))
+      (def:stage 'dist
+        (def:task 'distribution)))))
 
 (define items '("アイテムX" "アイテムY"))
 
@@ -28,15 +31,15 @@
   (define select-second (filter (lambda (p ::Player) (eqv? (p:get 'item) (items 1))) (ctx:players:asLList)))
   (define minority
     (if (< (length select-first) (length select-second)) select-first select-second))
-  (manager:show-message 'all
+  (ctx:showMessageToAll
     (html:p "結果は以下です"
-    (apply html:ul
-      (map
-        (lambda (p ::Player) (to-string p:name "→" (p:get 'item) ", "))
-        (ctx:players:asLList)))))
+      (apply html:ul
+        (map
+          (lambda (p ::Player) (to-string p:name "→" (p:get 'item) ", "))
+          (ctx:players:asLList)))))
   (log:debug (ln) minority)
   (for-each
     (lambda (p ::Player)
-      (manager:show-message 'all p:name "が" (p:get 'item) "を手に入れました．"))
+        (ctx:showMessageToAll (to-string p:name "が" (p:get 'item) "を手に入れました．")))
     minority)
-  (manager:show-message 'all "ラウンド" ctx:roundnum "が終了しました"))
+  (ctx:showMessageToAll (to-string "ラウンド" ctx:roundnum "が終了しました")))

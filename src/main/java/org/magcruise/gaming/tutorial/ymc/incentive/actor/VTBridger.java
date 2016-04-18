@@ -5,7 +5,7 @@ import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 
 public class VTBridger extends Player {
 
-	public String revisedSentence = "";
+	public volatile String revisedSentence = "";
 
 	public VTBridger(DefaultPlayerParameter playerParameter) {
 		super(playerParameter);
