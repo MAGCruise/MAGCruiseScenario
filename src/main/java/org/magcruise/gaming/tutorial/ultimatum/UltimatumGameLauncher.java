@@ -9,7 +9,9 @@ public class UltimatumGameLauncher {
 		GameLauncher launcher = new GameLauncher(
 				UltimatumGameResourceLoader.class);
 		launcher.setBootstrapInResource("bootstrap.scm");
+		launcher.useSwingGui();
 		// launcher.runOnExternalProcess();
+		launcher.useAutoInput();
 		launcher.run();
 
 	}

@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial.croquette;
+package org.magcruise.gaming.tutorial.ultimatum;
 
 import static org.junit.Assert.assertEquals;
 
@@ -10,12 +10,19 @@ import org.magcruise.gaming.manager.InternalGameProcess;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.def.sys.GameSystemPropertiesBuilder;
 import org.magcruise.gaming.model.sys.GameLauncher;
-import org.magcruise.gaming.tutorial.croquette.resource.CroquetteGameResourceLoader;
+import org.magcruise.gaming.tutorial.ultimatum.resource.UltimatumGameResourceLoader;
 import org.nkjmlab.util.rdb.RDBUtil;
 
 import gnu.kawa.io.Path;
 
-public class CroquetteGameLauncherTest {
+public class UltimatumGameLauncherTest {
+
+	private Integer[] frstplayerAccounts = new Integer[] { 90000, 170000,
+			170000, 230000, 280000, 280000, 370000, 450000, 450000, 510000,
+			510000 };
+	private Integer[] secondPlayerAccounts = new Integer[] { 10000, 30000,
+			30000, 70000, 120000, 120000, 130000, 150000, 150000, 190000,
+			190000 };
 
 	@Before
 	public void setUp() throws Exception {
@@ -24,7 +31,7 @@ public class CroquetteGameLauncherTest {
 	@Test
 	public void testRun() {
 		GameLauncher launcher = new GameLauncher(
-				CroquetteGameResourceLoader.class);
+				UltimatumGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
 		checkResult(launcher, 0);
@@ -34,26 +41,19 @@ public class CroquetteGameLauncherTest {
 	@Test
 	public void testRevert() {
 		GameLauncher launcher = new GameLauncher(
-				CroquetteGameResourceLoader.class);
+				UltimatumGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
 		launcher.useAutoInput();
 		int suspendround = 4;
 		Path revertCode = launcher.runAndGetRevertCode(suspendround);
-		launcher = new GameLauncher(CroquetteGameResourceLoader.class);
+		launcher = new GameLauncher(UltimatumGameResourceLoader.class);
 		launcher.setBootstrapInResource("bootstrap.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
 		launcher.addGameDefinition(revertCode);
 		checkResult(launcher, suspendround + 1);
 
 	}
-
-	private Integer[] factoryProfits = new Integer[] { 0, -6000, -70, 5990,
-			29990, -29940, -4000, 20000, 11000, 38000, 0 };
-	private Integer[] shop1Profits = new Integer[] { 22600, 27200, 7980, 9600,
-			3890, 7980, 12000, 4400, 14200, 12900, 0 };
-	private Integer[] shop2Profits = new Integer[] { 26400, 24000, 9240, 12800,
-			5940, 5360, 7700, 9700, 10600, 5900, 0 };
 
 	private void checkResult(GameLauncher launcher, int roundnum) {
 		launcher.useAutoInput();
@@ -65,36 +65,26 @@ public class CroquetteGameLauncherTest {
 
 		RDBUtil util = new RDBUtil("jdbc:h2:tcp://localhost/"
 				+ GameSystemPropertiesBuilder.createDBFilePath().toString());
+
 		{
 			String actual = util.readList(int.class,
-					"SELECT PROFIT FROM ORG_MAGCRUISE_GAMING_TUTORIAL_CROQUETTE_ACTOR_CROQUETTEFACTORY "
+					"SELECT " + "ACCOUNT" + " FROM "
+							+ "ORG_MAGCRUISE_GAMING_TUTORIAL_ULTIMATUM_ACTOR_FIRSTPLAYER"
 							+ " WHERE PID=? ORDER BY ROUNDNUM",
 					pid.toString()).toString();
-			System.out.println();
-			assertEquals(Arrays.asList(factoryProfits)
-					.subList(roundnum, factoryProfits.length).toString(),
+			assertEquals(Arrays.asList(frstplayerAccounts)
+					.subList(roundnum, frstplayerAccounts.length).toString(),
 					actual);
 		}
 
 		{
 			String actual = util.readList(int.class,
-					"SELECT PROFIT FROM ORG_MAGCRUISE_GAMING_TUTORIAL_CROQUETTE_ACTOR_SHOP "
-							+ " WHERE PID=? AND PLAYER_NAME=? ORDER BY ROUNDNUM",
-					pid.toString(), "Shop1").toString();
-			assertEquals(
-					Arrays.asList(shop1Profits)
-							.subList(roundnum, shop1Profits.length).toString(),
-					actual);
-		}
-
-		{
-			String actual = util.readList(int.class,
-					"SELECT PROFIT FROM ORG_MAGCRUISE_GAMING_TUTORIAL_CROQUETTE_ACTOR_SHOP "
-							+ " WHERE PID=? AND PLAYER_NAME=? ORDER BY ROUNDNUM",
-					pid.toString(), "Shop2").toString();
-			assertEquals(
-					Arrays.asList(shop2Profits)
-							.subList(roundnum, shop2Profits.length).toString(),
+					"SELECT " + "ACCOUNT" + " FROM "
+							+ "ORG_MAGCRUISE_GAMING_TUTORIAL_ULTIMATUM_ACTOR_SECONDPLAYER"
+							+ " WHERE PID=? ORDER BY ROUNDNUM",
+					pid.toString()).toString();
+			assertEquals(Arrays.asList(secondPlayerAccounts)
+					.subList(roundnum, secondPlayerAccounts.length).toString(),
 					actual);
 		}
 

@@ -3,8 +3,6 @@ package org.magcruise.gaming.tutorial.croquette;
 import org.magcruise.gaming.model.sys.GameLauncher;
 import org.magcruise.gaming.tutorial.croquette.resource.CroquetteGameResourceLoader;
 
-import gnu.kawa.io.Path;
-
 public class CroquetteGameLauncher {
 
 	public static void main(String[] args) {
@@ -17,8 +15,8 @@ public class CroquetteGameLauncher {
 		// revertTest(revertCode);
 		launcher.useSwingGui();
 		launcher.useAutoInput();
-		launcher.runOnExternalProcess();
-		// launcher.run();
+		//launcher.runOnExternalProcess();
+		launcher.run();
 	}
 
 }

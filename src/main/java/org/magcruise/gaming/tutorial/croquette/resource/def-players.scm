@@ -1,4 +1,4 @@
-(define  (setup-players builder ::GameBuilder)
+(define (setup-players builder ::GameBuilder)
   (builder:addDefPlayers
     (def:player 'Farmer 'agent Farmer)
     (def:player 'Factory 'human Factory

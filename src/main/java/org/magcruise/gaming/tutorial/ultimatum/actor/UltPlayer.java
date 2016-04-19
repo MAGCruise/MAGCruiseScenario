@@ -4,10 +4,10 @@ import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 
-public class UltPlayer extends Player {
+public abstract class UltPlayer extends Player {
 
 	@HistoricalField(name = "手に入れたお金の<ruby><rb>合計</rb><rp>(</rp><rt>ごうけい</rt><rp>)</rp>")
-	public volatile int account;
+	public volatile int account = 0;
 
 	@HistoricalField(name = "おおぐま君が伝えた<ruby><rb>金額</rb><rp>(</rp><rt>きんがく</rt><rp>)</rp>")
 	public volatile int proposition;
@@ -20,11 +20,13 @@ public class UltPlayer extends Player {
 
 	public UltPlayer(DefaultPlayerParameter playerParameter) {
 		super(playerParameter);
-		account = 0;
 	}
 
 	public void status(UltContext ctx) {
 		showMessage(tabulateHistory());
+		proposition = 0;
+		yesOrNo = "";
+		acquisition = 0;
 	}
 
 	public void paid(int money) {
