@@ -1,4 +1,4 @@
-package org.magcruise.gaming.tutorial;
+package org.magcruise.gaming.tutorial.util;
 
 import org.magcruise.gaming.util.MAGCruiseReplUtil;
 

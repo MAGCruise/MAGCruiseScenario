@@ -16,21 +16,9 @@ public class CroquetteGameLauncher {
 
 		// revertTest(revertCode);
 		launcher.useSwingGui();
-		launcher.setAutoInputMode(true);
+		launcher.useAutoInput();
 		launcher.runOnExternalProcess();
 		// launcher.run();
-	}
-
-	public static void revertTest(Path revertCode) {
-		GameLauncher launcher = new GameLauncher(
-				CroquetteGameResourceLoader.class);
-		launcher.setBootstrapInResource("bootstrap.scm");
-
-		launcher.addGameDefinition(revertCode);
-		launcher.setAutoInputMode(true);
-
-		launcher.run();
-
 	}
 
 }

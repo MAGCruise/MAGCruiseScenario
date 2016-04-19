@@ -9,7 +9,7 @@ public class TranslationServiceGameLauncher {
 		GameLauncher launcher = new GameLauncher(
 				TranslationServiceGameResourceLoader.class);
 		launcher.setBootstrapInResource("bootstrap.scm");
-		launcher.setAutoInputMode(false);
+		launcher.useSwingGui();
 		launcher.run();
 
 	}
