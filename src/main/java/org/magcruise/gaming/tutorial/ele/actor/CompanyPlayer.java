@@ -2,7 +2,7 @@ package org.magcruise.gaming.tutorial.ele.actor;
 
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.tutorial.ele.resource.CompanySetting;
@@ -29,7 +29,7 @@ public class CompanyPlayer extends Player {
 	@HistoricalField(name = "売買")
 	public volatile Trades trades;
 
-	public CompanyPlayer(DefaultPlayerParameter playerParameter) {
+	public CompanyPlayer(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 

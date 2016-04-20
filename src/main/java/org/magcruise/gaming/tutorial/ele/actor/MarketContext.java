@@ -5,15 +5,13 @@ import java.util.List;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.magcruise.gaming.model.game.Context;
-import org.magcruise.gaming.model.game.DefaultContextParameter;
+import org.magcruise.gaming.model.game.ContextParameter;
 import org.magcruise.gaming.tutorial.ele.resource.CompanySetting;
 import org.magcruise.gaming.tutorial.ele.resource.CompanySettings;
 
-import gnu.mapping.SimpleSymbol;
-
 public class MarketContext extends Context {
 
-	public MarketContext(DefaultContextParameter contextParameter) {
+	public MarketContext(ContextParameter contextParameter) {
 		super(contextParameter);
 	}
 
@@ -21,7 +19,7 @@ public class MarketContext extends Context {
 		List<CompanySetting> settings = CompanySettings.readSettings(this);
 		for (CompanySetting setting : settings) {
 			CompanyPlayer player = (CompanyPlayer) players
-					.get(new SimpleSymbol(setting.name));
+					.get(toSymbol(setting.name));
 			player.init(setting);
 		}
 	}

@@ -3,13 +3,13 @@ package org.magcruise.gaming.tutorial.ymc.incentive.actor;
 import java.text.DecimalFormat;
 
 import org.magcruise.gaming.model.game.Player;
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.PlayerParameter;
 
 public class Evaluator extends Player {
 
 	public volatile String averageScore = "0.00";
 
-	public Evaluator(DefaultPlayerParameter playerParameter) {
+	public Evaluator(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 

@@ -5,19 +5,16 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
-import org.magcruise.gaming.lang.SConstructor;
 import org.magcruise.gaming.model.game.Context;
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.tutorial.croquette.msg.CroquetteDelivery;
 import org.magcruise.gaming.tutorial.croquette.msg.CroquetteOrder;
 import org.magcruise.gaming.tutorial.croquette.msg.PotatoDelivery;
 import org.magcruise.gaming.tutorial.croquette.msg.PotatoOrder;
 import org.magcruise.gaming.ui.model.Form;
-import org.magcruise.gaming.util.SExpressionUtils;
 
-import gnu.mapping.SimpleSymbol;
 import gnu.mapping.Symbol;
 
 public class CroquetteFactory extends Player {
@@ -54,20 +51,19 @@ public class CroquetteFactory extends Player {
 	// @HistoricalField(name = "発注個数のデフォルト値")
 	public List<Number> defaultOrdersToFarmer;
 
-	public CroquetteFactory(DefaultPlayerParameter playerParameter) {
+	public CroquetteFactory(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 
-	public CroquetteFactory(DefaultPlayerParameter playerParameter,
+	public CroquetteFactory(PlayerParameter playerParameter,
 			List<Number> ordersToFarmer) {
 		super(playerParameter);
 		this.defaultOrdersToFarmer = ordersToFarmer;
 	}
 
 	@Override
-	public SConstructor<? extends Player> toConstructor() {
-		return SExpressionUtils.toConstructor(this.getClass(),
-				toDefaultPlayerParameter(), defaultOrdersToFarmer);
+	public Object[] getConstractorArgs() {
+		return new Object[] { getPlayerParameter(), defaultOrdersToFarmer };
 	}
 
 	public void init(Market ctx) {
@@ -106,8 +102,8 @@ public class CroquetteFactory extends Player {
 					this.orderOfPotato = param.getArgAsInt(0);
 					showMessage(createMessage("factory:after-order-msg", ctx,
 							this));
-					sendGameMessage(new PotatoOrder(name,
-							Symbol.parse("Farmer"), this.orderOfPotato));
+					sendGameMessage(new PotatoOrder(name, toSymbol("Farmer"),
+							this.orderOfPotato));
 				});
 	}
 
@@ -124,7 +120,7 @@ public class CroquetteFactory extends Player {
 
 		@SuppressWarnings("unchecked")
 		Map<Symbol, Number> prevOrders = (Map<Symbol, Number>) getValueBefore(
-				new SimpleSymbol("orders"), 2);
+				toSymbol("orders"), 2);
 		int tmp = 0;
 		for (Number num : prevOrders.values()) {
 			tmp += Integer.valueOf(num.toString());

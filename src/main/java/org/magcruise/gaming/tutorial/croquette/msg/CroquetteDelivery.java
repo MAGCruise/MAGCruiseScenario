@@ -2,7 +2,6 @@ package org.magcruise.gaming.tutorial.croquette.msg;
 
 import org.magcruise.gaming.lang.SConstructor;
 import org.magcruise.gaming.model.game.message.GameMessage;
-import org.magcruise.gaming.util.SExpressionUtils;
 
 import gnu.mapping.Symbol;
 
@@ -17,7 +16,12 @@ public class CroquetteDelivery extends GameMessage {
 
 	@Override
 	public SConstructor<? extends GameMessage> toConstructor() {
-		return SExpressionUtils.toConstructor(this.getClass(), from, to, num);
+		return SConstructor.toConstructor(this.getClass(), from, to, num);
+	}
+
+	@Override
+	public Object[] getConstractorArgs() {
+		return new Object[] { from, to, num };
 	}
 
 }

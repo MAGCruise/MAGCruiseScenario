@@ -1,6 +1,6 @@
 package org.magcruise.gaming.tutorial.ultimatum.actor;
 
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 
@@ -18,7 +18,7 @@ public abstract class UltPlayer extends Player {
 	@HistoricalField(name = "<ruby><rb>今回</rb><rp>(</rp><rt>こんかい</rt><rp>)</rp>手に入れたお金")
 	public volatile int acquisition;
 
-	public UltPlayer(DefaultPlayerParameter playerParameter) {
+	public UltPlayer(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 

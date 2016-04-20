@@ -1,13 +1,13 @@
 package org.magcruise.gaming.tutorial.ymc.incentive.actor;
 
 import org.magcruise.gaming.model.game.Player;
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.PlayerParameter;
 
 public class JPBridger extends Player {
 
 	public volatile String revisedSentence = "";
 
-	public JPBridger(DefaultPlayerParameter playerParameter) {
+	public JPBridger(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 

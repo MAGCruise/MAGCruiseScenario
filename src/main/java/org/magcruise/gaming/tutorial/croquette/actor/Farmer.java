@@ -1,6 +1,6 @@
 package org.magcruise.gaming.tutorial.croquette.actor;
 
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.tutorial.croquette.msg.PotatoDelivery;
@@ -11,7 +11,7 @@ public class Farmer extends Player {
 	@HistoricalField
 	public volatile int receivedOrderOfPotato = 0;
 
-	public Farmer(DefaultPlayerParameter playerParameter) {
+	public Farmer(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 
@@ -19,7 +19,6 @@ public class Farmer extends Player {
 		takeAllMessages(PotatoOrder.class).forEach((msg) -> {
 			receiveOrder(msg.num);
 		});
-
 	}
 
 	public void receiveOrder(int order) {

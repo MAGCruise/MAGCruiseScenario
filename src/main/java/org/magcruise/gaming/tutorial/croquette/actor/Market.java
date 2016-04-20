@@ -1,11 +1,11 @@
 package org.magcruise.gaming.tutorial.croquette.actor;
 
 import org.magcruise.gaming.model.game.Context;
-import org.magcruise.gaming.model.game.DefaultContextParameter;
+import org.magcruise.gaming.model.game.ContextParameter;
 
 public class Market extends Context {
 
-	public Market(DefaultContextParameter contextParameter) {
+	public Market(ContextParameter contextParameter) {
 		super(contextParameter);
 	}
 

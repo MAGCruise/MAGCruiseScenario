@@ -1,13 +1,13 @@
 package org.magcruise.gaming.tutorial.ultimatum.actor;
 
 import org.magcruise.gaming.model.game.Context;
-import org.magcruise.gaming.model.game.DefaultContextParameter;
+import org.magcruise.gaming.model.game.ContextParameter;
 
 public class UltContext extends Context {
 
 	public final static int providedVal = 100000;
 
-	public UltContext(DefaultContextParameter contextParameter) {
+	public UltContext(ContextParameter contextParameter) {
 		super(contextParameter);
 	}
 

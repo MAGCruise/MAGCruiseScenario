@@ -2,14 +2,12 @@ package org.magcruise.gaming.tutorial.croquette.actor;
 
 import java.util.List;
 
-import org.magcruise.gaming.lang.SConstructor;
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.tutorial.croquette.msg.CroquetteDelivery;
 import org.magcruise.gaming.tutorial.croquette.msg.CroquetteOrder;
 import org.magcruise.gaming.ui.model.Form;
-import org.magcruise.gaming.util.SExpressionUtils;
 
 import gnu.mapping.Symbol;
 
@@ -42,11 +40,11 @@ public class Shop extends Player {
 	// @Attribute(name = "販売価格のデフォルト値")
 	public List<Number> defaultPrices;
 
-	public Shop(DefaultPlayerParameter playerParameter) {
+	public Shop(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 
-	public Shop(DefaultPlayerParameter playerParameter, List<Number> prices,
+	public Shop(PlayerParameter playerParameter, List<Number> prices,
 			List<Number> orders) {
 		super(playerParameter);
 		this.stock = 600;
@@ -55,9 +53,9 @@ public class Shop extends Player {
 	}
 
 	@Override
-	public SConstructor<? extends Player> toConstructor() {
-		return SExpressionUtils.toConstructor(this.getClass(),
-				toDefaultPlayerParameter(), defaultPrices, defaultOrders);
+	public Object[] getConstractorArgs() {
+		return new Object[] { getPlayerParameter(), defaultPrices,
+				defaultOrders };
 	}
 
 	public void init(Market ctx) {

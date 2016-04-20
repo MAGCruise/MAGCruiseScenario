@@ -1,6 +1,6 @@
 package org.magcruise.gaming.tutorial.ymc.incentive.actor;
 
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.Player;
 
 public class JPExpert extends Player {
@@ -10,7 +10,7 @@ public class JPExpert extends Player {
 
 	public String answer = answers[0];
 
-	public JPExpert(DefaultPlayerParameter playerParameter) {
+	public JPExpert(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 

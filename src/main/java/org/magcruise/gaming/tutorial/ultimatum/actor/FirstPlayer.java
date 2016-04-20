@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.magcruise.gaming.lang.SConstructor;
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.Player;
-import org.magcruise.gaming.util.SExpressionUtils;
 
 public class FirstPlayer extends UltPlayer {
 
 	public List<Integer> defaultPropositions;
 
-	public FirstPlayer(DefaultPlayerParameter playerParameter,
+	public FirstPlayer(PlayerParameter playerParameter,
 			List<Integer> propositions) {
 		super(playerParameter);
 		this.defaultPropositions = new ArrayList<>(propositions);
@@ -20,7 +19,7 @@ public class FirstPlayer extends UltPlayer {
 
 	@Override
 	public SConstructor<? extends Player> toConstructor() {
-		return SExpressionUtils.toConstructor(this.getClass(),
-				toDefaultPlayerParameter(), defaultPropositions);
+		return SConstructor.toConstructor(this.getClass(),
+				getPlayerParameter(), defaultPropositions);
 	}
 }

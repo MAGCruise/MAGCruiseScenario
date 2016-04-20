@@ -5,7 +5,7 @@ import java.util.List;
 
 import org.magcruise.gaming.langrid.AccessConfigFactory;
 import org.magcruise.gaming.langrid.client.TranslationClient;
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.tutorial.trans_srv.resource.TranslationServiceGameResourceLoader;
@@ -42,7 +42,7 @@ public class TranslationServiceGamePlayer extends Player {
 	@HistoricalField(name = "スコア(合計点)", visible = false)
 	public volatile int sumOfScore = 0;
 
-	public TranslationServiceGamePlayer(DefaultPlayerParameter playerParameter) {
+	public TranslationServiceGamePlayer(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 

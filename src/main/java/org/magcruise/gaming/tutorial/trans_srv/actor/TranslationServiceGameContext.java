@@ -1,7 +1,7 @@
 package org.magcruise.gaming.tutorial.trans_srv.actor;
 
 import org.magcruise.gaming.model.game.Context;
-import org.magcruise.gaming.model.game.DefaultContextParameter;
+import org.magcruise.gaming.model.game.ContextParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 
 public class TranslationServiceGameContext extends Context {
@@ -9,7 +9,7 @@ public class TranslationServiceGameContext extends Context {
 	@HistoricalField(name = "寄付金(トークン)")
 	public volatile int funds = 0;
 
-	public TranslationServiceGameContext(DefaultContextParameter contextParameter) {
+	public TranslationServiceGameContext(ContextParameter contextParameter) {
 		super(contextParameter);
 	}
 

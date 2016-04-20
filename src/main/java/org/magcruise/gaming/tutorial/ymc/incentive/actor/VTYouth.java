@@ -1,7 +1,7 @@
 package org.magcruise.gaming.tutorial.ymc.incentive.actor;
 
 import org.magcruise.gaming.model.game.Player;
-import org.magcruise.gaming.model.game.DefaultPlayerParameter;
+import org.magcruise.gaming.model.game.PlayerParameter;
 
 public class VTYouth extends Player {
 
@@ -16,7 +16,7 @@ public class VTYouth extends Player {
 	volatile boolean[] thanksMessageTimings = { true, false };
 	volatile boolean[] failureMessageTimings = { true, false };
 
-	public VTYouth(DefaultPlayerParameter playerParameter) {
+	public VTYouth(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 

@@ -15,8 +15,8 @@ public class CroquetteGameLauncher {
 		// revertTest(revertCode);
 		launcher.useSwingGui();
 		launcher.useAutoInput();
-		//launcher.runOnExternalProcess();
-		launcher.run();
+		launcher.runOnExternalProcess();
+		// launcher.run();
 	}
 
 }
