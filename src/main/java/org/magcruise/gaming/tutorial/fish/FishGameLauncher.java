@@ -12,6 +12,7 @@ public class FishGameLauncher {
 		// resourceLoader.addGameDefinitionInResource("fish.scm");
 		launcher.addGameDefinitionInResource(
 				"fish-game-by-interaction-protocol.scm");
+		launcher.useSwingGui();
 		launcher.run();
 
 	}
