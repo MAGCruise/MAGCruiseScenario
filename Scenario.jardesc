@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <jardesc>
-    <jar path="MAGCruiseTutorial/magc/MAGCruiseScenario.jar"/>
-    <options buildIfNeeded="true" compress="true" descriptionLocation="/MAGCruiseScenario/ScenarioToTutorial.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
+    <jar path="MAGCruiseScenario/tmp/MAGCruiseScenario.jar"/>
+    <options buildIfNeeded="true" compress="true" descriptionLocation="/MAGCruiseScenario/Scenario.jardesc" exportErrors="true" exportWarnings="true" includeDirectoryEntries="false" overwrite="false" saveDescription="true" storeRefactorings="false" useSourceFolders="false"/>
     <storedRefactorings deprecationInfo="true" structuralOnly="false"/>
     <selectedProjects/>
     <manifest generateManifest="true" manifestLocation="" manifestVersion="1.0" reuseManifest="false" saveManifest="false" usesManifest="true">
@@ -11,13 +11,11 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
-        <javaElement handleIdentifier="=MAGCruiseScenario/src"/>
         <file path="/MAGCruiseScenario/.classpath"/>
         <file path="/MAGCruiseScenario/LICENSE"/>
         <file path="/MAGCruiseScenario/.gitignore"/>
         <folder path="/MAGCruiseScenario/docs"/>
         <file path="/MAGCruiseScenario/.project"/>
-        <folder path="/MAGCruiseScenario/scenario"/>
         <file path="/MAGCruiseScenario/README.md"/>
         <folder path="/MAGCruiseScenario/lib"/>
     </selectedElements>

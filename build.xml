@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration>
+<project name="MAGCruiseScenario_jar" default="jar" basedir=".">
+	<target name="jar">
+		<jar basedir="target/classes" jarfile="tmp/MAGCruiseScenario.jar" />
+	</target>
+</project>

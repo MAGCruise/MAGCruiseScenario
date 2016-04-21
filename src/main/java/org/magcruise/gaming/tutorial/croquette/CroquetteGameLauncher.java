@@ -15,7 +15,12 @@ public class CroquetteGameLauncher {
 		// revertTest(revertCode);
 		launcher.useSwingGui();
 		launcher.useAutoInput();
-		launcher.runOnExternalProcess();
+		// ExternalGameProcess p = launcher.runOnExternalProcess();
+		// p.waitFor();
+		launcher.addJarOnWeb(
+				"https://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1");
+		launcher.runOnServer(
+				"http://localhost:8080/MAGCruiseBroker/json/GameProcessService");
 		// launcher.run();
 	}
 

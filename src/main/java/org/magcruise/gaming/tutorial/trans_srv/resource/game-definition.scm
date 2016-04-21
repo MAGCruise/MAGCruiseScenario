@@ -3,7 +3,7 @@
   (define-alias TranslationGameContext org.magcruise.gaming.tutorial.trans_srv.actor.TranslationServiceGameContext)
   (define-alias TranslationGamePlayer org.magcruise.gaming.tutorial.trans_srv.actor.TranslationServiceGamePlayer)
 
-  (builder:setDefContext
+  (builder:addDefContext
     (def:context TranslationGameContext))
 
   (builder:addDefPlayers
