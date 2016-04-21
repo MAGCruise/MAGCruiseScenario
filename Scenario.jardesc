@@ -11,12 +11,7 @@
         </sealing>
     </manifest>
     <selectedElements exportClassFiles="true" exportJavaFiles="true" exportOutputFolder="false">
-        <file path="/MAGCruiseScenario/.classpath"/>
-        <file path="/MAGCruiseScenario/LICENSE"/>
-        <file path="/MAGCruiseScenario/.gitignore"/>
-        <folder path="/MAGCruiseScenario/docs"/>
-        <file path="/MAGCruiseScenario/.project"/>
-        <file path="/MAGCruiseScenario/README.md"/>
-        <folder path="/MAGCruiseScenario/lib"/>
+        <javaElement handleIdentifier="=MAGCruiseScenario/src\/test\/java"/>
+        <javaElement handleIdentifier="=MAGCruiseScenario/src\/main\/java"/>
     </selectedElements>
 </jardesc>
