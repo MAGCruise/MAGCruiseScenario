@@ -59,7 +59,7 @@ public class Shop extends Player {
 	}
 
 	public void init(Market ctx) {
-		String msg = (String) callProcedure("shop:init-msg", ctx, this);
+		String msg = (String) ctx.callProcedure("shop:init-msg", ctx, this);
 		syncRequestToInput(new Form(msg), (params) -> {
 			return;
 		});
@@ -67,11 +67,11 @@ public class Shop extends Player {
 	}
 
 	public void refresh(Market ctx) {
-		showMessage(createMessage("shop:refresh-msg", ctx, this,
+		showMessage(ctx.createMessage("shop:refresh-msg", ctx, this,
 				ctx.getOther(this)));
-		syncRequestToInput(createForm("end-day-form", ctx), (param) -> {
+		syncRequestToInput(ctx.createForm("end-day-form", ctx), (param) -> {
 		});
-		showMessage(createMessage("start-day-msg", ctx));
+		showMessage(ctx.createMessage("start-day-msg", ctx));
 		refresh();
 	}
 
@@ -88,22 +88,22 @@ public class Shop extends Player {
 	}
 
 	public void order(Market ctx) {
-		syncRequestToInput(createForm("shop:order-form", ctx, this),
+		syncRequestToInput(ctx.createForm("shop:order-form", ctx, this),
 				(param) -> {
 					this.numOfOrder = param.getArgAsInt(0);
-					showMessage(
-							createMessage("shop:after-order-msg", ctx, this));
+					showMessage(ctx.createMessage("shop:after-order-msg", ctx,
+							this));
 					sendGameMessage(new CroquetteOrder(name,
 							Symbol.parse("Factory"), this.numOfOrder));
 				});
 	}
 
 	public void price(Market ctx) {
-		syncRequestToInput(createForm("shop:price-form", ctx, this),
+		syncRequestToInput(ctx.createForm("shop:price-form", ctx, this),
 				(param) -> {
 					this.price = param.getArgAsInt(0);
-					showMessage(
-							createMessage("shop:after-price-msg", ctx, this));
+					showMessage(ctx.createMessage("shop:after-price-msg", ctx,
+							this));
 				});
 
 	}
@@ -111,7 +111,7 @@ public class Shop extends Player {
 	public void receiveDelivery(Market ctx) {
 		this.delivery = ((CroquetteDelivery) takeMessage()).num;
 		this.stock += delivery;
-		showMessage(createMessage("shop:receive-delivery-msg", ctx, this));
+		showMessage(ctx.createMessage("shop:receive-delivery-msg", ctx, this));
 	}
 
 	public void closing(Market ctx) {

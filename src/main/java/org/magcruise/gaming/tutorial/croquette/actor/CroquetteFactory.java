@@ -67,7 +67,7 @@ public class CroquetteFactory extends Player {
 	}
 
 	public void init(Market ctx) {
-		String msg = (String) callProcedure("factory:init-msg", ctx, this);
+		String msg = (String) ctx.callProcedure("factory:init-msg", ctx, this);
 		syncRequestToInput(new Form(msg), (params) -> {
 			return;
 		});
@@ -75,10 +75,10 @@ public class CroquetteFactory extends Player {
 	}
 
 	public void refresh(Market ctx) {
-		showMessage(createMessage("factory:refresh-msg", ctx, this));
-		syncRequestToInput(createForm("end-day-form", ctx), (param) -> {
+		showMessage(ctx.createMessage("factory:refresh-msg", ctx, this));
+		syncRequestToInput(ctx.createForm("end-day-form", ctx), (param) -> {
 		});
-		showMessage(createMessage("start-day-msg", ctx));
+		showMessage(ctx.createMessage("start-day-msg", ctx));
 		refresh();
 	}
 
@@ -97,11 +97,11 @@ public class CroquetteFactory extends Player {
 	}
 
 	public void order(Market ctx) {
-		syncRequestToInput(createForm("factory:order-form", ctx, this),
+		syncRequestToInput(ctx.createForm("factory:order-form", ctx, this),
 				(param) -> {
 					this.orderOfPotato = param.getArgAsInt(0);
-					showMessage(createMessage("factory:after-order-msg", ctx,
-							this));
+					showMessage(ctx.createMessage("factory:after-order-msg",
+							ctx, this));
 					sendGameMessage(new PotatoOrder(name, toSymbol("Farmer"),
 							this.orderOfPotato));
 				});
@@ -111,6 +111,8 @@ public class CroquetteFactory extends Player {
 		takeAllMessages(CroquetteOrder.class).forEach((msg) -> {
 			this.orders.put(msg.from, new Integer(msg.num));
 		});
+		showMessage(tabulate(new String[] { "価格", "発注個数(じゃがいも)", "受注内容" },
+				price, orderOfPotato, orders));
 	}
 
 	public int getTotalOrder(Context ctx) {
@@ -133,10 +135,10 @@ public class CroquetteFactory extends Player {
 		int stockBeforeDelivery = this.stock;
 		ctx.players.getPlayers(Shop.class).forEach((Shop p) -> {
 			int d = delivery(ctx, p, stockBeforeDelivery);
-			msgs.add(createMessage("factory:delivery-msg", p.name, d));
+			msgs.add(ctx.createMessage("factory:delivery-msg", p.name, d));
 			sendGameMessage(new CroquetteDelivery(name, p.name, d));
 		});
-		showMessage(createMessage("factory:after-delivery-msg",
+		showMessage(ctx.createMessage("factory:after-delivery-msg",
 				String.join(",", msgs), this));
 	}
 
@@ -165,8 +167,8 @@ public class CroquetteFactory extends Player {
 	public void receiveDelivery(Market ctx) {
 		takeAllMessages(PotatoDelivery.class).forEach((msg) -> {
 			receiveDeliveryAndProduce(msg.num);
-			showMessage(createMessage("factory:receive-delivery-msg", msg.num,
-					production, stock));
+			showMessage(ctx.createMessage("factory:receive-delivery-msg",
+					msg.num, production, stock));
 		});
 	}
 

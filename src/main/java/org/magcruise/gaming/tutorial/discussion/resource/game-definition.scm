@@ -2,14 +2,14 @@
     (builder:addDefContext (def:context org.magcruise.gaming.model.game.SimpleContext))
 
   (builder:addDefPlayers
-    (def:player 'Talker1 'human org.magcruise.gaming.tutorial.discussion.actor.Talker)
-    (def:player 'Talker2 'human org.magcruise.gaming.tutorial.discussion.actor.Talker))
+    (def:player 'Player1 'human org.magcruise.gaming.tutorial.discussion.actor.Talker)
+    (def:player 'Player2 'human org.magcruise.gaming.tutorial.discussion.actor.Talker))
 
   (builder:addDefRounds
     (def:rounds 2
       (def:interaction-protocol-stage 'discussion-stage
-        (def:scenario-task 'Talker1 'talker-scenario)
-        (def:scenario-task 'Talker2 'talker-scenario)
+        (def:scenario-task 'Player1 'talker-scenario)
+        (def:scenario-task 'Player2 'talker-scenario)
         (def:task 'start-stage))
       (def:stage
          (def:task 'show-msg)))))
@@ -18,8 +18,8 @@
   (ctx:showMessageToAll (to-string ctx:roundnum " is finished.")))
 
 (define (start-stage ctx ::Context)
-  (ctx:sendScenarioEvent 'Talker1 'start-negotiation)
-  (ctx:sendScenarioEvent 'Talker2 'start-negotiation))
+  (ctx:sendScenarioEvent 'Player1 'start-negotiation)
+  (ctx:sendScenarioEvent 'Player2 'start-negotiation))
 
 (define (talker-scenario)
   (def:player-scenario 'talker-scenario

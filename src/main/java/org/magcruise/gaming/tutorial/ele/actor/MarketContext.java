@@ -2,8 +2,8 @@ package org.magcruise.gaming.tutorial.ele.actor;
 
 import java.util.List;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.apache.commons.lang.builder.ToStringStyle;
+import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.ContextParameter;
 import org.magcruise.gaming.tutorial.ele.resource.CompanySetting;

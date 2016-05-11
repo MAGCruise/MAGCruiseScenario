@@ -2,11 +2,11 @@
   (builder:addDefPlayers
     (def:player 'Farmer 'agent Farmer)
     (def:player 'Factory 'human Factory
-      (list 300 300 300 300 300 300 300 300 300 300 300))
+      (list #!null #!null #!null #!null #!null #!null #!null #!null #!null #!null #!null))
 
     (def:player 'Shop1 'human Shop
-        (list 100 100 100 100 100 100 100 100 100 100 100)
-        (list 400 400 400 400 400 400 400 400 400 400 400))
+        (list #!null #!null #!null #!null #!null #!null #!null #!null #!null #!null #!null)
+        (list #!null #!null #!null #!null #!null #!null #!null #!null #!null #!null #!null))
     (def:player 'Shop2 'human Shop
-        (list 150 150 150 150 150 150 150 150 150 150 150)
-        (list 150 150 150 150 150 150 150 150 150 150 150))))
+        (list #!null #!null #!null #!null #!null #!null #!null #!null #!null #!null #!null)
+        (list #!null #!null #!null #!null #!null #!null #!null #!null #!null #!null #!null))))

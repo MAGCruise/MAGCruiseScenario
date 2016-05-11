@@ -8,20 +8,12 @@ public class CroquetteGameLauncher {
 	public static void main(String[] args) {
 		GameLauncher launcher = new GameLauncher(
 				CroquetteGameResourceLoader.class);
-		launcher.setBootstrapInResource("bootstrap.scm");
-
-		// Path revertCode = launcher.runAndGetRevertCode(3);
-
-		// revertTest(revertCode);
+		launcher.addGameDefinitionInResource("game-definition.scm");
+		launcher.addGameDefinitionInResource("def-test-players.scm");
 		launcher.useSwingGui();
 		launcher.useAutoInput();
-		// ExternalGameProcess p = launcher.runOnExternalProcess();
-		// p.waitFor();
-		launcher.addJarOnWeb(
-				"https://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1");
-		launcher.runOnServer(
-				"http://localhost:8080/MAGCruiseBroker/json/GameProcessService");
-		// launcher.run();
+		launcher.runOnExternalProcess();
+
 	}
 
 }

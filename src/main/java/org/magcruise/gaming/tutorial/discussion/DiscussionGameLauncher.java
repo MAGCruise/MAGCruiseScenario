@@ -9,7 +9,8 @@ public class DiscussionGameLauncher {
 
 		GameLauncher launcher = new GameLauncher(
 				DiscussionGameResourceLoader.class);
-		launcher.addGameDefinitionInResource("game-definition.scm");
+		launcher.setBootstrapInResource("bootstrap.scm");
+		// launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.useSwingGui();
 		launcher.run();
 

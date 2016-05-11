@@ -25,8 +25,9 @@ public class UltContext extends Context {
 			bigBear.paid(0);
 			smallBear.paid(0);
 		}
-		showMessageToAll(applyProcedure("makeResultMessage",
-				bigBear.acquisition, smallBear.acquisition).toString());
+		showMessageToAll(
+				applyProcedure(getEnvironmentName(), "makeResultMessage",
+						bigBear.acquisition, smallBear.acquisition).toString());
 	}
 
 }
