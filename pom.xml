@@ -11,15 +11,26 @@
 	</parent>
 	<repositories>
 		<repository>
-			<id>nkjmlab-releases</id>
-			<url>http://maven.nkjmlab.org/nexus/content/repositories/nkjmlab-releases/</url>
-		</repository>
-		<repository>
-			<id>nkjmlab-snapshots</id>
-			<url>http://maven.nkjmlab.org/nexus/content/repositories/nkjmlab-snapshots/</url>
+			<id>nkjmlab-public</id>
+			<url>http://maven.nkjmlab.org/nexus/content/groups/public</url>
 		</repository>
 	</repositories>
 	<dependencies>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.magcruise</groupId>
+			<artifactId>magcruise-core</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>org.magcruise</groupId>
+			<artifactId>magcruise-langrid</artifactId>
+			<version>0.0.1-SNAPSHOT</version>
+		</dependency>
 		<dependency>
 			<groupId>com.orangesignal</groupId>
 			<artifactId>orangesignal-csv</artifactId>

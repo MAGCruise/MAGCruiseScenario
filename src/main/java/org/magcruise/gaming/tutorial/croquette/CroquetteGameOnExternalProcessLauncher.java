@@ -1,12 +1,12 @@
 package org.magcruise.gaming.tutorial.croquette;
 
-import org.magcruise.gaming.model.sys.GameLauncher;
+import org.magcruise.gaming.model.sys.GameOnExternalProcessLauncher;
 import org.magcruise.gaming.tutorial.croquette.resource.CroquetteGameResourceLoader;
 
-public class CroquetteGameLauncher {
+public class CroquetteGameOnExternalProcessLauncher {
 
 	public static void main(String[] args) {
-		GameLauncher launcher = new GameLauncher(
+		GameOnExternalProcessLauncher launcher = new GameOnExternalProcessLauncher(
 				CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");

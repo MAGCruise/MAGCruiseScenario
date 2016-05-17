@@ -4,6 +4,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.def.sys.GameSystemPropertiesBuilder;
+import org.magcruise.gaming.model.sys.GameForRevertCodeLauncher;
 import org.magcruise.gaming.model.sys.GameLauncher;
 import org.magcruise.gaming.tutorial.TestUtils;
 import org.magcruise.gaming.tutorial.ultimatum.resource.UltimatumGameResourceLoader;
@@ -38,7 +39,7 @@ public class UltimatumGameLauncherTest {
 				UltimatumGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
-		ProcessId pid = TestUtils.exec(launcher);
+		ProcessId pid = TestUtils.run(launcher);
 		checkFirstPlayerResult(pid, firstPlayerAccounts, 0,
 				firstPlayerAccounts.length);
 		checkSecondPlayerResult(pid, secondPlayerAccounts, 0,
@@ -70,18 +71,19 @@ public class UltimatumGameLauncherTest {
 
 	@Test
 	public void testRevert() {
+		int suspendround = 4;
+		GameForRevertCodeLauncher revLauncher = new GameForRevertCodeLauncher(
+				UltimatumGameResourceLoader.class, suspendround);
+		revLauncher.addGameDefinitionInResource("game-definition.scm");
+		revLauncher.addGameDefinitionInResource("def-test-players.scm");
+		revLauncher.useAutoInput();
+		Path revertCode = revLauncher.run();
 		GameLauncher launcher = new GameLauncher(
 				UltimatumGameResourceLoader.class);
-		launcher.addGameDefinitionInResource("game-definition.scm");
-		launcher.addGameDefinitionInResource("def-test-players.scm");
-		launcher.useAutoInput();
-		int suspendround = 4;
-		Path revertCode = launcher.runAndGetRevertCode(suspendround);
-		launcher = new GameLauncher(UltimatumGameResourceLoader.class);
-		launcher.setBootstrapInResource("bootstrap.scm");
+		launcher.setBootstrapInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
 		launcher.addGameDefinition(revertCode);
-		ProcessId pid = TestUtils.exec(launcher);
+		ProcessId pid = TestUtils.run(launcher);
 		checkFirstPlayerResult(pid, firstPlayerAccounts, suspendround + 1,
 				firstPlayerAccounts.length);
 		checkSecondPlayerResult(pid, secondPlayerAccounts, suspendround + 1,
