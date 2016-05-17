@@ -67,7 +67,7 @@ public class CroquetteFactory extends Player {
 	}
 
 	public void init(Market ctx) {
-		String msg = (String) ctx.callProcedure("factory:init-msg", ctx, this);
+		String msg = (String) ctx.applyProcedure("factory:init-msg", ctx, this);
 		syncRequestToInput(new Form(msg), (params) -> {
 			return;
 		});

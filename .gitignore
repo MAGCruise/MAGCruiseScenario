@@ -4,3 +4,4 @@
 *.log
 /target/
 langrid-conf.json
+/.settings/org.eclipse.wst.validation.prefs

@@ -1,17 +1,17 @@
 ;; 最後通牒ゲーム
 (define-namespace ult "ult")
 
-(define-alias UltPlayer org.magcruise.gaming.tutorial.ultimatum.actor.UltPlayer)
+(define-alias UltPlayer org.magcruise.gaming.tutorial.ultimatum.actor.UltimatumPlayer)
 (define-alias FirstPlayer org.magcruise.gaming.tutorial.ultimatum.actor.FirstPlayer)
 (define-alias SecondPlayer org.magcruise.gaming.tutorial.ultimatum.actor.SecondPlayer)
-(define-alias UltContext org.magcruise.gaming.tutorial.ultimatum.actor.UltContext)
+(define-alias UltimatumGameContext org.magcruise.gaming.tutorial.ultimatum.actor.UltimatumGameContext)
 (define-alias FinalNote org.magcruise.gaming.tutorial.ultimatum.msg.FinalNote)
 
 
 (define (def:setup-game-builder game-builder ::GameBuilder)
 
 
-  (game-builder:addDefContext (def:context UltContext))
+  (game-builder:addDefContext (def:context UltimatumGameContext))
 
   (setup-players game-builder)
 
@@ -34,37 +34,29 @@
 (define (ult:assign builder ::GameBuilder  u1 ::symbol u2 ::symbol)
   (builder:addDefAssignRequests
     (def:assignment-request 'BigBear (symbol->string u1))
-    (def:assignment-request 'SmallBear (symbol->string u1))))
+    (def:assignment-request 'SmallBear (symbol->string u2))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 通牒者プレーヤ(BigBear)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (note ctx ::UltContext self ::FirstPlayer)
-  (self:syncRequestToInput
-    (ui:form
+(define (note-form ctx ::UltimatumGameContext self ::FirstPlayer) ::Form
+  (ui:form
       (to-string
         (<ruby> "第" "だい") ctx:roundnum "ラウンドです．"
-        "おおぐま君，<br>あなたは" UltContext:providedVal "円を" (<ruby> "受" "う") "けとりました．こぐま君にいくらを" (<ruby> "分" "わ") "けますか？"
+        "おおぐま君，<br>あなたは" UltimatumGameContext:providedVal "円を" (<ruby> "受" "う") "けとりました．こぐま君にいくらを" (<ruby> "分" "わ") "けますか？"
         (<div-class> "pull-right" (<img> "http://res.nkjmlab.org/www/img/WASEDA_BEAR_BIG.png")))
-      (ui:number (<ruby> "金額" "きんがく") 'proposition (self:defaultPropositions ctx:roundnum) (Min 0) (Max UltContext:providedVal)))
-    (lambda (proposition ::integer)
-      (set! self:proposition proposition)
-      (self:sendMessage (FinalNote self:name 'SmallBear proposition)))))
+      (ui:number (<ruby> "金額" "きんがく") 'proposition (self:defaultPropositions ctx:roundnum) (Min 0) (Max UltimatumGameContext:providedVal))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 判断者プレーヤ(SmallBear)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-(define (judge ctx ::UltContext self ::SecondPlayer)
-  (define rec-msg ::FinalNote (self:takeMessage))
-  (self:syncRequestToInput
+(define (judge-form ctx ::UltimatumGameContext self ::SecondPlayer rec-msg ::FinalNote) ::Form
     (ui:form (to-string
                 (<ruby> "第" "だい") ctx:roundnum "ラウンドです．"
-                "こぐま君，<br>おおぐま君は" UltContext:providedVal "円を" (<ruby> "受" "う") "け取り，あなたに"
+                "こぐま君，<br>おおぐま君は" UltimatumGameContext:providedVal "円を" (<ruby> "受" "う") "け取り，あなたに"
                 rec-msg:proposition "円を" (<ruby> "分" "わ") "けると言いました．" (<ruby> "受" "う") "けとりますか？"
                 (<div-class> "pull-right" (<img> "http://res.nkjmlab.org/www/img/WASEDA_BEAR_SMALL.png")))
-      (ui:radio (to-string (<ruby> "受" "う") "けとる？") 'yes-or-no (self:getDefaultYesOrNo ctx:roundnum) (list "yes" "no") (list "yes" "no")))
-    (lambda (y-n ::String)
-      (set! self:yesOrNo y-n))))
+      (ui:radio (to-string (<ruby> "受" "う") "けとる？") 'yes-or-no (self:getDefaultYesOrNo ctx:roundnum) (list "yes" "no") (list "yes" "no"))))
 
 
 (define (makeResultMessage val1 val2) ::String

@@ -4,7 +4,7 @@ import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 
-public abstract class UltPlayer extends Player {
+public abstract class UltimatumPlayer extends Player {
 
 	@HistoricalField(name = "手に入れたお金の<ruby><rb>合計</rb><rp>(</rp><rt>ごうけい</rt><rp>)</rp>")
 	public volatile int account = 0;
@@ -18,11 +18,11 @@ public abstract class UltPlayer extends Player {
 	@HistoricalField(name = "<ruby><rb>今回</rb><rp>(</rp><rt>こんかい</rt><rp>)</rp>手に入れたお金")
 	public volatile int acquisition;
 
-	public UltPlayer(PlayerParameter playerParameter) {
+	public UltimatumPlayer(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 
-	public void status(UltContext ctx) {
+	public void status(UltimatumGameContext ctx) {
 		showMessage(tabulateHistory());
 		proposition = 0;
 		yesOrNo = "";

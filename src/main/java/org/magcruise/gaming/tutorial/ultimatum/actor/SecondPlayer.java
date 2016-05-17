@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.magcruise.gaming.lang.SConstructor;
-import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.PlayerParameter;
 
-public class SecondPlayer extends UltPlayer {
+public class SecondPlayer extends UltimatumPlayer {
 
 	public List<Boolean> defaultYesOrNos;
 
@@ -19,8 +19,8 @@ public class SecondPlayer extends UltPlayer {
 
 	@Override
 	public SConstructor<? extends Player> toConstructor() {
-		return SConstructor.toConstructor(this.getClass(),
-				getPlayerParameter(), defaultYesOrNos);
+		return SConstructor.toConstructor(this.getClass(), getPlayerParameter(),
+				defaultYesOrNos);
 	}
 
 	public String getDefaultYesOrNo(int roundnum) {
@@ -28,5 +28,13 @@ public class SecondPlayer extends UltPlayer {
 			return "yes";
 		}
 		return "no";
+	}
+
+	public void judge(UltimatumGameContext ctx) {
+		syncRequestToInput(
+				ctx.createForm("judge-form", ctx, this, takeMessage()),
+				(params) -> {
+					this.yesOrNo = params.getArgAsString(0);
+				});
 	}
 }

@@ -3,17 +3,19 @@ package org.magcruise.gaming.tutorial.ultimatum.actor;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.ContextParameter;
 
-public class UltContext extends Context {
+public class UltimatumGameContext extends Context {
 
 	public final static int providedVal = 100000;
 
-	public UltContext(ContextParameter contextParameter) {
+	public UltimatumGameContext(ContextParameter contextParameter) {
 		super(contextParameter);
 	}
 
 	public void paid() {
-		UltPlayer bigBear = (UltPlayer) getPlayer(toSymbol("BigBear"));
-		UltPlayer smallBear = (UltPlayer) getPlayer(toSymbol("SmallBear"));
+		UltimatumPlayer bigBear = (UltimatumPlayer) getPlayer(
+				toSymbol("BigBear"));
+		UltimatumPlayer smallBear = (UltimatumPlayer) getPlayer(
+				toSymbol("SmallBear"));
 
 		smallBear.proposition = bigBear.proposition;
 		bigBear.yesOrNo = smallBear.yesOrNo;
@@ -25,9 +27,8 @@ public class UltContext extends Context {
 			bigBear.paid(0);
 			smallBear.paid(0);
 		}
-		showMessageToAll(
-				applyProcedure(getEnvironmentName(), "makeResultMessage",
-						bigBear.acquisition, smallBear.acquisition).toString());
+		showMessageToAll(applyProcedure("makeResultMessage",
+				bigBear.acquisition, smallBear.acquisition).toString());
 	}
 
 }

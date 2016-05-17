@@ -59,7 +59,7 @@ public class Shop extends Player {
 	}
 
 	public void init(Market ctx) {
-		String msg = (String) ctx.callProcedure("shop:init-msg", ctx, this);
+		String msg = (String) ctx.applyProcedure("shop:init-msg", ctx, this);
 		syncRequestToInput(new Form(msg), (params) -> {
 			return;
 		});

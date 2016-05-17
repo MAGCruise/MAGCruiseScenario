@@ -4,10 +4,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.magcruise.gaming.lang.SConstructor;
-import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.PlayerParameter;
+import org.magcruise.gaming.tutorial.ultimatum.msg.FinalNote;
 
-public class FirstPlayer extends UltPlayer {
+public class FirstPlayer extends UltimatumPlayer {
 
 	public List<Integer> defaultPropositions;
 
@@ -19,7 +20,16 @@ public class FirstPlayer extends UltPlayer {
 
 	@Override
 	public SConstructor<? extends Player> toConstructor() {
-		return SConstructor.toConstructor(this.getClass(),
-				getPlayerParameter(), defaultPropositions);
+		return SConstructor.toConstructor(this.getClass(), getPlayerParameter(),
+				defaultPropositions);
 	}
+
+	public void note(UltimatumGameContext ctx) {
+		syncRequestToInput(ctx.createForm("note-form", ctx, this), (params) -> {
+			this.proposition = params.getArgAsInt(0);
+			sendMessage(new FinalNote(name, toSymbol("SmallBear"),
+					this.proposition));
+		});
+	}
+
 }

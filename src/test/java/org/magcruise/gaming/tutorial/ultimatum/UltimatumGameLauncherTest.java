@@ -5,9 +5,11 @@ import org.junit.Test;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.def.sys.GameSystemPropertiesBuilder;
 import org.magcruise.gaming.model.sys.GameLauncher;
-import org.magcruise.gaming.tutorial.TestUtil;
+import org.magcruise.gaming.tutorial.TestUtils;
 import org.magcruise.gaming.tutorial.ultimatum.resource.UltimatumGameResourceLoader;
-import org.nkjmlab.util.rdb.RDBUtil;
+import org.nkjmlab.util.db.DbClientFactory;
+import org.nkjmlab.util.db.H2Client;
+import org.nkjmlab.util.db.H2ConfigFactory;
 
 import gnu.kawa.io.Path;
 
@@ -20,11 +22,14 @@ public class UltimatumGameLauncherTest {
 			30000, 70000, 120000, 120000, 130000, 150000, 150000, 190000,
 			190000 };
 
-	RDBUtil util = new RDBUtil("jdbc:h2:tcp://localhost/"
-			+ GameSystemPropertiesBuilder.createDefaultDBFilePath().toString());
+	H2Client util = DbClientFactory.createH2Client(H2ConfigFactory
+			.create("jdbc:h2:tcp://localhost/" + GameSystemPropertiesBuilder
+					.createDefaultDBFilePath().toString()));
 
 	@Before
 	public void setUp() throws Exception {
+		util.getConnection();
+		System.out.println("test");
 	}
 
 	@Test
@@ -33,7 +38,7 @@ public class UltimatumGameLauncherTest {
 				UltimatumGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
-		ProcessId pid = TestUtil.exec(launcher);
+		ProcessId pid = TestUtils.exec(launcher);
 		checkFirstPlayerResult(pid, firstPlayerAccounts, 0,
 				firstPlayerAccounts.length);
 		checkSecondPlayerResult(pid, secondPlayerAccounts, 0,
@@ -43,7 +48,7 @@ public class UltimatumGameLauncherTest {
 
 	private void checkFirstPlayerResult(ProcessId pid,
 			Object[] firstPlayerAccounts, int fromIndex, int toIndex) {
-		TestUtil.checkResult(firstPlayerAccounts, fromIndex, toIndex,
+		TestUtils.checkResult(firstPlayerAccounts, fromIndex, toIndex,
 				util.readList(int.class,
 						"SELECT " + "ACCOUNT" + " FROM "
 								+ "ORG_MAGCRUISE_GAMING_TUTORIAL_ULTIMATUM_ACTOR_FIRSTPLAYER"
@@ -54,7 +59,7 @@ public class UltimatumGameLauncherTest {
 
 	private void checkSecondPlayerResult(ProcessId pid,
 			Object[] secondPlayerAccounts, int fromIndex, int toIndex) {
-		TestUtil.checkResult(secondPlayerAccounts, fromIndex, toIndex,
+		TestUtils.checkResult(secondPlayerAccounts, fromIndex, toIndex,
 				util.readList(int.class,
 						"SELECT " + "ACCOUNT" + " FROM "
 								+ "ORG_MAGCRUISE_GAMING_TUTORIAL_ULTIMATUM_ACTOR_SECONDPLAYER"
@@ -76,7 +81,7 @@ public class UltimatumGameLauncherTest {
 		launcher.setBootstrapInResource("bootstrap.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
 		launcher.addGameDefinition(revertCode);
-		ProcessId pid = TestUtil.exec(launcher);
+		ProcessId pid = TestUtils.exec(launcher);
 		checkFirstPlayerResult(pid, firstPlayerAccounts, suspendround + 1,
 				firstPlayerAccounts.length);
 		checkSecondPlayerResult(pid, secondPlayerAccounts, suspendround + 1,

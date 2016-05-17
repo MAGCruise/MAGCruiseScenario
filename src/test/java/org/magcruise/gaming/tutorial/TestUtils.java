@@ -9,7 +9,7 @@ import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameLauncher;
 import org.magcruise.gaming.tutorial.croquette.CroquetteGameLauncherTest;
 
-public class TestUtil {
+public class TestUtils {
 
 	public static void checkResult(Object[] expected, int fromIndex,
 			int toIndex, Object[] actual) {

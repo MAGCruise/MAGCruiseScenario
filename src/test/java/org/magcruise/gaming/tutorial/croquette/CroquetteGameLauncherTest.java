@@ -8,9 +8,11 @@ import org.junit.Test;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.def.sys.GameSystemPropertiesBuilder;
 import org.magcruise.gaming.model.sys.GameLauncher;
-import org.magcruise.gaming.tutorial.TestUtil;
+import org.magcruise.gaming.tutorial.TestUtils;
 import org.magcruise.gaming.tutorial.croquette.resource.CroquetteGameResourceLoader;
-import org.nkjmlab.util.rdb.RDBUtil;
+import org.nkjmlab.util.db.DbClientFactory;
+import org.nkjmlab.util.db.H2Client;
+import org.nkjmlab.util.db.H2ConfigFactory;
 
 import gnu.kawa.io.Path;
 
@@ -30,8 +32,10 @@ public class CroquetteGameLauncherTest {
 			9600, 3890, 7980, 12000, 4400, 14200, 12900, 0 };
 	private static Integer[] shop2Profits = new Integer[] { 26400, 24000, 9240,
 			12800, 5940, 5360, 7700, 9700, 10600, 5900, 0 };
-	protected static RDBUtil util = new RDBUtil("jdbc:h2:tcp://localhost/"
-			+ GameSystemPropertiesBuilder.createDefaultDBFilePath().toString());
+	protected static H2Client util = DbClientFactory
+			.createH2Client(H2ConfigFactory.create(
+					"jdbc:h2:tcp://localhost/" + GameSystemPropertiesBuilder
+							.createDefaultDBFilePath().toString()));
 
 	@Test
 	public void testRun() {
@@ -39,7 +43,7 @@ public class CroquetteGameLauncherTest {
 				CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
-		ProcessId pid = TestUtil.exec(launcher);
+		ProcessId pid = TestUtils.exec(launcher);
 		checkRunResult(pid);
 	}
 
@@ -56,7 +60,7 @@ public class CroquetteGameLauncherTest {
 						+ " ORG_MAGCRUISE_GAMING_TUTORIAL_CROQUETTE_ACTOR_SHOP "
 						+ " WHERE PID=?  AND PLAYER_NAME=? ORDER BY ROUNDNUM",
 				pid.toString(), name);
-		TestUtil.checkResult(expected, fromIndex, toIndex, actual.toArray());
+		TestUtils.checkResult(expected, fromIndex, toIndex, actual.toArray());
 	}
 
 	private static void checkFactoryResult(Object[] expected, ProcessId pid,
@@ -66,7 +70,7 @@ public class CroquetteGameLauncherTest {
 						+ " ORG_MAGCRUISE_GAMING_TUTORIAL_CROQUETTE_ACTOR_CROQUETTEFACTORY "
 						+ " WHERE PID=? ORDER BY ROUNDNUM",
 				pid.toString());
-		TestUtil.checkResult(expected, fromIndex, toIndex, actual.toArray());
+		TestUtils.checkResult(expected, fromIndex, toIndex, actual.toArray());
 	}
 
 	@Test
@@ -82,7 +86,7 @@ public class CroquetteGameLauncherTest {
 		launcher.setBootstrapInResource("bootstrap.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
 		launcher.addGameDefinition(revertCode);
-		ProcessId pid = TestUtil.exec(launcher);
+		ProcessId pid = TestUtils.exec(launcher);
 		checkRevertResult(pid, suspendround);
 	}
 

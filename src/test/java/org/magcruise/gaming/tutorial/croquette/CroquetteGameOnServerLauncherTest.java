@@ -3,7 +3,7 @@ package org.magcruise.gaming.tutorial.croquette;
 import org.junit.Test;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameOnServerLauncher;
-import org.magcruise.gaming.tutorial.TestUtil;
+import org.magcruise.gaming.tutorial.TestUtils;
 import org.magcruise.gaming.tutorial.croquette.resource.CroquetteGameResourceLoader;
 
 public class CroquetteGameOnServerLauncherTest {
@@ -21,7 +21,7 @@ public class CroquetteGameOnServerLauncherTest {
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
 		launcher.runOnServer("http://localhost:8080/MAGCruiseBroker");
-		ProcessId pid = TestUtil.exec(launcher);
+		ProcessId pid = TestUtils.exec(launcher);
 		CroquetteGameLauncherTest.checkRunResult(pid);
 	}
 }

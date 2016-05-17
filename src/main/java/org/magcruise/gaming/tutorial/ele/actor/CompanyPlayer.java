@@ -3,9 +3,9 @@ package org.magcruise.gaming.tutorial.ele.actor;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
 import org.magcruise.gaming.model.game.PlayerParameter;
+import org.magcruise.gaming.tutorial.ele.resource.CompanySetting;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
-import org.magcruise.gaming.tutorial.ele.resource.CompanySetting;
 import org.magcruise.gaming.ui.model.Form;
 
 public class CompanyPlayer extends Player {
