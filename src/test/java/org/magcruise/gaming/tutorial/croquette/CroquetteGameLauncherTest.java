@@ -12,15 +12,12 @@ import org.magcruise.gaming.tutorial.croquette.resource.CroquetteGameResourceLoa
 import org.nkjmlab.util.db.DbClientFactory;
 import org.nkjmlab.util.db.H2Client;
 import org.nkjmlab.util.db.H2ConfigFactory;
+import org.nkjmlab.util.db.H2Server;
 
 public class CroquetteGameLauncherTest {
 
 	protected static transient org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
-
-	@Before
-	public void setUp() throws Exception {
-	}
 
 	protected static Integer[] factoryProfits = new Integer[] { 0, -6000, -70,
 			5990, 29990, -29940, -4000, 20000, 11000, 38000, 0 };
@@ -34,6 +31,11 @@ public class CroquetteGameLauncherTest {
 					"jdbc:h2:tcp://localhost/" + GameSystemPropertiesBuilder
 							.createDefaultDBFilePath().toString()));
 
+	@Before
+	public void setUp() throws Exception {
+		H2Server.start();
+	}
+
 	@Test
 	public void testRun() {
 		GameLauncher launcher = new GameLauncher(
@@ -41,10 +43,10 @@ public class CroquetteGameLauncherTest {
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("def-test-players.scm");
 		ProcessId pid = TestUtils.run(launcher);
-		checkRunResult(pid);
+		checkResult(pid);
 	}
 
-	protected static void checkRunResult(ProcessId pid) {
+	protected static void checkResult(ProcessId pid) {
 		checkFactoryResult(pid, factoryProfits, 0, factoryProfits.length);
 		checkShopResult(pid, shop1Profits, "Shop1", 0, shop1Profits.length);
 		checkShopResult(pid, shop2Profits, "Shop2", 0, shop2Profits.length);

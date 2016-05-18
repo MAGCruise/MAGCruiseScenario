@@ -1,15 +1,21 @@
 package org.magcruise.gaming.tutorial.croquette;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameForRevertCodeLauncher;
 import org.magcruise.gaming.model.sys.GameLauncher;
 import org.magcruise.gaming.tutorial.TestUtils;
 import org.magcruise.gaming.tutorial.croquette.resource.CroquetteGameResourceLoader;
+import org.nkjmlab.util.db.H2Server;
 
 import gnu.kawa.io.Path;
 
 public class CroquetteGameRevertTest {
+	@Before
+	public void setUp() throws Exception {
+		H2Server.start();
+	}
 
 	@Test
 	public void testRevert() {

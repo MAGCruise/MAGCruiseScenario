@@ -6,9 +6,11 @@ import java.util.Arrays;
 import java.util.stream.Collectors;
 
 import org.apache.logging.log4j.Logger;
+import org.magcruise.gaming.manager.ExternalGameProcess;
 import org.magcruise.gaming.manager.InternalGameProcess;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameLauncher;
+import org.magcruise.gaming.model.sys.GameOnExternalProcessLauncher;
 import org.magcruise.gaming.model.sys.GameOnServerLauncher;
 
 public class TestUtils {
@@ -45,10 +47,16 @@ public class TestUtils {
 		while (!p.isFinished()) {
 
 		}
-		return p.getExecutor().getProcessId();
+		return launcher.getProcessId();
 	}
 
-	public static ProcessId runOnServer(GameOnServerLauncher launcher) {
+	public static ProcessId run(GameOnExternalProcessLauncher launcher) {
+		launcher.useAutoInput();
+		ExternalGameProcess p = launcher.run();
+		return launcher.getProcessId();
+	}
+
+	public static ProcessId run(GameOnServerLauncher launcher) {
 		return launcher.run();
 	}
 
