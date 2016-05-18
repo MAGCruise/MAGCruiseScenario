@@ -38,6 +38,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nkjmlab-util"/>
+	<classpathentry combineaccessrules="false" exported="true" kind="src" path="/nkjmlab-utils"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

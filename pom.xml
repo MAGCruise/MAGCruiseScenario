@@ -22,10 +22,6 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.nkjmlab</groupId>
-			<artifactId>nkjmlab-util</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>org.magcruise</groupId>
 			<artifactId>magcruise-core</artifactId>
 		</dependency>
