@@ -128,7 +128,7 @@ public class TranslationServiceGamePlayer extends Player {
 
 		if (ctx.getRoundnum() <= 5) {
 			builder.addLabel("このラウンドで寄付できるのは0トークンか，100トークンです．");
-			builder.setInput(new RadioInput("寄付金(トークン)", "token", "0",
+			builder.addInput(new RadioInput("寄付金(トークン)", "token", "0",
 					Arrays.asList(new String[] { "0トークン", "100トークン" }),
 					Arrays.asList(new String[] { "0", "100" }),
 					new Required()));
@@ -137,7 +137,7 @@ public class TranslationServiceGamePlayer extends Player {
 			});
 		} else if (ctx.getRoundnum() <= 25) {
 			builder.addLabel("このラウンドで寄付できトークン数は，0以上100以下の任意の整数です．");
-			builder.setInput(new NumberInput("寄付金(トークン)", "token", 100,
+			builder.addInput(new NumberInput("寄付金(トークン)", "token", 100,
 					new Min(0), new Max(100), new Required()));
 			syncRequestToInput(builder.build(), params -> {
 				this.investment = params.getInt("token");

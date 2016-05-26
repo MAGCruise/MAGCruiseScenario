@@ -5,13 +5,12 @@ import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
-import org.magcruise.gaming.model.sys.GameOnServerLauncher;
+import org.magcruise.gaming.model.sys.GameOnLocalWithSeverLauncher;
 import org.nkjmlab.util.db.H2Server;
 
-public class CroquetteGameOnServerLauncherTest {
+public class CroquetteGameOnLocalWithServer {
 	protected static transient org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
-
 	private String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
 
 	@Before
@@ -21,7 +20,7 @@ public class CroquetteGameOnServerLauncherTest {
 
 	@Test
 	public void testRunOnServer() throws InterruptedException {
-		GameOnServerLauncher launcher = new GameOnServerLauncher(
+		GameOnLocalWithSeverLauncher launcher = new GameOnLocalWithSeverLauncher(
 				CroquetteGameResourceLoader.class, brokerUrl);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
@@ -31,5 +30,4 @@ public class CroquetteGameOnServerLauncherTest {
 		Thread.sleep(millis);
 		CroquetteGameLauncherTest.checkResult(pid);
 	}
-
 }

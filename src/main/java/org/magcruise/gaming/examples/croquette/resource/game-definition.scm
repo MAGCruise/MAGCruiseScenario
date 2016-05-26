@@ -112,7 +112,7 @@
         (<h4> "収支表")
         (self:tabulateHistory 'materialCost 'inventoryCost 'earnings 'profit))))
 
-(define (factory:refresh-msg ctx ::Market self ::Factory)
+(define (factory:refresh-msg ctx ::Market self ::Factory) ::String
     (<div-class> "alert alert-info"
       (to-string
         (<h4> (- ctx:roundnum 1) "日目が終わりました．")
