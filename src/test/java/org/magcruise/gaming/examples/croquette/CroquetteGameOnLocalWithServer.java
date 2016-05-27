@@ -11,7 +11,10 @@ import org.nkjmlab.util.db.H2Server;
 public class CroquetteGameOnLocalWithServer {
 	protected static transient org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
-	private String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
+
+	// private String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
+
+	private String brokerUrl = "http://phoenix.toho.magcruise.org/MAGCruiseBroker";
 
 	@Before
 	public void setUp() throws Exception {
@@ -19,7 +22,7 @@ public class CroquetteGameOnLocalWithServer {
 	}
 
 	@Test
-	public void testRunOnServer() throws InterruptedException {
+	public void testRunWithServer() throws InterruptedException {
 		GameOnLocalWithSeverLauncher launcher = new GameOnLocalWithSeverLauncher(
 				CroquetteGameResourceLoader.class, brokerUrl);
 		launcher.addGameDefinitionInResource("game-definition.scm");

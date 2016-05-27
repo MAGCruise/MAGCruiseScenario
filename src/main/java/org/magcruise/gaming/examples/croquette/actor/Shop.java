@@ -1,5 +1,6 @@
 package org.magcruise.gaming.examples.croquette.actor;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.magcruise.gaming.examples.croquette.msg.CroquetteDelivery;
@@ -48,8 +49,8 @@ public class Shop extends Player {
 			List<Number> orders) {
 		super(playerParameter);
 		this.stock = 600;
-		this.defaultPrices = prices;
-		this.defaultOrders = orders;
+		this.defaultPrices = new ArrayList<>(prices);
+		this.defaultOrders = new ArrayList<>(orders);
 	}
 
 	@Override
@@ -93,7 +94,7 @@ public class Shop extends Player {
 					this.numOfOrder = param.getArgAsInt(0);
 					showMessage(ctx.createMessage("shop:after-order-msg", ctx,
 							this));
-					sendGameMessage(new CroquetteOrder(name,
+					sendMessage(new CroquetteOrder(name,
 							Symbol.parse("Factory"), this.numOfOrder));
 				});
 	}

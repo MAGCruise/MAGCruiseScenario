@@ -8,10 +8,12 @@ public class UltimatumGameLauncher {
 	public static void main(String[] args) {
 		GameLauncher launcher = new GameLauncher(
 				UltimatumGameResourceLoader.class);
-		launcher.setBootstrapInResource("bootstrap.scm");
+		// launcher.setBootstrapInResource("bootstrap.scm");
+		launcher.addGameDefinitionInResource("game-definition.scm");
+		launcher.addGameDefinitionInResource("test-definition.scm");
+
 		launcher.useSwingGui();
-		// launcher.runOnExternalProcess();
-		launcher.useAutoInput();
+		//launcher.useAutoInput();
 		launcher.run();
 
 	}

@@ -58,7 +58,7 @@ public class CroquetteFactory extends Player {
 	public CroquetteFactory(PlayerParameter playerParameter,
 			List<Number> ordersToFarmer) {
 		super(playerParameter);
-		this.defaultOrdersToFarmer = ordersToFarmer;
+		this.defaultOrdersToFarmer = new ArrayList<>(ordersToFarmer);
 	}
 
 	@Override
@@ -102,7 +102,7 @@ public class CroquetteFactory extends Player {
 					this.orderOfPotato = param.getArgAsInt(0);
 					showMessage(ctx.createMessage("factory:after-order-msg",
 							ctx, this));
-					sendGameMessage(new PotatoOrder(name, toSymbol("Farmer"),
+					sendMessage(new PotatoOrder(name, toSymbol("Farmer"),
 							this.orderOfPotato));
 				});
 	}
@@ -136,7 +136,7 @@ public class CroquetteFactory extends Player {
 		ctx.players.getPlayers(Shop.class).forEach((Shop p) -> {
 			int d = delivery(ctx, p, stockBeforeDelivery);
 			msgs.add(ctx.createMessage("factory:delivery-msg", p.name, d));
-			sendGameMessage(new CroquetteDelivery(name, p.name, d));
+			sendMessage(new CroquetteDelivery(name, p.name, d));
 		});
 		showMessage(ctx.createMessage("factory:after-delivery-msg",
 				String.join(",", msgs), this));
