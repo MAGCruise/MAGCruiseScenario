@@ -10,7 +10,6 @@
 		</property>
 		<!-- <property name="pattern_loc">"%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t]
 			%c{3.}.%M:%L %m%n" </property> -->
-
 	</Properties>
 	<Appenders>
 		<Console name="stdout" target="SYSTEM_OUT">

@@ -14,10 +14,3 @@
 
 (define (def:after-setup-game-builder builder ::GameBuilder)
   (builder:addDefAssignmentRequestsList (list 'Factory 'Shop1 'Shop2) (list 'user1 'user2 'user3)))
-
-(define (def:setup-services builder ::GameSystemPropertiesBuilder)
-  (builder:addProperties
-   (def:ui-service
-        "http://waseda1.magcruise.org/MAGCruiseBroker/json/GameInteractionService")
-   (def:request-to-game-executor-publisher-service
-        "http://waseda1.magcruise.org/MAGCruiseBroker/json/GameInteractionService")))
