@@ -3,13 +3,13 @@
 <configuration status="OFF">
 	<Properties>
 		<property name="pattern_loc">
-			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c{3.}.%M(%F:%L) %m%n
+			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c.%M(%F:%L) %m%n
 		</property>
 		<property name="pattern">
-			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c{3.} %m%n
+			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c %m%n
 		</property>
 		<!-- <property name="pattern_loc">"%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t]
-			%c{3.}.%M:%L %m%n" </property> -->
+			%c.%M:%L %m%n" </property> -->
 	</Properties>
 	<Appenders>
 		<Console name="stdout" target="SYSTEM_OUT">

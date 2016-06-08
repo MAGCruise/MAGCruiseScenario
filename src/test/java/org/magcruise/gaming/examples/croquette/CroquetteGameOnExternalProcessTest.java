@@ -9,6 +9,9 @@ import org.magcruise.gaming.model.sys.GameOnExternalProcessLauncher;
 import org.nkjmlab.util.db.H2Server;
 
 public class CroquetteGameOnExternalProcessTest {
+	protected static transient org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+			.getLogger();
+
 	@Before
 	public void setUp() throws Exception {
 		H2Server.start();
@@ -22,6 +25,7 @@ public class CroquetteGameOnExternalProcessTest {
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		ProcessId pid = TestUtils.run(launcher);
+		log.debug(pid);
 		Thread.sleep(10000);
 		CroquetteGameLauncherTest.checkResult(pid);
 	}

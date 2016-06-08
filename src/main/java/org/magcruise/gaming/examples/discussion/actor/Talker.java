@@ -32,7 +32,9 @@ public class Talker extends Player {
 
 		syncRequestToInput(
 				new Form("",
-						new TextInput("相手に伝えたいことを入力して下さい．何も無ければENDと入力して下さい．",
+						new TextInput(
+								"roundnum=" + ctx.getRoundnum()
+										+ ". 相手に伝えたいことを入力して下さい．何も無ければENDと入力して下さい．",
 								"input-msg", "", new SimpleSubmit())),
 				(param) -> {
 
@@ -53,12 +55,10 @@ public class Talker extends Player {
 					}
 
 					if (param.getArgAsString(0).equalsIgnoreCase("END")) {
-						sendScenarioEvent(msg.from,
-								toSymbol("finish-negotiation"));
-						sendScenarioEvent(msg.to,
-								toSymbol("finish-negotiation"));
+						sendEvent(msg.from, toSymbol("finish-negotiation"));
+						sendEvent(msg.to, toSymbol("finish-negotiation"));
 					} else {
-						sendScenarioEvent(name, toSymbol(""));
+						sendEvent(name, toSymbol(""));
 					}
 				});
 	}

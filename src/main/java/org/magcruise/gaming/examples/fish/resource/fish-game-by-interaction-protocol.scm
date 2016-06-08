@@ -19,24 +19,24 @@
 
 (define-namespace man1 "man1")
 
-(define (?negotiation self ::FishGamePlayer ctx ::Context event ::ScenarioEvent)
+(define (?negotiation self ::FishGamePlayer ctx ::Context event ::GameEvent)
   (event:isNamed 'negotiation))
 
-(define (?finish-negotiation self ::FishGamePlayer ctx ::Context event ::ScenarioEvent)
+(define (?finish-negotiation self ::FishGamePlayer ctx ::Context event ::GameEvent)
   (event:isNamed 'finish-negotiation))
 
-(define (!change-scene self ::FishGamePlayer ctx ::Context event ::ScenarioEvent) #t)
+(define (!change-scene self ::FishGamePlayer ctx ::Context event ::GameEvent) #t)
 
-(define (man1:!negotiation self ::FishGamePlayer ctx ::Context event ::ScenarioEvent)
+(define (man1:!negotiation self ::FishGamePlayer ctx ::Context event ::GameEvent)
   (self:negotiation ctx)
     (if (equal? (self:get 'text) "END")
       (begin
-        (self:sendScenarioEvent 'Player1 'finish-negotiation)
-        (self:sendScenarioEvent 'Player2 'finish-negotiation))
+        (self:sendGameEvent 'Player1 'finish-negotiation)
+        (self:sendGameEvent 'Player2 'finish-negotiation))
       (begin
-        (self:sendScenarioEvent 'Player1 'negotiation))))
+        (self:sendGameEvent 'Player1 'negotiation))))
 
-(define (man1:!decide-target self ::FishGamePlayer ctx ::Context event ::ScenarioEvent)
+(define (man1:!decide-target self ::FishGamePlayer ctx ::Context event ::GameEvent)
   (ctx:showMessageToAll (to-string event))
   (fisher:decide-number-of-fish ctx self))
 
@@ -51,16 +51,16 @@
 
 (define-namespace man2 "man2")
 
-(define (man2:!negotiation self ::FishGamePlayer ctx ::Context event ::ScenarioEvent)
+(define (man2:!negotiation self ::FishGamePlayer ctx ::Context event ::GameEvent)
   (self:negotiation ctx)
     (if (equal? (self:get 'text) "END")
       (begin
-        (self:sendScenarioEvent 'Player1 'finish-negotiation)
-        (self:sendScenarioEvent 'Player2 'finish-negotiation))
+        (self:sendGameEvent 'Player1 'finish-negotiation)
+        (self:sendGameEvent 'Player2 'finish-negotiation))
       (begin
-        (self:sendScenarioEvent 'Player2 'negotiation))))
+        (self:sendGameEvent 'Player2 'negotiation))))
 
-(define (man2:!decide-target self ::FishGamePlayer ctx ::Context event ::ScenarioEvent)
+(define (man2:!decide-target self ::FishGamePlayer ctx ::Context event ::GameEvent)
   (ctx:showMessageToAll (to-string event))
   (fisher:decide-number-of-fish ctx self))
 
@@ -73,7 +73,7 @@
       (def:default-behavior 'man2:!decide-target 'end-scene))))
 
 (define (start-stage ctx ::Context)
-  (ctx:sendScenarioEvent 'Player1 'negotiation)
-  (ctx:sendScenarioEvent 'Player2 'negotiation))
+  (ctx:sendGameEvent 'Player1 'negotiation)
+  (ctx:sendGameEvent 'Player2 'negotiation))
 
 

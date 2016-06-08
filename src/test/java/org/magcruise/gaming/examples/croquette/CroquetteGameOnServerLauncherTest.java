@@ -26,7 +26,7 @@ public class CroquetteGameOnServerLauncherTest {
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		ProcessId pid = TestUtils.run(launcher);
-		int millis = 10000;
+		int millis = 16000;
 		log.debug("Wait end of game {} millisec.", millis);
 		Thread.sleep(millis);
 		CroquetteGameLauncherTest.checkResult(pid);

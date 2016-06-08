@@ -31,11 +31,6 @@
     (def:round
       (def:restage 'status))))
 
-(define (ult:assign builder ::GameBuilder  u1 ::symbol u2 ::symbol)
-  (builder:addDefAssignmentRequests
-    (def:assignment-request 'BigBear (symbol->string u1))
-    (def:assignment-request 'SmallBear (symbol->string u2))))
-
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 通牒者プレーヤ(BigBear)のモデル
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
@@ -44,8 +39,9 @@
       (to-string
         (<ruby> "第" "だい") ctx:roundnum "ラウンドです．"
         "おおぐま君，<br>あなたは" UltimatumGameContext:providedVal "円を" (<ruby> "受" "う") "けとりました．こぐま君にいくらを" (<ruby> "分" "わ") "けますか？"
-        (<div-class> "pull-right" (<img> "http://res.nkjmlab.org/www/img/WASEDA_BEAR_BIG.png")))
-      (ui:number (<ruby> "金額" "きんがく") 'proposition (self:defaultPropositions ctx:roundnum) (Min 0) (Max UltimatumGameContext:providedVal))))
+        (<div> class: "pull-right" (<img> src: "http://res.nkjmlab.org/www/img/WASEDA_BEAR_BIG.png")))
+      (ui:number (<ruby> "金額" "きんがく") 'proposition (self:defaultPropositions ctx:roundnum)
+                 (Min 0) (Max UltimatumGameContext:providedVal))))
 
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 ;; 判断者プレーヤ(SmallBear)のモデル
@@ -55,12 +51,12 @@
                 (<ruby> "第" "だい") ctx:roundnum "ラウンドです．"
                 "こぐま君，<br>おおぐま君は" UltimatumGameContext:providedVal "円を" (<ruby> "受" "う") "け取り，あなたに"
                 rec-msg:proposition "円を" (<ruby> "分" "わ") "けると言いました．" (<ruby> "受" "う") "けとりますか？"
-                (<div-class> "pull-right" (<img> "http://res.nkjmlab.org/www/img/WASEDA_BEAR_SMALL.png")))
+                (<div> class: "pull-right" (<img> src: "http://res.nkjmlab.org/www/img/WASEDA_BEAR_SMALL.png")))
       (ui:radio (to-string (<ruby> "受" "う") "けとる？") 'yes-or-no (self:getDefaultYesOrNo ctx:roundnum) (list "yes" "no") (list "yes" "no"))))
 
 
 (define (makeResultMessage val1 val2) ::String
-   (<div-class> "alert alert-success"
+   (<div> class: "alert alert-success"
           (to-string (<ruby> "交渉" "こうしょう") "が" (<ruby> "成立" "せいりつ")  "しました．")
           (html:ul
             (to-string "おおぐま君は" val1 "円を手に入れました．")
