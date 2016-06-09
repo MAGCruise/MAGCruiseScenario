@@ -6,14 +6,14 @@
 			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c.%M(%F:%L) %m%n
 		</property>
 		<property name="pattern">
-			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c %m%n
+			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c{3.} %m%n
 		</property>
 		<!-- <property name="pattern_loc">"%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t]
 			%c.%M:%L %m%n" </property> -->
 	</Properties>
 	<Appenders>
 		<Console name="stdout" target="SYSTEM_OUT">
-			<PatternLayout pattern="${pattern_loc}" />
+			<PatternLayout pattern="${pattern}" />
 			<Filters>
 				<ThresholdFilter level="WARN" onMatch="DENY"
 					onMismatch="ACCEPT" />
