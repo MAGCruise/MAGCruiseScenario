@@ -13,4 +13,19 @@
 
 
 (define (def:after-setup-game-builder builder ::GameBuilder)
-  (builder:addDefAssignmentRequests (list 'Factory 'Shop1 'Shop2) (list 'user1_n 'user2_n 'user3_n)))
+  (builder:addDefAssignmentRequests (list 'Factory 'Shop1 'Shop2) (list 'user1 'user2 'user3))
+  (builder:setDefKeyValueTable
+    (def:key-value-table
+     (list 'Factory "potato" (list 100 200 300 100 700 300 100 200 300 100 200))
+     (list 'Shop1   "num-of-croquette" (list 200 300 400 200 300 400 200 300 400 200 300))
+     (list 'Shop2   "num-of-croquette" (list 100 200 300 400 100 200 300 400 100 200 300))
+     (list 'Shop1   "price" (list 200 300 400 200 300 400 200 300 400 200 300))
+     (list 'Shop2   "price" (list 100 200 300 400 100 200 300 400 100 200 300))
+     (list 'Factory "potato" 100)
+     (list 'Shop1   "num-of-croquette" 200)
+     (list 'Shop2   "num-of-croquette" 200)
+     (list 'Shop1   "price" 150)
+     (list 'Shop2   "price" 150)
+    )
+  )
+)
