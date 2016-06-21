@@ -9,11 +9,13 @@ public class CroquetteGameOnServerLauncher {
 		GameOnServerLauncher launcher = new GameOnServerLauncher(
 				CroquetteGameResourceLoader.class,
 				"http://localhost:8080/MAGCruiseBroker");
-		launcher.addJarOnWeb(
-				"https://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1");
-		launcher.setBootstrapInResource("bootstrap.scm");
-		// launcher.useSwingGui();
-		// launcher.useAutoInput();
+		// launcher.addJarOnWeb(
+		// "https://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1");
+		launcher.addGameDefinitionInResource("game-definition.scm");
+		launcher.addGameDefinitionInResource("test-definition.scm");
+		launcher.useAutoInput();
+		launcher.useRemoteDebug();
+
 		launcher.run();
 	}
 

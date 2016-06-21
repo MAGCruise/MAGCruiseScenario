@@ -2,6 +2,7 @@ package org.magcruise.gaming.examples.croquette;
 
 import java.util.List;
 
+import org.apache.logging.log4j.Level;
 import org.junit.Before;
 import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
@@ -16,7 +17,7 @@ import org.nkjmlab.util.db.H2Server;
 
 public class CroquetteGameLauncherTest {
 
-	protected static transient org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
 	protected static Integer[] factoryProfits = new Integer[] { 0, -6000, -70,
@@ -42,7 +43,9 @@ public class CroquetteGameLauncherTest {
 				CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
-		ProcessId pid = TestUtils.run(launcher);
+		launcher.setLogConfiguration(Level.INFO, true);
+		launcher.useAutoInput();
+		ProcessId pid = launcher.runAndWaitForFinish();
 		checkResult(pid);
 	}
 

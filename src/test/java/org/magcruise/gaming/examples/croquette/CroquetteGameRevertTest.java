@@ -1,8 +1,8 @@
 package org.magcruise.gaming.examples.croquette;
 
+import org.apache.logging.log4j.Level;
 import org.junit.Before;
 import org.junit.Test;
-import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameForRevertCodeLauncher;
@@ -12,6 +12,9 @@ import org.nkjmlab.util.db.H2Server;
 import gnu.kawa.io.Path;
 
 public class CroquetteGameRevertTest {
+	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+			.getLogger();
+
 	@Before
 	public void setUp() throws Exception {
 		H2Server.start();
@@ -20,24 +23,26 @@ public class CroquetteGameRevertTest {
 	@Test
 	public void testRevert() {
 		int suspendround = 4;
-		Path revertCode = getReverCode(suspendround);
-
 		GameLauncher launcher = new GameLauncher(
 				CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
-		launcher.addGameDefinition(revertCode);
-		ProcessId pid = TestUtils.run(launcher);
+		launcher.addGameDefinition(getReverCode(suspendround));
+		launcher.setLogConfiguration(Level.INFO, true);
+		launcher.useAutoInput();
+		ProcessId pid = launcher.runAndWaitForFinish();
 		CroquetteGameLauncherTest.checkResult(pid, suspendround);
 	}
 
 	private Path getReverCode(int suspendround) {
-		GameForRevertCodeLauncher revLauncher = new GameForRevertCodeLauncher(
+		GameForRevertCodeLauncher launcher = new GameForRevertCodeLauncher(
 				CroquetteGameResourceLoader.class, suspendround);
-		revLauncher.addGameDefinitionInResource("game-definition.scm");
-		revLauncher.addGameDefinitionInResource("test-definition.scm");
-		revLauncher.useAutoInput();
-		return revLauncher.run();
+		launcher.addGameDefinitionInResource("game-definition.scm");
+		launcher.addGameDefinitionInResource("test-definition.scm");
+		launcher.setLogConfiguration(Level.INFO, true);
+		launcher.useAutoInput();
+		launcher.runAndWaitForFinish();
+		return launcher.getPathOfRevertCode();
 	}
 
 }

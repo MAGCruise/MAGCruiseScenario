@@ -19,7 +19,7 @@ public class CroquetteGameOnLocalWithWebUI {
 				new DefUIServiceAndRegisterSession(webUI, loginId, brokerUrl));
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
-		// launcher.useAutoInput();
+		launcher.useAutoInput();
 		launcher.run();
 	}
 }

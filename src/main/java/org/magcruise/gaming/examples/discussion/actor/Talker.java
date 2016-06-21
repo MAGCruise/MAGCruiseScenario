@@ -55,10 +55,13 @@ public class Talker extends Player {
 					}
 
 					if (param.getArgAsString(0).equalsIgnoreCase("END")) {
-						sendEvent(msg.from, toSymbol("finish-negotiation"));
-						sendEvent(msg.to, toSymbol("finish-negotiation"));
+						sendMessage(new ScenarioEvent(name, msg.from,
+								toSymbol("finish-negotiation")));
+						sendMessage(new ScenarioEvent(name, msg.to,
+								toSymbol("finish-negotiation")));
 					} else {
-						sendEvent(name, toSymbol(""));
+						sendMessage(
+								new ScenarioEvent(name, name, toSymbol("")));
 					}
 				});
 	}

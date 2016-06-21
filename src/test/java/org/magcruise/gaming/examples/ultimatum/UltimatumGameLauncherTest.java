@@ -1,5 +1,6 @@
 package org.magcruise.gaming.examples.ultimatum;
 
+import org.apache.logging.log4j.Level;
 import org.junit.Before;
 import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
@@ -39,7 +40,9 @@ public class UltimatumGameLauncherTest {
 				UltimatumGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
-		ProcessId pid = TestUtils.run(launcher);
+		launcher.setLogConfiguration(Level.INFO, true);
+		launcher.useAutoInput();
+		ProcessId pid = launcher.runAndWaitForFinish();
 		checkFirstPlayerResult(pid, firstPlayerAccounts, 0,
 				firstPlayerAccounts.length);
 		checkSecondPlayerResult(pid, secondPlayerAccounts, 0,
@@ -83,7 +86,8 @@ public class UltimatumGameLauncherTest {
 		launcher.setBootstrapInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.addGameDefinition(revertCode);
-		ProcessId pid = TestUtils.run(launcher);
+		launcher.useAutoInput();
+		ProcessId pid = launcher.runAndWaitForFinish();
 		checkFirstPlayerResult(pid, firstPlayerAccounts, suspendround + 1,
 				firstPlayerAccounts.length);
 		checkSecondPlayerResult(pid, secondPlayerAccounts, suspendround + 1,

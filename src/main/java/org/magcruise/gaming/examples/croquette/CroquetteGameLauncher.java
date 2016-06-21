@@ -10,8 +10,8 @@ public class CroquetteGameLauncher {
 				CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
-		//launcher.useSwingGui();
-		launcher.useAutoInput();
+		launcher.useSwingGui();
+		// launcher.useAutoInput();
 		launcher.run();
 
 	}
