@@ -48,27 +48,18 @@ public class CroquetteFactory extends Player {
 	@HistoricalField(name = "受注内容")
 	public volatile Map<Symbol, Number> orders = new ConcurrentHashMap<>();
 
-	// @HistoricalField(name = "発注個数のデフォルト値")
-	public List<Number> defaultOrdersToFarmer;
-
 	public CroquetteFactory(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 
-	public CroquetteFactory(PlayerParameter playerParameter,
-			List<Number> ordersToFarmer) {
-		super(playerParameter);
-		this.defaultOrdersToFarmer = new ArrayList<>(ordersToFarmer);
-	}
-
 	@Override
 	public Object[] getConstractorArgs() {
-		return new Object[] { getPlayerParameter(), defaultOrdersToFarmer };
+		return new Object[] { getPlayerParameter() };
 	}
 
 	public void init(Market ctx) {
 		String msg = (String) ctx.applyProcedure("factory:init-msg", ctx, this);
-		syncRequestToInput(new Form(msg), (params) -> {
+		syncRequestToInput(ctx, new Form(msg), (params) -> {
 			return;
 		});
 		showMessage(msg);
@@ -76,8 +67,9 @@ public class CroquetteFactory extends Player {
 
 	public void refresh(Market ctx) {
 		showMessage(ctx.createMessage("factory:refresh-msg", ctx, this));
-		syncRequestToInput(ctx.createForm("end-day-form", ctx), (param) -> {
-		});
+		syncRequestToInput(ctx, ctx.createForm("end-day-form", ctx),
+				(param) -> {
+				});
 		showMessage(ctx.createMessage("start-day-msg", ctx));
 		refresh();
 	}
@@ -97,7 +89,7 @@ public class CroquetteFactory extends Player {
 	}
 
 	public void order(Market ctx) {
-		syncRequestToInput(ctx.createForm("factory:order-form", ctx, this),
+		syncRequestToInput(ctx, ctx.createForm("factory:order-form", ctx, this),
 				(param) -> {
 					this.orderOfPotato = param.getArgAsInt(0);
 					showMessage(ctx.createMessage("factory:after-order-msg",

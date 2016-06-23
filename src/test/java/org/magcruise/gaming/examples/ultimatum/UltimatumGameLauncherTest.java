@@ -11,7 +11,6 @@ import org.magcruise.gaming.model.sys.GameForRevertCodeLauncher;
 import org.magcruise.gaming.model.sys.GameLauncher;
 import org.nkjmlab.util.db.DbClientFactory;
 import org.nkjmlab.util.db.H2Client;
-import org.nkjmlab.util.db.H2ConfigFactory;
 import org.nkjmlab.util.db.H2Server;
 
 import gnu.kawa.io.Path;
@@ -25,9 +24,8 @@ public class UltimatumGameLauncherTest {
 			30000, 70000, 120000, 120000, 130000, 150000, 150000, 190000,
 			190000 };
 
-	private H2Client util = DbClientFactory.createH2Client(H2ConfigFactory
-			.create("jdbc:h2:tcp://localhost/" + GameSystemPropertiesBuilder
-					.createDefaultDBFilePath().toString()));
+	private H2Client util = DbClientFactory.createH2Client(
+			GameSystemPropertiesBuilder.createDefaultDbConfig());
 
 	@Before
 	public void setUp() throws Exception {

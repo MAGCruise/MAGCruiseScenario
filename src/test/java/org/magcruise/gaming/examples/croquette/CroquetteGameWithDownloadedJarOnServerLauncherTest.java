@@ -13,7 +13,7 @@ public class CroquetteGameWithDownloadedJarOnServerLauncherTest {
 			.getLogger();
 
 	private String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
-	private String jarOnWeb = "https://www.dropbox.com/s/sfedu5t9dca0h5p/MAGCruiseScenario.jar?dl=1";
+	private String jarOnWeb = "http://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1";
 
 	@Before
 	public void setUp() throws Exception {

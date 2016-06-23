@@ -1,8 +1,5 @@
 package org.magcruise.gaming.examples.croquette.actor;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.magcruise.gaming.examples.croquette.msg.CroquetteDelivery;
 import org.magcruise.gaming.examples.croquette.msg.CroquetteOrder;
 import org.magcruise.gaming.model.game.HistoricalField;
@@ -36,32 +33,19 @@ public class Shop extends Player {
 	@HistoricalField(name = "来店者数")
 	public volatile int demand;
 
-	// @Attribute(name = "発注個数のデフォルト値")
-	public List<Number> defaultOrders;
-	// @Attribute(name = "販売価格のデフォルト値")
-	public List<Number> defaultPrices;
-
 	public Shop(PlayerParameter playerParameter) {
 		super(playerParameter);
-	}
-
-	public Shop(PlayerParameter playerParameter, List<Number> prices,
-			List<Number> orders) {
-		super(playerParameter);
 		this.stock = 600;
-		this.defaultPrices = new ArrayList<>(prices);
-		this.defaultOrders = new ArrayList<>(orders);
 	}
 
 	@Override
 	public Object[] getConstractorArgs() {
-		return new Object[] { getPlayerParameter(), defaultPrices,
-				defaultOrders };
+		return new Object[] { getPlayerParameter() };
 	}
 
 	public void init(Market ctx) {
 		String msg = (String) ctx.applyProcedure("shop:init-msg", ctx, this);
-		syncRequestToInput(new Form(msg), (params) -> {
+		syncRequestToInput(ctx, new Form(msg), (params) -> {
 			return;
 		});
 		showMessage(msg);
@@ -70,8 +54,9 @@ public class Shop extends Player {
 	public void refresh(Market ctx) {
 		showMessage(ctx.createMessage("shop:refresh-msg", ctx, this,
 				ctx.getOther(this)));
-		syncRequestToInput(ctx.createForm("end-day-form", ctx), (param) -> {
-		});
+		syncRequestToInput(ctx, ctx.createForm("end-day-form", ctx),
+				(param) -> {
+				});
 		showMessage(ctx.createMessage("start-day-msg", ctx));
 		refresh();
 	}
@@ -89,7 +74,7 @@ public class Shop extends Player {
 	}
 
 	public void order(Market ctx) {
-		syncRequestToInput(ctx.createForm("shop:order-form", ctx, this),
+		syncRequestToInput(ctx, ctx.createForm("shop:order-form", ctx, this),
 				(param) -> {
 					this.numOfOrder = param.getArgAsInt(0);
 					showMessage(ctx.createMessage("shop:after-order-msg", ctx,
@@ -100,7 +85,7 @@ public class Shop extends Player {
 	}
 
 	public void price(Market ctx) {
-		syncRequestToInput(ctx.createForm("shop:price-form", ctx, this),
+		syncRequestToInput(ctx, ctx.createForm("shop:price-form", ctx, this),
 				(param) -> {
 					this.price = param.getArgAsInt(0);
 					showMessage(ctx.createMessage("shop:after-price-msg", ctx,
@@ -110,7 +95,7 @@ public class Shop extends Player {
 	}
 
 	public void receiveDelivery(Market ctx) {
-		this.delivery = ((CroquetteDelivery) takeMessage()).num;
+		this.delivery = takeMessage(CroquetteDelivery.class).num;
 		this.stock += delivery;
 		showMessage(ctx.createMessage("shop:receive-delivery-msg", ctx, this));
 	}

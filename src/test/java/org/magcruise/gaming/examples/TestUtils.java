@@ -26,7 +26,7 @@ public class TestUtils {
 					.map(o -> o.toString()).collect(Collectors.toList()));
 		} catch (Throwable e) {
 			log.error(e, e);
-			log.error("expected is {}.", Arrays.asList(expected).stream()
+			log.error("expected is {}.", Arrays.asList(expectedSub).stream()
 					.map(o -> o.toString()).collect(Collectors.toList()));
 			log.error("actual is {}.", Arrays.asList(actual).stream()
 					.map(o -> o.toString()).collect(Collectors.toList()));

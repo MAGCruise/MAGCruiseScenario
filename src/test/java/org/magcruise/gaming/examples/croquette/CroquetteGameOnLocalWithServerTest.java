@@ -12,9 +12,10 @@ public class CroquetteGameOnLocalWithServerTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	// private String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
+	private String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
 
-	private String brokerUrl = "http://phoenix.toho.magcruise.org/MAGCruiseBroker";
+	// private String brokerUrl =
+	// "http://phoenix.toho.magcruise.org/MAGCruiseBroker";
 
 	@Before
 	public void setUp() throws Exception {

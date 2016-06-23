@@ -12,7 +12,6 @@ import org.magcruise.gaming.model.def.sys.GameSystemPropertiesBuilder;
 import org.magcruise.gaming.model.sys.GameLauncher;
 import org.nkjmlab.util.db.DbClientFactory;
 import org.nkjmlab.util.db.H2Client;
-import org.nkjmlab.util.db.H2ConfigFactory;
 import org.nkjmlab.util.db.H2Server;
 
 public class CroquetteGameLauncherTest {
@@ -27,10 +26,8 @@ public class CroquetteGameLauncherTest {
 			7980, 9600, 3890, 7980, 12000, 4400, 14200, 12900, 0 };
 	protected static Integer[] shop2Profits = new Integer[] { 26400, 24000,
 			9240, 12800, 5940, 5360, 7700, 9700, 10600, 5900, 0 };
-	protected static H2Client util = DbClientFactory
-			.createH2Client(H2ConfigFactory.create(
-					"jdbc:h2:tcp://localhost/" + GameSystemPropertiesBuilder
-							.createDefaultDBFilePath().toString()));
+	protected static H2Client util = DbClientFactory.createH2Client(
+			GameSystemPropertiesBuilder.createDefaultDbConfig());
 
 	@Before
 	public void setUp() throws Exception {
@@ -50,6 +47,7 @@ public class CroquetteGameLauncherTest {
 	}
 
 	protected static void checkResult(ProcessId pid) {
+		log.debug("pid={}", pid);
 		checkFactoryResult(pid, factoryProfits, 0, factoryProfits.length);
 		checkShopResult(pid, shop1Profits, "Shop1", 0, shop1Profits.length);
 		checkShopResult(pid, shop2Profits, "Shop2", 0, shop2Profits.length);
@@ -76,12 +74,11 @@ public class CroquetteGameLauncherTest {
 	}
 
 	protected static void checkResult(ProcessId pid, int finalRound) {
-		int startRound = finalRound + 1;
-		checkFactoryResult(pid, factoryProfits, startRound,
+		checkFactoryResult(pid, factoryProfits, finalRound + 1,
 				factoryProfits.length);
-		checkShopResult(pid, shop1Profits, "Shop1", startRound,
+		checkShopResult(pid, shop1Profits, "Shop1", finalRound + 1,
 				shop1Profits.length);
-		checkShopResult(pid, shop2Profits, "Shop2", startRound,
+		checkShopResult(pid, shop2Profits, "Shop2", finalRound + 1,
 				shop2Profits.length);
 	}
 

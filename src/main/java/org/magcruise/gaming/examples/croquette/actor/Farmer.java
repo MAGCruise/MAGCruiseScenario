@@ -1,10 +1,10 @@
 package org.magcruise.gaming.examples.croquette.actor;
 
-import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.examples.croquette.msg.PotatoDelivery;
 import org.magcruise.gaming.examples.croquette.msg.PotatoOrder;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.PlayerParameter;
 
 public class Farmer extends Player {
 

@@ -30,7 +30,7 @@ public class Talker extends Player {
 				new FishGameResourceLoader().getResource("langrid-conf.json"));
 		TranslationClient client = new TranslationClient("KyotoUJServer");
 
-		syncRequestToInput(
+		syncRequestToInput(ctx,
 				new Form("",
 						new TextInput(
 								"roundnum=" + ctx.getRoundnum()

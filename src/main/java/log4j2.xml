@@ -31,11 +31,11 @@
 			<AppenderRef ref="stdout" />
 			<AppenderRef ref="stderr" />
 		</Root>
-		<Logger name="org.magcruise" level="trace" additivity="false">
+		<Logger name="org.magcruise" level="debug" additivity="false">
 			<AppenderRef ref="stdout" />
 			<AppenderRef ref="stderr" />
 		</Logger>
-		<Logger name="org.nkjmlab" level="trace" additivity="false">
+		<Logger name="org.nkjmlab" level="debug" additivity="false">
 			<AppenderRef ref="stdout" />
 			<AppenderRef ref="stderr" />
 		</Logger>

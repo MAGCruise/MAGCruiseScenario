@@ -25,11 +25,12 @@ public class FirstPlayer extends UltimatumPlayer {
 	}
 
 	public void note(UltimatumGameContext ctx) {
-		syncRequestToInput(ctx.createForm("note-form", ctx, this), (params) -> {
-			this.proposition = params.getArgAsInt(0);
-			sendMessage(new FinalNote(name, toSymbol("SmallBear"),
-					this.proposition));
-		});
+		syncRequestToInput(ctx, ctx.createForm("note-form", ctx, this),
+				(params) -> {
+					this.proposition = params.getArgAsInt(0);
+					sendMessage(new FinalNote(name, toSymbol("SmallBear"),
+							this.proposition));
+				});
 	}
 
 }

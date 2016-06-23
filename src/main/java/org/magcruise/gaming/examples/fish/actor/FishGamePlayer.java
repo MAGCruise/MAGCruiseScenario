@@ -23,7 +23,7 @@ public class FishGamePlayer extends Player {
 				new FishGameResourceLoader().getResource("langrid-conf.json"));
 		TranslationClient client = new TranslationClient("KyotoUJServer");
 
-		syncRequestToInput(
+		syncRequestToInput(ctx,
 				new Form("相手に伝えたいことを入力して下さい．何も無ければENDと入力して下さい．", new TextInput(
 						"", "input-text", "", new SimpleSubmit())),
 				(params) -> {

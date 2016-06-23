@@ -31,6 +31,8 @@ public class CroquetteGameRevertTest {
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
 		ProcessId pid = launcher.runAndWaitForFinish();
+		log.info("After revert laucher pid ={}", launcher.getProcessId());
+		log.info("After revert laucher={}", launcher);
 		CroquetteGameLauncherTest.checkResult(pid, suspendround);
 	}
 
@@ -42,6 +44,8 @@ public class CroquetteGameRevertTest {
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
 		launcher.runAndWaitForFinish();
+		log.info("Before revert laucher pid ={}", launcher.getProcessId());
+		log.info("Before revert laucher={}", launcher);
 		return launcher.getPathOfRevertCode();
 	}
 
