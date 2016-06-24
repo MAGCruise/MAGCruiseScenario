@@ -19,9 +19,10 @@ public class FirstPlayer extends UltimatumPlayer {
 	}
 
 	@Override
-	public SConstructor<? extends Player> toConstructor() {
-		return SConstructor.toConstructor(this.getClass(), getPlayerParameter(),
-				defaultPropositions);
+	public SConstructor<? extends Player> toConstructor(
+			ToExpressionStyle style) {
+		return SConstructor.toConstructor(style, getClass(),
+				getPlayerParameter(), defaultPropositions);
 	}
 
 	public void note(UltimatumGameContext ctx) {

@@ -7,7 +7,7 @@ import org.magcruise.gaming.model.game.Context;
 
 public class SampleFilter implements SConstructive {
 
-	protected static transient org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
 	public void initBeforeFilter(Context ctx, DefStage defStage) {
@@ -19,8 +19,9 @@ public class SampleFilter implements SConstructive {
 	}
 
 	@Override
-	public SConstructor<? extends SampleFilter> toConstructor() {
-		return SConstructor.toConstructor(this.getClass());
+	public SConstructor<? extends SampleFilter> toConstructor(
+			ToExpressionStyle style) {
+		return SConstructor.toConstructor(style, getClass());
 	}
 
 }

@@ -29,8 +29,9 @@ public class Trade implements SConstructive {
 	}
 
 	@Override
-	public SConstructor<? extends Trade> toConstructor() {
-		return SConstructor.toConstructor(this.getClass(), partner, price,
+	public SConstructor<? extends Trade> toConstructor(
+			ToExpressionStyle style) {
+		return SConstructor.toConstructor(style, getClass(), partner, price,
 				amount);
 	}
 

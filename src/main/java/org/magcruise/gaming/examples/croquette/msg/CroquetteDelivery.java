@@ -15,8 +15,8 @@ public class CroquetteDelivery extends GameMessage {
 	}
 
 	@Override
-	public SConstructor<? extends GameMessage> toConstructor() {
-		return SConstructor.toConstructor(this.getClass(), from, to, num);
+	public SConstructor<? extends GameMessage> toConstructor(ToExpressionStyle style) {
+		return SConstructor.toConstructor(style, this.getClass(), from, to, num);
 	}
 
 	@Override

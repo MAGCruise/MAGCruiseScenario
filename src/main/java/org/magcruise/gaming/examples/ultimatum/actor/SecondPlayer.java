@@ -18,9 +18,10 @@ public class SecondPlayer extends UltimatumPlayer {
 	}
 
 	@Override
-	public SConstructor<? extends Player> toConstructor() {
-		return SConstructor.toConstructor(this.getClass(), getPlayerParameter(),
-				defaultYesOrNos);
+	public SConstructor<? extends Player> toConstructor(
+			ToExpressionStyle style) {
+		return SConstructor.toConstructor(style, getClass(),
+				getPlayerParameter(), defaultYesOrNos);
 	}
 
 	public String getDefaultYesOrNo(int roundnum) {

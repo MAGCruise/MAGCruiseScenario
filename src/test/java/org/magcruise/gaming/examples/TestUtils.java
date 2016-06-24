@@ -20,9 +20,9 @@ public class TestUtils {
 			for (int i = 0; i < actual.length - 1; i++) {
 				assertEquals(expectedSub[i], actual[i]);
 			}
-			log.debug("expected is {}.", Arrays.asList(expected).stream()
+			log.debug("expected length is {}.", Arrays.asList(expected).stream()
 					.map(o -> o.toString()).collect(Collectors.toList()));
-			log.debug("actual is {}.", Arrays.asList(actual).stream()
+			log.debug("actual length is {}.", Arrays.asList(actual).stream()
 					.map(o -> o.toString()).collect(Collectors.toList()));
 		} catch (Throwable e) {
 			log.error(e, e);

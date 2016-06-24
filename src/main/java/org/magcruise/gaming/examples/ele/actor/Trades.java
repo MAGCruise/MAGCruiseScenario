@@ -30,8 +30,9 @@ public class Trades implements SConstructive {
 	}
 
 	@Override
-	public SConstructor<? extends Trades> toConstructor() {
-		return SConstructor.toConstructor(this.getClass(), trades);
+	public SConstructor<? extends Trades> toConstructor(
+			ToExpressionStyle style) {
+		return SConstructor.toConstructor(style, getClass(), trades);
 	}
 
 	public List<Trade> getTrades() {

@@ -2,6 +2,7 @@ package org.magcruise.gaming.examples.croquette;
 
 import org.apache.logging.log4j.Level;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
+import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameLauncher;
 
 public class CroquetteGameRevertLauncher {
@@ -15,7 +16,7 @@ public class CroquetteGameRevertLauncher {
 		// launcher.useSwingGui();
 		launcher.useRoundValidation();
 		launcher.useAutoInput();
-		launcher.revertToEndOf("proc-20160623-134727-341", 4);
+		launcher.setStartFromEndOf(new ProcessId("proc-20160623-134727-341"), 4);
 		launcher.run();
 
 	}
