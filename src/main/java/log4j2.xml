@@ -2,12 +2,12 @@
 <!DOCTYPE configuration>
 <configuration status="OFF">
 	<Properties>
-		<property name="pattern_loc">
-			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c.%M(%F:%L) %m%n
-		</property>
-		<property name="pattern">
-			%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c{3.} %m%n
-		</property>
+        <property name="pattern_loc">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c.%M(%F:%L) %m%n
+        </property>
+        <property name="pattern">
+            %d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t] %c{3.} %m%n
+        </property>
 		<!-- <property name="pattern_loc">"%d{yyyy-MM-dd HH:mm:ss.SSS} %5p [%t]
 			%c.%M:%L %m%n" </property> -->
 	</Properties>
@@ -31,11 +31,11 @@
 			<AppenderRef ref="stdout" />
 			<AppenderRef ref="stderr" />
 		</Root>
-		<Logger name="org.magcruise" level="debug" additivity="false">
+		<Logger name="org.magcruise" level="INFO" additivity="false">
 			<AppenderRef ref="stdout" />
 			<AppenderRef ref="stderr" />
 		</Logger>
-		<Logger name="org.nkjmlab" level="debug" additivity="false">
+		<Logger name="org.nkjmlab" level="INFO" additivity="false">
 			<AppenderRef ref="stdout" />
 			<AppenderRef ref="stderr" />
 		</Logger>

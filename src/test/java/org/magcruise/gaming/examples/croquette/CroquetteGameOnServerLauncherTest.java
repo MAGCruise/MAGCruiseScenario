@@ -25,7 +25,7 @@ public class CroquetteGameOnServerLauncherTest {
 				CroquetteGameResourceLoader.class, brokerUrl);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
-		launcher.setLogConfiguration(Level.DEBUG, true);
+		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
 		ProcessId pid = launcher.runAndWaitForFinish();
 		CroquetteGameLauncherTest.checkResult(pid);
