@@ -30,6 +30,7 @@ public class CroquetteGameRevertTest {
 		launcher.addGameDefinition(getReverCode(suspendround));
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
+		log.info(launcher.toDefBootstrap());
 		ProcessId pid = launcher.runAndWaitForFinish();
 		log.info("After revert laucher pid ={}", launcher.getProcessId());
 		log.info("After revert laucher={}", launcher);

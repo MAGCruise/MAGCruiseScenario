@@ -6,7 +6,7 @@ import org.magcruise.gaming.model.def.sys.DefUIServiceAndRegisterSession;
 import org.magcruise.gaming.model.sys.GameOnLocalWithSeverLauncher;
 
 public class CroquetteGameOnLocalWithWebUIPhoenix {
-	protected static transient org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+	protected static  org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
 	private static String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/MAGCruiseBroker";

@@ -27,8 +27,10 @@ public class CroquetteGameOnServerLauncherTest {
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
+		log.info(launcher.toDefBootstrap());
 		ProcessId pid = launcher.runAndWaitForFinish();
 		CroquetteGameLauncherTest.checkResult(pid);
+
 	}
 
 }

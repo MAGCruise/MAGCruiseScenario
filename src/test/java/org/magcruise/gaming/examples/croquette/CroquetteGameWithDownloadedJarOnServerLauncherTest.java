@@ -31,12 +31,14 @@ public class CroquetteGameWithDownloadedJarOnServerLauncherTest {
 	public void testRunOnServerWithDownloadedJar() throws InterruptedException {
 		GameOnServerLauncher launcher = new GameOnServerLauncher(
 				CroquetteGameResourceLoader.class, brokerUrl);
-		launcher.addJarOnWeb(jarOnWeb);
+		launcher.addScenarioJarOnWeb(jarOnWeb);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
 		ProcessId pid = launcher.runAndWaitForFinish();
 		CroquetteGameLauncherTest.checkResult(pid);
+		log.info(launcher.toDefBootstrap());
+
 	}
 }

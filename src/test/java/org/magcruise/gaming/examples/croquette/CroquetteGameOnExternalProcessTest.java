@@ -26,6 +26,7 @@ public class CroquetteGameOnExternalProcessTest {
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
+		log.info(launcher.toDefBootstrap());
 		ProcessId pid = launcher.runAndWaitForFinish();
 		log.debug(pid);
 		CroquetteGameLauncherTest.checkResult(pid);

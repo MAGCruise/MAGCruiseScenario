@@ -2,7 +2,7 @@ package org.magcruise.gaming.examples.croquette.resource;
 
 import org.magcruise.gaming.lang.SConstructive;
 import org.magcruise.gaming.lang.SConstructor;
-import org.magcruise.gaming.model.def.stage.DefStage;
+import org.magcruise.gaming.model.def.scenario.stage.DefStage;
 import org.magcruise.gaming.model.game.Context;
 
 public class SampleFilter implements SConstructive {
