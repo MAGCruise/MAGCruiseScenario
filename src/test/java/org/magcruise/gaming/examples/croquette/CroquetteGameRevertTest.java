@@ -33,7 +33,6 @@ public class CroquetteGameRevertTest {
 		log.info(launcher.toDefBootstrap());
 		ProcessId pid = launcher.runAndWaitForFinish();
 		log.info("After revert laucher pid ={}", launcher.getProcessId());
-		log.info("After revert laucher={}", launcher);
 		CroquetteGameLauncherTest.checkResult(pid, suspendround);
 	}
 

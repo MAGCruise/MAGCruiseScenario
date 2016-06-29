@@ -21,13 +21,15 @@ public class CroquetteGameWithWebUILauncher {
 	private static String webUI = "http://toho.magcruise.org/world/BackendAPIService";
 	private static String loginId = "admin";
 
+	private static int maxAutoResponseTime = 1;
+
 	@Before
 	public void setUp() throws Exception {
 		H2Server.start();
 	}
 
 	@Test
-	public void testWebUI(String[] args) {
+	public void testWebUI() {
 		GameOnServerLauncher launcher = new GameOnServerLauncher(
 				CroquetteGameResourceLoader.class, brokerUrl);
 		launcher.addDefUI(
@@ -35,7 +37,7 @@ public class CroquetteGameWithWebUILauncher {
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.setLogConfiguration(Level.INFO);
-		launcher.useAutoInput();
+		launcher.useAutoInput(maxAutoResponseTime);
 		ProcessId pid = launcher.runAndWaitForFinish();
 		CroquetteGameLauncherTest.checkResult(pid);
 	}
