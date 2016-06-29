@@ -27,11 +27,6 @@ public class UltimatumGameLauncherTest {
 	private H2Client util = DbClientFactory.createH2Client(
 			GameSystemPropertiesBuilder.createDefaultDbConfig());
 
-	@Before
-	public void setUp() throws Exception {
-		H2Server.start();
-	}
-
 	@Test
 	public void testRun() {
 		GameLauncher launcher = new GameLauncher(

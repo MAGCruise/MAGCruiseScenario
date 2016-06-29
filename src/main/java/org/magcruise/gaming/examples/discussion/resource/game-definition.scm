@@ -1,9 +1,7 @@
 (define (def:setup-game-builder builder ::GameBuilder)
     (builder:addDefContext (def:context org.magcruise.gaming.model.game.SimpleContext))
 
-  (builder:addDefPlayers
-    (def:player 'Player1 'human org.magcruise.gaming.examples.discussion.actor.Talker)
-    (def:player 'Player2 'human org.magcruise.gaming.examples.discussion.actor.Talker))
+  (setup-players builder)
 
   (builder:addDefRounds
     (def:round repeat: 2
@@ -18,8 +16,8 @@
   (ctx:showMessageToAll (to-string "roundnum. " ctx:roundnum " is finished.")))
 
 (define (start-stage ctx ::Context)
-  (ctx:sendGameEvent 'Player1 'start-negotiation)
-  (ctx:sendGameEvent 'Player2 'start-negotiation))
+  (ctx:sendEvent (ScenarioEvent ctx:name 'Player1 'start-negotiation))
+  (ctx:sendEvent (ScenarioEvent ctx:name 'Player2 'start-negotiation)))
 
 (define (talker-scenario)
   (def:player-scenario 'talker-scenario

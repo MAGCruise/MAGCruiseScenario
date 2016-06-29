@@ -13,8 +13,13 @@ import org.magcruise.gaming.ui.model.input.TextInput;
 
 public class Talker extends Player {
 
+	private TranslationClient client;
+
 	public Talker(PlayerParameter playerParameter) {
 		super(playerParameter);
+		AccessConfigFactory.setPath(
+				new FishGameResourceLoader().getResource("langrid-conf.json"));
+		client = new TranslationClient("KyotoUJServer");
 	}
 
 	public boolean isStartNegotiation(SimpleContext ctx, ScenarioEvent msg) {
@@ -26,9 +31,6 @@ public class Talker extends Player {
 	}
 
 	public void negotiation(SimpleContext ctx, ScenarioEvent msg) {
-		AccessConfigFactory.setPath(
-				new FishGameResourceLoader().getResource("langrid-conf.json"));
-		TranslationClient client = new TranslationClient("KyotoUJServer");
 
 		syncRequestToInput(ctx,
 				new Form("",
@@ -37,8 +39,9 @@ public class Talker extends Player {
 										+ ". 相手に伝えたいことを入力して下さい．何も無ければENDと入力して下さい．",
 								"input-msg", "", new SimpleSubmit())),
 				(param) -> {
+					if (param.getArgAsString(0) == "") {
 
-					if (name.toString().equals("Player1")) {
+					} else if (name.toString().equals("Player1")) {
 						ctx.showMessageToAll(
 								"<div class='alert alert-success'>" + name
 										+ ": "
@@ -55,13 +58,12 @@ public class Talker extends Player {
 					}
 
 					if (param.getArgAsString(0).equalsIgnoreCase("END")) {
-						sendMessage(new ScenarioEvent(name, msg.from,
+						sendEvent(new ScenarioEvent(name, msg.from,
 								toSymbol("finish-negotiation")));
-						sendMessage(new ScenarioEvent(name, msg.to,
+						sendEvent(new ScenarioEvent(name, msg.to,
 								toSymbol("finish-negotiation")));
 					} else {
-						sendMessage(
-								new ScenarioEvent(name, name, toSymbol("")));
+						sendEvent(new ScenarioEvent(name, name, toSymbol("")));
 					}
 				});
 	}

@@ -1,13 +1,14 @@
-package org.magcruise.gaming.examples.croquette;
+package org.magcruise.gaming.examples.discussion;
 
 import org.apache.logging.log4j.Level;
 import org.junit.Test;
-import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
+import org.magcruise.gaming.examples.discussion.resource.DiscussionGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.def.sys.DefUIServiceAndRegisterSession;
-import org.magcruise.gaming.model.sys.GameOnServerLauncher;
+import org.magcruise.gaming.model.sys.GameOnLocalWithSeverLauncher;
 
-public class CroquetteGameWithWebUILauncher {
+public class DiscussionGameWithWebUITest {
+
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
@@ -23,8 +24,8 @@ public class CroquetteGameWithWebUILauncher {
 
 	@Test
 	public void testWebUI() {
-		GameOnServerLauncher launcher = new GameOnServerLauncher(
-				CroquetteGameResourceLoader.class, brokerUrl);
+		GameOnLocalWithSeverLauncher launcher = new GameOnLocalWithSeverLauncher(
+				DiscussionGameResourceLoader.class, brokerUrl);
 		launcher.addDefUI(
 				new DefUIServiceAndRegisterSession(webUI, loginId, brokerUrl));
 		launcher.addGameDefinitionInResource("game-definition.scm");
@@ -32,7 +33,6 @@ public class CroquetteGameWithWebUILauncher {
 		launcher.setLogConfiguration(Level.INFO);
 		launcher.useAutoInput(maxAutoResponseTime);
 		ProcessId pid = launcher.runAndWaitForFinish();
-		CroquetteGameLauncherTest.checkResult(pid);
 	}
 
 }

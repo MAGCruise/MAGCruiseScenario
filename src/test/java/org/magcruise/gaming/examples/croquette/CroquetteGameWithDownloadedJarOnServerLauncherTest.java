@@ -1,12 +1,10 @@
 package org.magcruise.gaming.examples.croquette;
 
 import org.apache.logging.log4j.Level;
-import org.junit.Before;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameOnServerLauncher;
-import org.nkjmlab.util.db.H2Server;
 
 public class CroquetteGameWithDownloadedJarOnServerLauncherTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -14,11 +12,6 @@ public class CroquetteGameWithDownloadedJarOnServerLauncherTest {
 
 	private String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
 	private String jarOnWeb = "http://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1";
-
-	@Before
-	public void setUp() throws Exception {
-		H2Server.start();
-	}
 
 	/**
 	 * http://localhost:8080/MAGCruiseBroker

@@ -3,7 +3,6 @@ package org.magcruise.gaming.examples.croquette;
 import java.util.List;
 
 import org.apache.logging.log4j.Level;
-import org.junit.Before;
 import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
@@ -12,7 +11,6 @@ import org.magcruise.gaming.model.def.sys.GameSystemPropertiesBuilder;
 import org.magcruise.gaming.model.sys.GameLauncher;
 import org.nkjmlab.util.db.DbClientFactory;
 import org.nkjmlab.util.db.H2Client;
-import org.nkjmlab.util.db.H2Server;
 
 public class CroquetteGameLauncherTest {
 
@@ -28,11 +26,6 @@ public class CroquetteGameLauncherTest {
 			9240, 12800, 5940, 5360, 7700, 9700, 10600, 5900, 0 };
 	protected static H2Client util = DbClientFactory.createH2Client(
 			GameSystemPropertiesBuilder.createDefaultDbConfig());
-
-	@Before
-	public void setUp() throws Exception {
-		H2Server.start();
-	}
 
 	@Test
 	public void testRun() {

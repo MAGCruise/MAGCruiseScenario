@@ -1,7 +1,6 @@
 package org.magcruise.gaming.examples.croquette;
 
 import org.apache.logging.log4j.Level;
-import org.junit.Before;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
@@ -9,7 +8,6 @@ import org.magcruise.gaming.model.def.boot.DefBootstrapScript;
 import org.magcruise.gaming.model.def.sys.DefUIServiceAndRegisterSession;
 import org.magcruise.gaming.model.sys.GameLauncher;
 import org.magcruise.gaming.model.sys.GameOnServerLauncher;
-import org.nkjmlab.util.db.H2Server;
 
 public class CroquetteGameWithWebUIWithBootstrapScriptLauncher {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -22,11 +20,6 @@ public class CroquetteGameWithWebUIWithBootstrapScriptLauncher {
 	// "http://waseda1.magcruise.org/MAGCruiseBroker";
 	private static String webUI = "http://toho.magcruise.org/world/BackendAPIService";
 	private static String loginId = "admin";
-
-	@Before
-	public void setUp() throws Exception {
-		H2Server.start();
-	}
 
 	@Test
 	public void testWebUIWithBootstrapScript() {

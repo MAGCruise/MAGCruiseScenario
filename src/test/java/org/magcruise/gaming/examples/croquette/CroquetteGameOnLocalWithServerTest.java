@@ -1,12 +1,10 @@
 package org.magcruise.gaming.examples.croquette;
 
 import org.apache.logging.log4j.Level;
-import org.junit.Before;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameOnLocalWithSeverLauncher;
-import org.nkjmlab.util.db.H2Server;
 
 public class CroquetteGameOnLocalWithServerTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -16,11 +14,6 @@ public class CroquetteGameOnLocalWithServerTest {
 
 	// private String brokerUrl =
 	// "http://proxy.phoenix.toho.magcruise.org/MAGCruiseBroker";
-
-	@Before
-	public void setUp() throws Exception {
-		H2Server.start();
-	}
 
 	@Test
 	public void testRunWithServer() {
