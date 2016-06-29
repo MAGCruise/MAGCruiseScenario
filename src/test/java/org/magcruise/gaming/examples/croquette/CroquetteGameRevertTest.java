@@ -23,17 +23,23 @@ public class CroquetteGameRevertTest {
 	@Test
 	public void testRevert() {
 		int suspendround = 4;
+		Path revertCode = getReverCode(suspendround);
+		ProcessId pid = restart(revertCode, suspendround);
+		CroquetteGameLauncherTest.checkResult(pid, suspendround);
+
+	}
+
+	private ProcessId restart(Path revertCode, int suspendround) {
 		GameLauncher launcher = new GameLauncher(
 				CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
-		launcher.addGameDefinition(getReverCode(suspendround));
+		launcher.addGameDefinition(revertCode);
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
 		log.info(launcher.toDefBootstrap());
 		ProcessId pid = launcher.runAndWaitForFinish();
-		log.info("After revert laucher pid ={}", launcher.getProcessId());
-		CroquetteGameLauncherTest.checkResult(pid, suspendround);
+		return pid;
 	}
 
 	private Path getReverCode(int suspendround) {
