@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.magcruise.gaming.examples.ultimatum.msg.FinalNote;
 import org.magcruise.gaming.lang.SConstructor;
+import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 
@@ -29,7 +30,7 @@ public class FirstPlayer extends UltimatumPlayer {
 		syncRequestToInput(ctx, ctx.createForm("note-form", ctx, this),
 				(params) -> {
 					this.proposition = params.getArgAsInt(0);
-					sendMessage(new FinalNote(name, toSymbol("SmallBear"),
+					sendMessage(new FinalNote(name, ActorName.of("SmallBear"),
 							this.proposition));
 				});
 	}

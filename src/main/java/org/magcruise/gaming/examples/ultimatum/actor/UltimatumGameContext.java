@@ -13,9 +13,9 @@ public class UltimatumGameContext extends Context {
 
 	public void paid() {
 		UltimatumPlayer bigBear = (UltimatumPlayer) getPlayer(
-				toSymbol("BigBear"));
+				toActorName("BigBear"));
 		UltimatumPlayer smallBear = (UltimatumPlayer) getPlayer(
-				toSymbol("SmallBear"));
+				toActorName("SmallBear"));
 
 		smallBear.proposition = bigBear.proposition;
 		bigBear.yesOrNo = smallBear.yesOrNo;

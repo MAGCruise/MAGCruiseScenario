@@ -127,7 +127,7 @@
         (<br>)
         (<h4> "詳細")
         (<ul>
-          (<li> "販売：" self:demand "個の冷凍コロッケの納品が必要でした．" "冷凍コロッケを1個" self:price "円で"
+          (<li> "販売：" self:demand "個の冷凍コロッケの納品が必要でした．" "冷凍コロッケを1個" self:PRICE "円で"
                          self:sales "個納品しました．" "売り上げは" self:earnings "円です．")
           (<li> "発注：" self:orderOfPotato "個のじゃがいもを発注しました．翌日に納品されます．")
           (<li> "受注：" "各ショップから" self:orders "の注文を受けました．")

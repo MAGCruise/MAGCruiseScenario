@@ -4,19 +4,18 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.magcruise.gaming.lang.SConstructive;
 import org.magcruise.gaming.lang.SConstructor;
-
-import gnu.mapping.Symbol;
+import org.magcruise.gaming.model.game.ActorName;
 
 public class Trade implements SConstructive {
 
-	private Symbol partner;
+	private ActorName partner;
 	private int price;
 	private int amount;
 
 	public Trade() {
 	}
 
-	public Trade(Symbol partner, int price, int amount) {
+	public Trade(ActorName partner, int price, int amount) {
 		this.partner = partner;
 		this.price = price;
 		this.amount = amount;
@@ -35,7 +34,7 @@ public class Trade implements SConstructive {
 				amount);
 	}
 
-	public Symbol getPartner() {
+	public ActorName getPartner() {
 		return partner;
 	}
 

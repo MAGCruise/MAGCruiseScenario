@@ -41,10 +41,10 @@ public class Market extends Context {
 	}
 
 	public Shop getOther(Shop shop) {
-		if (shop.getName().toString().equals("Shop1")) {
-			return (Shop) getPlayer(toSymbol("Shop2"));
+		if (shop.getName().compareToString("Shop1")) {
+			return (Shop) getPlayer(toActorName("Shop2"));
 		} else {
-			return (Shop) getPlayer(toSymbol("Shop1"));
+			return (Shop) getPlayer(toActorName("Shop1"));
 		}
 	}
 }

@@ -19,7 +19,7 @@ public class MarketContext extends Context {
 		List<CompanySetting> settings = CompanySettings.readSettings(this);
 		for (CompanySetting setting : settings) {
 			CompanyPlayer player = (CompanyPlayer) players
-					.get(toSymbol(setting.name));
+					.get(toActorName(setting.name));
 			player.init(setting);
 		}
 	}

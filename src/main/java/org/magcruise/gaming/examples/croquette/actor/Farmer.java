@@ -34,7 +34,7 @@ public class Farmer extends Player {
 				: Integer
 						.valueOf(getLastValue(toSymbol("receivedOrderOfPotato"))
 								.toString());
-		sendMessage(new PotatoDelivery(name, toSymbol("Factory"), order));
+		sendMessage(new PotatoDelivery(name, toActorName("Factory"), order));
 	}
 
 }

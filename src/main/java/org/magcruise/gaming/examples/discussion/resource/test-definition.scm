@@ -5,7 +5,7 @@
 
 
 (define (def:after-setup-game-builder builder ::GameBuilder)
- (builder:addDefAssignmentRequests (list 'Player1 'Player2) (list 'user1 'user2))
+ (builder:addAssignmentRequests (list 'Player1 'Player2) (list 'user1 'user2))
   (builder:setDefKeyValueTables
 
 

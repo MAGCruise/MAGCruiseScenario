@@ -7,8 +7,6 @@ import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.ui.model.Form;
 
-import gnu.mapping.Symbol;
-
 public class Shop extends Player {
 
 	@HistoricalField(name = "在庫個数")
@@ -38,25 +36,16 @@ public class Shop extends Player {
 		this.stock = 600;
 	}
 
-	@Override
-	public Object[] getConstractorArgs() {
-		return new Object[] { getPlayerParameter() };
-	}
-
 	public void init(Market ctx) {
 		String msg = (String) ctx.applyProcedure("shop:init-msg", ctx, this);
-		syncRequestToInput(ctx, new Form(msg), (params) -> {
-			return;
-		});
+		syncRequestToInput(ctx, new Form(msg));
 		showMessage(msg);
 	}
 
 	public void refresh(Market ctx) {
 		showMessage(ctx.createMessage("shop:refresh-msg", ctx, this,
 				ctx.getOther(this)));
-		syncRequestToInput(ctx, ctx.createForm("end-day-form", ctx),
-				(param) -> {
-				});
+		syncRequestToInput(ctx, ctx.createForm("end-day-form", ctx));
 		showMessage(ctx.createMessage("start-day-msg", ctx));
 		refresh();
 	}
@@ -74,22 +63,28 @@ public class Shop extends Player {
 	}
 
 	public void order(Market ctx) {
+		ctx.showMessageToAll("{}が{}日目の注文を入力しています．", name, ctx.getRoundnum());
 		syncRequestToInput(ctx, ctx.createForm("shop:order-form", ctx, this),
 				(param) -> {
 					this.numOfOrder = param.getArgAsInt(0);
 					showMessage(ctx.createMessage("shop:after-order-msg", ctx,
 							this));
-					sendMessage(new CroquetteOrder(name,
-							Symbol.parse("Factory"), this.numOfOrder));
+					sendMessage(new CroquetteOrder(name, toActorName("Factory"),
+							this.numOfOrder));
+					ctx.showMessageToAll("{}が{}日目の注文を入力しました．", name,
+							ctx.getRoundnum());
 				});
 	}
 
 	public void price(Market ctx) {
+		ctx.showMessageToAll("{}が{}日目の販売価格を入力しています．", name, ctx.getRoundnum());
 		syncRequestToInput(ctx, ctx.createForm("shop:price-form", ctx, this),
 				(param) -> {
 					this.price = param.getArgAsInt(0);
 					showMessage(ctx.createMessage("shop:after-price-msg", ctx,
 							this));
+					ctx.showMessageToAll("{}が{}日目の販売価格を入力しました．", name,
+							ctx.getRoundnum());
 				});
 
 	}
@@ -108,7 +103,7 @@ public class Shop extends Player {
 		this.stock -= sales;
 		this.earnings = sales * price; // 収入は売った個数*単価
 		this.inventoryCost = stock * 10; // 在庫費は売った後に計算．1個10円
-		this.materialCost = delivery * CroquetteFactory.price; // 材料費．冷凍コロッケの購入費は1個60円
+		this.materialCost = delivery * CroquetteFactory.PRICE; // 材料費．冷凍コロッケの購入費は1個60円
 		this.profit = earnings - (materialCost + inventoryCost); // 利益は収入から，材料費，在庫費を引いたもの．
 	}
 }

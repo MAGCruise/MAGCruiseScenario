@@ -9,6 +9,7 @@ import org.magcruise.gaming.examples.croquette.msg.CroquetteDelivery;
 import org.magcruise.gaming.examples.croquette.msg.CroquetteOrder;
 import org.magcruise.gaming.examples.croquette.msg.PotatoDelivery;
 import org.magcruise.gaming.examples.croquette.msg.PotatoOrder;
+import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
@@ -19,8 +20,7 @@ import gnu.mapping.Symbol;
 
 public class CroquetteFactory extends Player {
 
-	@HistoricalField(name = "価格")
-	public static volatile int price = 60;
+	public static final int PRICE = 60;
 
 	@HistoricalField(name = "発注個数(じゃがいも)")
 	public volatile int orderOfPotato;
@@ -46,30 +46,21 @@ public class CroquetteFactory extends Player {
 	public volatile int demand;
 
 	@HistoricalField(name = "受注内容")
-	public volatile Map<Symbol, Number> orders = new ConcurrentHashMap<>();
+	public volatile Map<ActorName, Number> orders = new ConcurrentHashMap<>();
 
 	public CroquetteFactory(PlayerParameter playerParameter) {
 		super(playerParameter);
 	}
 
-	@Override
-	public Object[] getConstractorArgs() {
-		return new Object[] { getPlayerParameter() };
-	}
-
 	public void init(Market ctx) {
 		String msg = (String) ctx.applyProcedure("factory:init-msg", ctx, this);
-		syncRequestToInput(ctx, new Form(msg), (params) -> {
-			return;
-		});
+		syncRequestToInput(ctx, new Form(msg));
 		showMessage(msg);
 	}
 
 	public void refresh(Market ctx) {
 		showMessage(ctx.createMessage("factory:refresh-msg", ctx, this));
-		syncRequestToInput(ctx, ctx.createForm("end-day-form", ctx),
-				(param) -> {
-				});
+		syncRequestToInput(ctx, ctx.createForm("end-day-form", ctx));
 		showMessage(ctx.createMessage("start-day-msg", ctx));
 		refresh();
 	}
@@ -89,13 +80,16 @@ public class CroquetteFactory extends Player {
 	}
 
 	public void order(Market ctx) {
+		ctx.showMessageToAll("{}が{}日目の発注個数を入力しています．", name, ctx.getRoundnum());
 		syncRequestToInput(ctx, ctx.createForm("factory:order-form", ctx, this),
 				(param) -> {
 					this.orderOfPotato = param.getArgAsInt(0);
 					showMessage(ctx.createMessage("factory:after-order-msg",
 							ctx, this));
-					sendMessage(new PotatoOrder(name, toSymbol("Farmer"),
+					sendMessage(new PotatoOrder(name, toActorName("Farmer"),
 							this.orderOfPotato));
+					ctx.showMessageToAll("{}が{}日目の発注個数を入力しました．", name,
+							ctx.getRoundnum());
 				});
 	}
 
@@ -104,7 +98,7 @@ public class CroquetteFactory extends Player {
 			this.orders.put(msg.from, new Integer(msg.num));
 		});
 		showMessage(tabulate(new String[] { "価格", "発注個数(じゃがいも)", "受注内容" },
-				price, orderOfPotato, orders));
+				PRICE, orderOfPotato, orders));
 	}
 
 	public int getTotalOrder(Context ctx) {
@@ -174,7 +168,7 @@ public class CroquetteFactory extends Player {
 		this.inventoryCost = (stock - production) * 10; // 持ち越し在庫(=在庫量-生産量)*単価
 		this.materialCost = deliveredPotato * 20; // 材料費(じゃがいも個数*単価)
 		this.machiningCost = +production * 20; // 加工費(生産個数*単価)
-		this.earnings = sales * price; // 収入は個数×単価
+		this.earnings = sales * PRICE; // 収入は個数×単価
 		this.profit = earnings - (materialCost + machiningCost + inventoryCost);// 利益は，収入から材料費，加工費，在庫維持費を引いたもの．
 	}
 }

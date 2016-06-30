@@ -1,14 +1,13 @@
 package org.magcruise.gaming.examples.croquette.msg;
 
+import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.message.GameMessage;
-
-import gnu.mapping.Symbol;
 
 public class CroquetteOrder extends GameMessage {
 
 	public final int num;
 
-	public CroquetteOrder(Symbol from, Symbol to, int num) {
+	public CroquetteOrder(ActorName from, ActorName to, int num) {
 		super(from, to);
 		this.num = num;
 	}

@@ -5,8 +5,11 @@ import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoa
 import org.magcruise.gaming.model.sys.GameLauncher;
 
 public class CroquetteGameLauncher {
+	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+			.getLogger();
 
 	public static void main(String[] args) {
+		log.info("test {}", 1);
 		GameLauncher launcher = new GameLauncher(
 				CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");

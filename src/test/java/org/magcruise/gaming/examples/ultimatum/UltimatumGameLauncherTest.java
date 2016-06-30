@@ -1,7 +1,6 @@
 package org.magcruise.gaming.examples.ultimatum;
 
 import org.apache.logging.log4j.Level;
-import org.junit.Before;
 import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.ultimatum.resource.UltimatumGameResourceLoader;
@@ -11,7 +10,6 @@ import org.magcruise.gaming.model.sys.GameForRevertCodeLauncher;
 import org.magcruise.gaming.model.sys.GameLauncher;
 import org.nkjmlab.util.db.DbClientFactory;
 import org.nkjmlab.util.db.H2Client;
-import org.nkjmlab.util.db.H2Server;
 
 import gnu.kawa.io.Path;
 

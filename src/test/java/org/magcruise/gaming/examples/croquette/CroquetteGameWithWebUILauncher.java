@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.def.sys.DefUIServiceAndRegisterSession;
-import org.magcruise.gaming.model.sys.GameOnServerLauncher;
+import org.magcruise.gaming.model.sys.GameOnLocalWithSeverLauncher;
 
 public class CroquetteGameWithWebUILauncher {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -23,7 +23,7 @@ public class CroquetteGameWithWebUILauncher {
 
 	@Test
 	public void testWebUI() {
-		GameOnServerLauncher launcher = new GameOnServerLauncher(
+		GameOnLocalWithSeverLauncher launcher = new GameOnLocalWithSeverLauncher(
 				CroquetteGameResourceLoader.class, brokerUrl);
 		launcher.addDefUI(
 				new DefUIServiceAndRegisterSession(webUI, loginId, brokerUrl));

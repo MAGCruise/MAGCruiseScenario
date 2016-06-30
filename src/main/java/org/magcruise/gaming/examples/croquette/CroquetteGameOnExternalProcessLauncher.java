@@ -5,6 +5,8 @@ import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoa
 import org.magcruise.gaming.model.sys.GameOnExternalProcessLauncher;
 
 public class CroquetteGameOnExternalProcessLauncher {
+	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
+			.getLogger();
 
 	public static void main(String[] args) {
 		GameOnExternalProcessLauncher launcher = new GameOnExternalProcessLauncher(
