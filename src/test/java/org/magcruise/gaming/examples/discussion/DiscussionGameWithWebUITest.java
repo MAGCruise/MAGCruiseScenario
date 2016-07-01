@@ -3,7 +3,6 @@ package org.magcruise.gaming.examples.discussion;
 import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.discussion.resource.DiscussionGameResourceLoader;
-import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.def.sys.DefUIServiceAndRegisterSession;
 import org.magcruise.gaming.model.sys.GameOnLocalWithBrokerLauncher;
 
@@ -32,7 +31,7 @@ public class DiscussionGameWithWebUITest {
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.setLogConfiguration(Level.INFO);
 		launcher.useAutoInput(maxAutoResponseTime);
-		ProcessId pid = launcher.runAndWaitForFinish();
+		launcher.runAndWaitForFinish();
 	}
 
 }
