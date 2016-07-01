@@ -13,7 +13,7 @@ import org.nkjmlab.util.db.H2Client;
 
 import gnu.kawa.io.Path;
 
-public class UltimatumGameLauncherTest {
+public class UltimatumGameTest {
 
 	private Integer[] firstPlayerAccounts = new Integer[] { 90000, 170000,
 			170000, 230000, 280000, 280000, 370000, 450000, 450000, 510000,

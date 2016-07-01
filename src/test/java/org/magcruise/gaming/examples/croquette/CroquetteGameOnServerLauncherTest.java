@@ -10,7 +10,9 @@ public class CroquetteGameOnServerLauncherTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	private String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
+	// private String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
+
+	private static String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/MAGCruiseBroker";
 
 	@Test
 	public void testRunOnServer() {
@@ -22,8 +24,9 @@ public class CroquetteGameOnServerLauncherTest {
 		launcher.useAutoInput();
 		log.info(launcher.toDefBootstrap());
 		ProcessId pid = launcher.runAndWaitForFinish();
-		CroquetteGameLauncherTest.checkResult(pid);
-
+		CroquetteGameTest.checkResult(pid);
+		CroquetteGameOnServerWithWebUITest
+				.getLatestContextAndCheckResult(launcher);
 	}
 
 }

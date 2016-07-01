@@ -20,18 +20,22 @@ public class TestUtils {
 			for (int i = 0; i < actual.length - 1; i++) {
 				assertEquals(expectedSub[i], actual[i]);
 			}
-			log.debug("expected length is {}.", Arrays.asList(expected).stream()
+			log.debug("expected length is {}", Arrays.asList(expected).stream()
 					.map(o -> o.toString()).collect(Collectors.toList()));
-			log.debug("actual length is {}.", Arrays.asList(actual).stream()
+			log.debug("actual length is {}", Arrays.asList(actual).stream()
 					.map(o -> o.toString()).collect(Collectors.toList()));
 		} catch (Throwable e) {
 			log.error(e, e);
-			log.error("expected is {}.", Arrays.asList(expectedSub).stream()
+			log.error("expected is {}", Arrays.asList(expectedSub).stream()
 					.map(o -> o.toString()).collect(Collectors.toList()));
-			log.error("actual is {}.", Arrays.asList(actual).stream()
+			log.error("actual is {}", Arrays.asList(actual).stream()
 					.map(o -> o.toString()).collect(Collectors.toList()));
 			throw e;
 		}
+		log.info("!!OK!! expected is {}", Arrays.asList(expectedSub).stream()
+				.map(o -> o.toString()).collect(Collectors.toList()));
+		log.info("!!OK!! actual is {}", Arrays.asList(actual).stream()
+				.map(o -> o.toString()).collect(Collectors.toList()));
 
 	}
 

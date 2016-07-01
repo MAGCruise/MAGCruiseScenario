@@ -22,7 +22,7 @@ public class CroquetteGameOnExternalProcessTest {
 		log.info(launcher.toDefBootstrap());
 		ProcessId pid = launcher.runAndWaitForFinish();
 		log.debug(pid);
-		CroquetteGameLauncherTest.checkResult(pid);
+		CroquetteGameTest.checkResult(pid);
 	}
 
 }

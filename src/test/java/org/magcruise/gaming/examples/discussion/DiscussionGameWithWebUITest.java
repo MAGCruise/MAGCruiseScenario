@@ -5,7 +5,7 @@ import org.junit.Test;
 import org.magcruise.gaming.examples.discussion.resource.DiscussionGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.def.sys.DefUIServiceAndRegisterSession;
-import org.magcruise.gaming.model.sys.GameOnLocalWithSeverLauncher;
+import org.magcruise.gaming.model.sys.GameOnLocalWithBrokerLauncher;
 
 public class DiscussionGameWithWebUITest {
 
@@ -24,7 +24,7 @@ public class DiscussionGameWithWebUITest {
 
 	@Test
 	public void testWebUI() {
-		GameOnLocalWithSeverLauncher launcher = new GameOnLocalWithSeverLauncher(
+		GameOnLocalWithBrokerLauncher launcher = new GameOnLocalWithBrokerLauncher(
 				DiscussionGameResourceLoader.class, brokerUrl);
 		launcher.addDefUI(
 				new DefUIServiceAndRegisterSession(webUI, loginId, brokerUrl));

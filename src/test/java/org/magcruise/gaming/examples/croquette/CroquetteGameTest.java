@@ -12,18 +12,19 @@ import org.magcruise.gaming.model.sys.GameLauncher;
 import org.nkjmlab.util.db.DbClientFactory;
 import org.nkjmlab.util.db.H2Client;
 
-public class CroquetteGameLauncherTest {
+public class CroquetteGameTest {
 
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	protected static Integer[] factoryProfits = new Integer[] { 0, -6000, -70,
+	public static Integer[] factoryProfits = new Integer[] { 0, -6000, -70,
 			5990, 29990, -29940, -4000, 20000, 11000, 38000, 0 };
 
-	protected static Integer[] shop1Profits = new Integer[] { 22600, 27200,
-			7980, 9600, 3890, 7980, 12000, 4400, 14200, 12900, 0 };
-	protected static Integer[] shop2Profits = new Integer[] { 26400, 24000,
-			9240, 12800, 5940, 5360, 7700, 9700, 10600, 5900, 0 };
+	public static Integer[] shop1Profits = new Integer[] { 22600, 27200, 7980,
+			9600, 3890, 7980, 12000, 4400, 14200, 12900, 0 };
+	public static Integer[] shop2Profits = new Integer[] { 26400, 24000, 9240,
+			12800, 5940, 5360, 7700, 9700, 10600, 5900, 0 };
+
 	protected static H2Client util = DbClientFactory.createH2Client(
 			GameSystemPropertiesBuilder.createDefaultDbConfig());
 

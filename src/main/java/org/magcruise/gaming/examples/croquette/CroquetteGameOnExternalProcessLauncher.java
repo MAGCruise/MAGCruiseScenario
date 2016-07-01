@@ -15,7 +15,7 @@ public class CroquetteGameOnExternalProcessLauncher {
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		// launcher.useSwingGui();
 		launcher.useAutoInput();
-		launcher.useRemoteDebug();
+		// launcher.useRemoteDebug();
 		launcher.setLogConfiguration(Level.INFO, true);
 
 		launcher.run();

@@ -16,7 +16,8 @@ public class CroquetteGameRevertLauncher {
 		// launcher.useSwingGui();
 		launcher.useRoundValidation();
 		launcher.useAutoInput();
-		launcher.setStartFromEndOf(new ProcessId("proc-20160623-134727-341"), 4);
+		launcher.setStartFromEndOf(new ProcessId("proc-20160623-134727-341"),
+				4);
 		launcher.run();
 
 	}

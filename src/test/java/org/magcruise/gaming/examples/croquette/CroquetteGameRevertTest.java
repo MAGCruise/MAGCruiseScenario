@@ -18,7 +18,7 @@ public class CroquetteGameRevertTest {
 		int suspendround = 4;
 		Path revertCode = getReverCode(suspendround);
 		ProcessId pid = restart(revertCode, suspendround);
-		CroquetteGameLauncherTest.checkResult(pid, suspendround);
+		CroquetteGameTest.checkResult(pid, suspendround);
 
 	}
 

@@ -3,7 +3,7 @@ package org.magcruise.gaming.examples.croquette;
 import org.apache.logging.log4j.Level;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.model.def.sys.DefUIServiceAndRegisterSession;
-import org.magcruise.gaming.model.sys.GameOnLocalWithSeverLauncher;
+import org.magcruise.gaming.model.sys.GameOnLocalWithBrokerLauncher;
 
 public class CroquetteGameOnLocalWithWebUIPhoenix {
 	protected static  org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -14,7 +14,7 @@ public class CroquetteGameOnLocalWithWebUIPhoenix {
 	private static String loginId = "admin";
 
 	public static void main(String[] args) {
-		GameOnLocalWithSeverLauncher launcher = new GameOnLocalWithSeverLauncher(
+		GameOnLocalWithBrokerLauncher launcher = new GameOnLocalWithBrokerLauncher(
 				CroquetteGameResourceLoader.class, brokerUrl);
 		launcher.addDefUI(
 				new DefUIServiceAndRegisterSession(webUI, loginId, brokerUrl));

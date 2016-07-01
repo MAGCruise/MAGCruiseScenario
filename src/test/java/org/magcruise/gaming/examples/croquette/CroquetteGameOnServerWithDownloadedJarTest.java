@@ -6,12 +6,15 @@ import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoa
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameOnServerLauncher;
 
-public class CroquetteGameWithDownloadedJarOnServerLauncherTest {
+public class CroquetteGameOnServerWithDownloadedJarTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	private String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
-	private String jarOnWeb = "http://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1";
+	private static String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/MAGCruiseBroker";
+
+	// private static String brokerUrl =
+	// "http://localhost:8080/MAGCruiseBroker";
+	private static String jarOnWeb = "http://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1";
 
 	/**
 	 * http://localhost:8080/MAGCruiseBroker
@@ -31,7 +34,7 @@ public class CroquetteGameWithDownloadedJarOnServerLauncherTest {
 		launcher.useAutoInput();
 		log.info(launcher.toDefBootstrap());
 		ProcessId pid = launcher.runAndWaitForFinish();
-		CroquetteGameLauncherTest.checkResult(pid);
+		CroquetteGameTest.checkResult(pid);
 
 	}
 }
