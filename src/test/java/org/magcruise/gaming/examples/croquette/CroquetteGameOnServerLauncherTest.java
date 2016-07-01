@@ -3,7 +3,6 @@ package org.magcruise.gaming.examples.croquette;
 import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameOnServerLauncher;
 
 public class CroquetteGameOnServerLauncherTest {
@@ -23,8 +22,7 @@ public class CroquetteGameOnServerLauncherTest {
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
 		log.info(launcher.toDefBootstrap());
-		ProcessId pid = launcher.runAndWaitForFinish();
-		CroquetteGameTest.checkResult(pid);
+		launcher.runAndWaitForFinish();
 		CroquetteGameOnServerWithWebUITest
 				.getLatestContextAndCheckResult(launcher);
 	}

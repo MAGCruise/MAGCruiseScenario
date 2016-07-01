@@ -5,3 +5,4 @@
 /target/
 langrid-conf.json
 /.settings/org.eclipse.wst.validation.prefs
+/src/main/java/org/magcruise/gaming/examples/croquette/resource/settings.json

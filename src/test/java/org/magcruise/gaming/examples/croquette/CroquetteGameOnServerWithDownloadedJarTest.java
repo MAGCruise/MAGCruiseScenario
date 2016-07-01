@@ -3,7 +3,6 @@ package org.magcruise.gaming.examples.croquette;
 import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.sys.GameOnServerLauncher;
 
 public class CroquetteGameOnServerWithDownloadedJarTest {
@@ -14,7 +13,7 @@ public class CroquetteGameOnServerWithDownloadedJarTest {
 
 	// private static String brokerUrl =
 	// "http://localhost:8080/MAGCruiseBroker";
-	private static String jarOnWeb = "http://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1";
+	private static String jarOnWeb = "https://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1";
 
 	/**
 	 * http://localhost:8080/MAGCruiseBroker
@@ -33,8 +32,9 @@ public class CroquetteGameOnServerWithDownloadedJarTest {
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
 		log.info(launcher.toDefBootstrap());
-		ProcessId pid = launcher.runAndWaitForFinish();
-		CroquetteGameTest.checkResult(pid);
+		launcher.runAndWaitForFinish();
+		CroquetteGameOnServerWithWebUITest
+				.getLatestContextAndCheckResult(launcher);
 
 	}
 }
