@@ -13,24 +13,26 @@ public class CroquetteGameOnLocalWithWebUIWithBootstrapScriptTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	private static String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/MAGCruiseBroker";
 	private static String webUI = "http://toho.magcruise.org/world/BackendAPIService";
 	private static String loginId = "admin";
 
 	@Test
 	public void testWebUIWithBootstrapScript() {
-		GameLauncher launcher = new GameLauncher(
-				CroquetteGameResourceLoader.class);
-		DefBootstrapScript b = getDefBootstrapScript();
-		log.info(b);
-		launcher.setDefBootstrapScript(b);
+		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
 
-		log.info(launcher.toDefBootstrap());
-		ProcessId pid = launcher.runAndWaitForFinish();
-		CroquetteGameTest.checkResult(pid);
+			GameLauncher launcher = new GameLauncher(
+					CroquetteGameResourceLoader.class);
+			DefBootstrapScript b = getDefBootstrapScript(brokerUrl);
+			log.info(b);
+			launcher.setDefBootstrapScript(b);
+
+			log.info(launcher.toDefBootstrap());
+			ProcessId pid = launcher.runAndWaitForFinish();
+			CroquetteGameTest.checkResult(pid);
+		}
 	}
 
-	private static DefBootstrapScript getDefBootstrapScript() {
+	private static DefBootstrapScript getDefBootstrapScript(String brokerUrl) {
 		GameOnServerLauncher launcher = new GameOnServerLauncher(
 				CroquetteGameResourceLoader.class, brokerUrl);
 		launcher.addDefUI(

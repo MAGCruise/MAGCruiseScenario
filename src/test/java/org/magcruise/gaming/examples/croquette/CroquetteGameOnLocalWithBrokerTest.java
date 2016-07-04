@@ -10,21 +10,18 @@ public class CroquetteGameOnLocalWithBrokerTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-//	private static String brokerUrl = "http://localhost:8080/MAGCruiseBroker";
-
-	private static String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/MAGCruiseBroker";
-
 	@Test
 	public void testRunWithServer() {
-		GameOnLocalWithBrokerLauncher launcher = new GameOnLocalWithBrokerLauncher(
-				CroquetteGameResourceLoader.class, brokerUrl);
-		launcher.addGameDefinitionInResource("game-definition.scm");
-		launcher.addGameDefinitionInResource("test-definition.scm");
-		launcher.setLogConfiguration(Level.INFO, true);
-		launcher.useAutoInput();
-		log.info(launcher.toDefBootstrap());
-		ProcessId pid = launcher.runAndWaitForFinish();
-		CroquetteGameTest.checkResult(pid);
-
+		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
+			GameOnLocalWithBrokerLauncher launcher = new GameOnLocalWithBrokerLauncher(
+					CroquetteGameResourceLoader.class, brokerUrl);
+			launcher.addGameDefinitionInResource("game-definition.scm");
+			launcher.addGameDefinitionInResource("test-definition.scm");
+			launcher.setLogConfiguration(Level.INFO, true);
+			launcher.useAutoInput();
+			log.info(launcher.toDefBootstrap());
+			ProcessId pid = launcher.runAndWaitForFinish();
+			CroquetteGameTest.checkResult(pid);
+		}
 	}
 }

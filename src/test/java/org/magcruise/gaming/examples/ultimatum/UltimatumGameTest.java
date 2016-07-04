@@ -5,10 +5,9 @@ import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.ultimatum.resource.UltimatumGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
-import org.magcruise.gaming.model.def.sys.GameSystemPropertiesBuilder;
 import org.magcruise.gaming.model.sys.GameForRevertCodeLauncher;
 import org.magcruise.gaming.model.sys.GameLauncher;
-import org.nkjmlab.util.db.DbClientFactory;
+import org.magcruise.gaming.util.SystemEnvironmentUtils;
 import org.nkjmlab.util.db.H2Client;
 
 import gnu.kawa.io.Path;
@@ -22,8 +21,7 @@ public class UltimatumGameTest {
 			30000, 70000, 120000, 120000, 130000, 150000, 150000, 190000,
 			190000 };
 
-	private H2Client util = DbClientFactory.createH2Client(
-			GameSystemPropertiesBuilder.createDefaultDbConfig());
+	private H2Client util = SystemEnvironmentUtils.getDefaultH2Client();
 
 	@Test
 	public void testRun() {

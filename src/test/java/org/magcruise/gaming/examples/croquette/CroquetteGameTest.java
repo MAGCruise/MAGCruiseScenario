@@ -7,9 +7,8 @@ import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
-import org.magcruise.gaming.model.def.sys.GameSystemPropertiesBuilder;
 import org.magcruise.gaming.model.sys.GameLauncher;
-import org.nkjmlab.util.db.DbClientFactory;
+import org.magcruise.gaming.util.SystemEnvironmentUtils;
 import org.nkjmlab.util.db.H2Client;
 
 public class CroquetteGameTest {
@@ -25,8 +24,12 @@ public class CroquetteGameTest {
 	public static Integer[] shop2Profits = new Integer[] { 26400, 24000, 9240,
 			12800, 5940, 5360, 7700, 9700, 10600, 5900, 0 };
 
-	protected static H2Client util = DbClientFactory.createH2Client(
-			GameSystemPropertiesBuilder.createDefaultDbConfig());
+	protected static H2Client util = SystemEnvironmentUtils
+			.getDefaultH2Client();
+
+	public static String[] brokerUrls = {
+			"http://localhost:8080/MAGCruiseBroker",
+			"http://proxy.phoenix.toho.magcruise.org/MAGCruiseBroker" };
 
 	@Test
 	public void testRun() {

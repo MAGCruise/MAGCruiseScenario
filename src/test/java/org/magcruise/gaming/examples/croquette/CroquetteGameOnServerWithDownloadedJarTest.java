@@ -9,25 +9,23 @@ public class CroquetteGameOnServerWithDownloadedJarTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	private static String brokerUrl = "http://proxy.robin.toho.magcruise.org/MAGCruiseBroker";
-
-	// private static String brokerUrl =
-	// "http://localhost:8080/MAGCruiseBroker";
 	private static String jarOnWeb = "https://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1";
 
 	@Test
 	public void testRunOnServerWithDownloadedJar() {
-		GameOnServerLauncher launcher = new GameOnServerLauncher(
-				CroquetteGameResourceLoader.class, brokerUrl);
-		launcher.addClasspath(jarOnWeb);
-		launcher.addGameDefinitionInResource("game-definition.scm");
-		launcher.addGameDefinitionInResource("test-definition.scm");
-		launcher.setLogConfiguration(Level.INFO, true);
-		launcher.useAutoInput();
-		log.info(launcher.toDefBootstrap());
-		launcher.runAndWaitForFinish();
-		CroquetteGameOnServerWithWebUITest
-				.getLatestContextAndCheckResult(launcher);
+		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
 
+			GameOnServerLauncher launcher = new GameOnServerLauncher(
+					CroquetteGameResourceLoader.class, brokerUrl);
+			launcher.addClasspath(jarOnWeb);
+			launcher.addGameDefinitionInResource("game-definition.scm");
+			launcher.addGameDefinitionInResource("test-definition.scm");
+			launcher.setLogConfiguration(Level.INFO, true);
+			launcher.useAutoInput();
+			log.info(launcher.toDefBootstrap());
+			launcher.runAndWaitForFinish();
+			CroquetteGameOnServerWithWebUITest
+					.getLatestContextAndCheckResult(launcher);
+		}
 	}
 }
