@@ -18,15 +18,15 @@ public class CroquetteGameOnLocalWithWebUITest {
 	@Test
 	public void testGameOnLocalWithWebUI() {
 		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
-			GameSession launcher = new GameSession(
+			GameSession session = new GameSession(
 					CroquetteGameResourceLoader.class);
-			launcher.setBroker(brokerUrl);
-			launcher.setWebUI(webUI, loginId, brokerUrl);
-			launcher.addGameDefinitionInResource("game-definition.scm");
-			launcher.addGameDefinitionInResource("test-definition.scm");
-			launcher.setLogConfiguration(Level.INFO);
-			launcher.useAutoInput(maxAutoResponseTime);
-			ProcessId pid = launcher.startAndWaitForFinish();
+			session.setBroker(brokerUrl);
+			session.setWebUI(webUI, loginId, brokerUrl);
+			session.addGameDefinitionInResource("game-definition.scm");
+			session.addGameDefinitionInResource("test-definition.scm");
+			session.setLogConfiguration(Level.INFO);
+			session.useAutoInput(maxAutoResponseTime);
+			ProcessId pid = session.startAndWaitForFinish();
 			CroquetteGameTest.checkResult(pid);
 		}
 	}

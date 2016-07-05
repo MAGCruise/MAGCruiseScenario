@@ -15,18 +15,18 @@ public class CroquetteGameOnServerWithDownloadedJarTest {
 	public void testRunOnServerWithDownloadedJar() {
 		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
 
-			GameSessionOnServer launcher = new GameSessionOnServer(
+			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			launcher.setBroker(brokerUrl);
-			launcher.addClasspath(jarOnWeb);
-			launcher.addGameDefinitionInResource("game-definition.scm");
-			launcher.addGameDefinitionInResource("test-definition.scm");
-			launcher.setLogConfiguration(Level.INFO, true);
-			launcher.useAutoInput();
-			log.info(launcher.toDefBootstrap());
-			launcher.startAndWaitForFinish();
+			session.setBroker(brokerUrl);
+			session.addClasspath(jarOnWeb);
+			session.addGameDefinitionInResource("game-definition.scm");
+			session.addGameDefinitionInResource("test-definition.scm");
+			session.setLogConfiguration(Level.INFO, true);
+			session.useAutoInput();
+			log.info(session.toDefBootstrap());
+			session.startAndWaitForFinish();
 			CroquetteGameOnServerWithWebUITest
-					.getLatestContextAndCheckResult(launcher);
+					.getLatestContextAndCheckResult(session);
 		}
 	}
 }

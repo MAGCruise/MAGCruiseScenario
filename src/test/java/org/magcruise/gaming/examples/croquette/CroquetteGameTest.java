@@ -33,14 +33,14 @@ public class CroquetteGameTest {
 
 	@Test
 	public void testRun() {
-		GameSession launcher = new GameSession(
+		GameSession session = new GameSession(
 				CroquetteGameResourceLoader.class);
-		launcher.addGameDefinitionInResource("game-definition.scm");
-		launcher.addGameDefinitionInResource("test-definition.scm");
-		launcher.setLogConfiguration(Level.INFO, true);
-		launcher.useAutoInput();
-		log.info(launcher.toDefBootstrap());
-		ProcessId pid = launcher.startAndWaitForFinish();
+		session.addGameDefinitionInResource("game-definition.scm");
+		session.addGameDefinitionInResource("test-definition.scm");
+		session.setLogConfiguration(Level.INFO, true);
+		session.useAutoInput();
+		log.info(session.toDefBootstrap());
+		ProcessId pid = session.startAndWaitForFinish();
 		checkResult(pid);
 	}
 

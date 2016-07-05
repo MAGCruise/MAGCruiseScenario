@@ -22,30 +22,30 @@ public class CroquetteGameRevertTest {
 	}
 
 	private ProcessId restart(Path revertCode, int suspendround) {
-		GameSession launcher = new GameSession(
+		GameSession session = new GameSession(
 				CroquetteGameResourceLoader.class);
-		launcher.addGameDefinitionInResource("game-definition.scm");
-		launcher.addGameDefinitionInResource("test-definition.scm");
-		launcher.addGameDefinition(revertCode);
-		launcher.setLogConfiguration(Level.INFO, true);
-		launcher.useAutoInput();
-		log.info(launcher.toDefBootstrap());
-		ProcessId pid = launcher.startAndWaitForFinish();
+		session.addGameDefinitionInResource("game-definition.scm");
+		session.addGameDefinitionInResource("test-definition.scm");
+		session.addGameDefinition(revertCode);
+		session.setLogConfiguration(Level.INFO, true);
+		session.useAutoInput();
+		log.info(session.toDefBootstrap());
+		ProcessId pid = session.startAndWaitForFinish();
 		return pid;
 	}
 
 	public static Path getReverCode(int suspendround) {
-		GameSession launcher = new GameSession(
+		GameSession session = new GameSession(
 				CroquetteGameResourceLoader.class);
-		launcher.addGameDefinitionInResource("game-definition.scm");
-		launcher.addGameDefinitionInResource("test-definition.scm");
-		launcher.setFinalRound(suspendround);
-		launcher.setLogConfiguration(Level.INFO, true);
-		launcher.useAutoInput();
-		launcher.startAndWaitForFinish();
-		log.info("Before revert laucher pid ={}", launcher.getProcessId());
-		log.info("Before revert laucher={}", launcher);
-		return launcher.getRevertScriptPath();
+		session.addGameDefinitionInResource("game-definition.scm");
+		session.addGameDefinitionInResource("test-definition.scm");
+		session.setFinalRound(suspendround);
+		session.setLogConfiguration(Level.INFO, true);
+		session.useAutoInput();
+		session.startAndWaitForFinish();
+		log.info("Before revert laucher pid ={}", session.getProcessId());
+		log.info("Before revert laucher={}", session);
+		return session.getRevertScriptPath();
 	}
 
 }

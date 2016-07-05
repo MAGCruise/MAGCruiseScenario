@@ -26,24 +26,24 @@ public class CroquetteGameRevertOnServerWithWebUITest {
 	@Test
 	public void testGameOnServerWithWebUI() {
 		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
-			GameSessionOnServer launcher = new GameSessionOnServer(
+			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			launcher.setBroker(brokerUrl);
-			launcher.setWebUI(webUIUrl, loginId, brokerUrl);
-			launcher.addGameDefinitionInResource("game-definition.scm");
-			launcher.addGameDefinitionInResource("exp-definition.scm");
-			launcher.addDefGameScript(getRerverScript(brokerUrl));
-			launcher.setLogConfiguration(Level.INFO, true);
-			launcher.build();
-			launcher.getGameBuilder().addAssignmentRequests(
+			session.setBroker(brokerUrl);
+			session.setWebUI(webUIUrl, loginId, brokerUrl);
+			session.addGameDefinitionInResource("game-definition.scm");
+			session.addGameDefinitionInResource("exp-definition.scm");
+			session.addDefGameScript(getRerverScript(brokerUrl));
+			session.setLogConfiguration(Level.INFO, true);
+			session.build();
+			session.getGameBuilder().addAssignmentRequests(
 					Arrays.asList(Symbol.parse("Factory"),
 							Symbol.parse("Shop1"), Symbol.parse("Shop2")),
 					Arrays.asList(Symbol.parse("user1"), Symbol.parse("user1"),
 							Symbol.parse("user1")));
-			launcher.useAutoInput(maxAutoResponseTime);
-			launcher.startAndWaitForFinish();
+			session.useAutoInput(maxAutoResponseTime);
+			session.startAndWaitForFinish();
 			CroquetteGameOnServerWithWebUITest
-					.getLatestContextAndCheckResult(launcher);
+					.getLatestContextAndCheckResult(session);
 
 		}
 	}

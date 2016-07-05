@@ -19,28 +19,28 @@ public class CroquetteGameOnLocalWithWebUIWithBootstrapScriptTest {
 	public void testWebUIWithBootstrapScript() {
 		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
 
-			GameSession launcher = new GameSession(
+			GameSession session = new GameSession(
 					CroquetteGameResourceLoader.class);
 			DefBootstrapScript b = getDefBootstrapScript(brokerUrl);
 			log.info(b);
-			launcher.setDefBootstrapScript(b);
+			session.setDefBootstrapScript(b);
 
-			log.info(launcher.toDefBootstrap());
-			ProcessId pid = launcher.startAndWaitForFinish();
+			log.info(session.toDefBootstrap());
+			ProcessId pid = session.startAndWaitForFinish();
 			CroquetteGameTest.checkResult(pid);
 		}
 	}
 
 	private static DefBootstrapScript getDefBootstrapScript(String brokerUrl) {
-		GameSessionOnServer launcher = new GameSessionOnServer(
+		GameSessionOnServer session = new GameSessionOnServer(
 				CroquetteGameResourceLoader.class);
-		launcher.setBroker(brokerUrl);
-		launcher.setWebUI(webUIUrl, loginId, brokerUrl);
-		launcher.addGameDefinitionInResource("game-definition.scm");
-		launcher.addGameDefinitionInResource("test-definition.scm");
-		launcher.setLogConfiguration(Level.INFO);
-		launcher.useAutoInput();
-		return launcher.toDefBootstrap();
+		session.setBroker(brokerUrl);
+		session.setWebUI(webUIUrl, loginId, brokerUrl);
+		session.addGameDefinitionInResource("game-definition.scm");
+		session.addGameDefinitionInResource("test-definition.scm");
+		session.setLogConfiguration(Level.INFO);
+		session.useAutoInput();
+		return session.toDefBootstrap();
 	}
 
 }
