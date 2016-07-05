@@ -4,8 +4,7 @@ import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
-import org.magcruise.gaming.model.sys.GameForRevertCodeLauncher;
-import org.magcruise.gaming.model.sys.GameLauncher;
+import org.magcruise.gaming.model.sys.GameSession;
 
 import gnu.kawa.io.Path;
 
@@ -23,7 +22,7 @@ public class CroquetteGameRevertTest {
 	}
 
 	private ProcessId restart(Path revertCode, int suspendround) {
-		GameLauncher launcher = new GameLauncher(
+		GameSession launcher = new GameSession(
 				CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
@@ -31,21 +30,22 @@ public class CroquetteGameRevertTest {
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
 		log.info(launcher.toDefBootstrap());
-		ProcessId pid = launcher.runAndWaitForFinish();
+		ProcessId pid = launcher.startAndWaitForFinish();
 		return pid;
 	}
 
-	private Path getReverCode(int suspendround) {
-		GameForRevertCodeLauncher launcher = new GameForRevertCodeLauncher(
-				CroquetteGameResourceLoader.class, suspendround);
+	public static Path getReverCode(int suspendround) {
+		GameSession launcher = new GameSession(
+				CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
+		launcher.setFinalRound(suspendround);
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
-		launcher.runAndWaitForFinish();
+		launcher.startAndWaitForFinish();
 		log.info("Before revert laucher pid ={}", launcher.getProcessId());
 		log.info("Before revert laucher={}", launcher);
-		return launcher.getPathOfRevertCode();
+		return launcher.getRevertScriptPath();
 	}
 
 }

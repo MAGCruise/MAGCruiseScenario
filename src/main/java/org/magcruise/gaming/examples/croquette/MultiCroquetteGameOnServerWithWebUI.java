@@ -5,8 +5,7 @@ import java.util.Arrays;
 
 import org.apache.logging.log4j.Level;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.model.def.sys.DefUIServiceAndRegisterSession;
-import org.magcruise.gaming.model.sys.GameOnServerLauncher;
+import org.magcruise.gaming.model.sys.GameSessionOnServer;
 
 import gnu.mapping.Symbol;
 import jp.go.nict.langrid.repackaged.net.arnx.jsonic.JSONException;
@@ -30,10 +29,10 @@ public class MultiCroquetteGameOnServerWithWebUI {
 
 		for (int i = 0; i < ss.length; i++) {
 			Setting s = ss[i];
-			GameOnServerLauncher launcher = new GameOnServerLauncher(
-					CroquetteGameResourceLoader.class, brokerUrl);
-			launcher.addDefUI(new DefUIServiceAndRegisterSession(webUI, loginId,
-					brokerUrl));
+			GameSessionOnServer launcher = new GameSessionOnServer(
+					CroquetteGameResourceLoader.class);
+			launcher.setBroker(brokerUrl);
+			launcher.setWebUI(webUI, loginId, brokerUrl);
 			launcher.addGameDefinitionInResource("game-definition.scm");
 			launcher.addGameDefinitionInResource("exp-definition.scm");
 			launcher.setLogConfiguration(Level.INFO, true);
@@ -45,7 +44,7 @@ public class MultiCroquetteGameOnServerWithWebUI {
 							Symbol.parse(s.userIds.get(1)),
 							Symbol.parse(s.userIds.get(2))));
 			launcher.useAutoInput(maxAutoResponseTime);
-			launcher.run();
+			launcher.start();
 		}
 	}
 }

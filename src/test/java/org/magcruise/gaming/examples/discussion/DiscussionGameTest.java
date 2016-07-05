@@ -2,20 +2,20 @@ package org.magcruise.gaming.examples.discussion;
 
 import org.junit.Test;
 import org.magcruise.gaming.examples.discussion.resource.DiscussionGameResourceLoader;
-import org.magcruise.gaming.model.sys.GameLauncher;
+import org.magcruise.gaming.model.sys.GameSession;
 
 public class DiscussionGameTest {
 
 	@Test
 	public void testRun() {
 
-		GameLauncher launcher = new GameLauncher(
+		GameSession launcher = new GameSession(
 				DiscussionGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.useSwingGui();
 		// launcher.useAutoInput();
-		launcher.runAndWaitForFinish();
+		launcher.startAndWaitForFinish();
 
 	}
 

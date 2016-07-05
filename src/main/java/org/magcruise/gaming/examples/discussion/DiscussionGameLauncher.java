@@ -1,18 +1,18 @@
 package org.magcruise.gaming.examples.discussion;
 
 import org.magcruise.gaming.examples.discussion.resource.DiscussionGameResourceLoader;
-import org.magcruise.gaming.model.sys.GameLauncher;
+import org.magcruise.gaming.model.sys.GameSession;
 
 public class DiscussionGameLauncher {
 
 	public static void main(String[] args) {
 
-		GameLauncher launcher = new GameLauncher(
+		GameSession launcher = new GameSession(
 				DiscussionGameResourceLoader.class);
 		launcher.setBootstrapInResource("bootstrap.scm");
 		// launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.useSwingGui();
-		launcher.run();
+		launcher.start();
 
 	}
 

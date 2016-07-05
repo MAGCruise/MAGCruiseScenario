@@ -5,8 +5,7 @@ import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.ultimatum.resource.UltimatumGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
-import org.magcruise.gaming.model.sys.GameForRevertCodeLauncher;
-import org.magcruise.gaming.model.sys.GameLauncher;
+import org.magcruise.gaming.model.sys.GameSession;
 import org.magcruise.gaming.util.SystemEnvironmentUtils;
 import org.nkjmlab.util.db.H2Client;
 
@@ -25,13 +24,13 @@ public class UltimatumGameTest {
 
 	@Test
 	public void testRun() {
-		GameLauncher launcher = new GameLauncher(
+		GameSession launcher = new GameSession(
 				UltimatumGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
-		ProcessId pid = launcher.runAndWaitForFinish();
+		ProcessId pid = launcher.startAndWaitForFinish();
 		checkFirstPlayerResult(pid, firstPlayerAccounts, 0,
 				firstPlayerAccounts.length);
 		checkSecondPlayerResult(pid, secondPlayerAccounts, 0,
@@ -64,19 +63,21 @@ public class UltimatumGameTest {
 	@Test
 	public void testRevert() {
 		int suspendround = 4;
-		GameForRevertCodeLauncher revLauncher = new GameForRevertCodeLauncher(
-				UltimatumGameResourceLoader.class, suspendround);
+		GameSession revLauncher = new GameSession(
+				UltimatumGameResourceLoader.class);
 		revLauncher.addGameDefinitionInResource("game-definition.scm");
 		revLauncher.addGameDefinitionInResource("test-definition.scm");
 		revLauncher.useAutoInput();
-		Path revertCode = revLauncher.run();
-		GameLauncher launcher = new GameLauncher(
+		revLauncher.setFinalRound(suspendround);
+		revLauncher.startAndWaitForFinish();
+		Path revertCode = revLauncher.getRevertScriptPath();
+		GameSession launcher = new GameSession(
 				UltimatumGameResourceLoader.class);
 		launcher.setBootstrapInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.addGameDefinition(revertCode);
 		launcher.useAutoInput();
-		ProcessId pid = launcher.runAndWaitForFinish();
+		ProcessId pid = launcher.startAndWaitForFinish();
 		checkFirstPlayerResult(pid, firstPlayerAccounts, suspendround + 1,
 				firstPlayerAccounts.length);
 		checkSecondPlayerResult(pid, secondPlayerAccounts, suspendround + 1,

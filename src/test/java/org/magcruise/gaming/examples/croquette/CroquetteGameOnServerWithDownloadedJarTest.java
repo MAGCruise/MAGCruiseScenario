@@ -3,7 +3,7 @@ package org.magcruise.gaming.examples.croquette;
 import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.model.sys.GameOnServerLauncher;
+import org.magcruise.gaming.model.sys.GameSessionOnServer;
 
 public class CroquetteGameOnServerWithDownloadedJarTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -15,15 +15,16 @@ public class CroquetteGameOnServerWithDownloadedJarTest {
 	public void testRunOnServerWithDownloadedJar() {
 		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
 
-			GameOnServerLauncher launcher = new GameOnServerLauncher(
-					CroquetteGameResourceLoader.class, brokerUrl);
+			GameSessionOnServer launcher = new GameSessionOnServer(
+					CroquetteGameResourceLoader.class);
+			launcher.setBroker(brokerUrl);
 			launcher.addClasspath(jarOnWeb);
 			launcher.addGameDefinitionInResource("game-definition.scm");
 			launcher.addGameDefinitionInResource("test-definition.scm");
 			launcher.setLogConfiguration(Level.INFO, true);
 			launcher.useAutoInput();
 			log.info(launcher.toDefBootstrap());
-			launcher.runAndWaitForFinish();
+			launcher.startAndWaitForFinish();
 			CroquetteGameOnServerWithWebUITest
 					.getLatestContextAndCheckResult(launcher);
 		}

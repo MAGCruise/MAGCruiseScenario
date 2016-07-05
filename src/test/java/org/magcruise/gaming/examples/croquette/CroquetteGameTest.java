@@ -7,7 +7,7 @@ import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
-import org.magcruise.gaming.model.sys.GameLauncher;
+import org.magcruise.gaming.model.sys.GameSession;
 import org.magcruise.gaming.util.SystemEnvironmentUtils;
 import org.nkjmlab.util.db.H2Client;
 
@@ -33,14 +33,14 @@ public class CroquetteGameTest {
 
 	@Test
 	public void testRun() {
-		GameLauncher launcher = new GameLauncher(
+		GameSession launcher = new GameSession(
 				CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.setLogConfiguration(Level.INFO, true);
 		launcher.useAutoInput();
 		log.info(launcher.toDefBootstrap());
-		ProcessId pid = launcher.runAndWaitForFinish();
+		ProcessId pid = launcher.startAndWaitForFinish();
 		checkResult(pid);
 	}
 

@@ -4,7 +4,7 @@ import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.manager.ProcessId;
-import org.magcruise.gaming.model.sys.GameOnLocalWithBrokerLauncher;
+import org.magcruise.gaming.model.sys.GameSession;
 
 public class CroquetteGameOnLocalWithBrokerTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -13,14 +13,15 @@ public class CroquetteGameOnLocalWithBrokerTest {
 	@Test
 	public void testRunWithServer() {
 		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
-			GameOnLocalWithBrokerLauncher launcher = new GameOnLocalWithBrokerLauncher(
-					CroquetteGameResourceLoader.class, brokerUrl);
-			launcher.addGameDefinitionInResource("game-definition.scm");
-			launcher.addGameDefinitionInResource("test-definition.scm");
-			launcher.setLogConfiguration(Level.INFO, true);
-			launcher.useAutoInput();
-			log.info(launcher.toDefBootstrap());
-			ProcessId pid = launcher.runAndWaitForFinish();
+			GameSession session = new GameSession(
+					CroquetteGameResourceLoader.class);
+			session.addGameDefinitionInResource("game-definition.scm");
+			session.addGameDefinitionInResource("test-definition.scm");
+			session.setBroker(brokerUrl);
+			session.setLogConfiguration(Level.INFO, true);
+			session.useAutoInput();
+			log.info(session.toDefBootstrap());
+			ProcessId pid = session.startAndWaitForFinish();
 			CroquetteGameTest.checkResult(pid);
 		}
 	}

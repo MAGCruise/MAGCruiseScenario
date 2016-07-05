@@ -8,10 +8,9 @@ import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.croquette.actor.Market;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.model.def.sys.DefUIServiceAndRegisterSession;
 import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Player;
-import org.magcruise.gaming.model.sys.GameOnServerLauncher;
+import org.magcruise.gaming.model.sys.GameSessionOnServer;
 
 import gnu.mapping.Symbol;
 
@@ -27,10 +26,10 @@ public class CroquetteGameOnServerWithWebUITest {
 	@Test
 	public void testGameOnServerWithWebUI() {
 		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
-			GameOnServerLauncher launcher = new GameOnServerLauncher(
-					CroquetteGameResourceLoader.class, brokerUrl);
-			launcher.addDefUI(new DefUIServiceAndRegisterSession(webUI, loginId,
-					brokerUrl));
+			GameSessionOnServer launcher = new GameSessionOnServer(
+					CroquetteGameResourceLoader.class);
+			launcher.setBroker(brokerUrl);
+			launcher.setWebUI(webUI, loginId, brokerUrl);
 			launcher.addGameDefinitionInResource("game-definition.scm");
 			launcher.addGameDefinitionInResource("exp-definition.scm");
 			launcher.setLogConfiguration(Level.INFO, true);
@@ -41,14 +40,14 @@ public class CroquetteGameOnServerWithWebUITest {
 					Arrays.asList(Symbol.parse("user1"), Symbol.parse("user1"),
 							Symbol.parse("user1")));
 			launcher.useAutoInput(maxAutoResponseTime);
-			launcher.runAndWaitForFinish();
+			launcher.startAndWaitForFinish();
 
 			getLatestContextAndCheckResult(launcher);
 		}
 	}
 
 	public static void getLatestContextAndCheckResult(
-			GameOnServerLauncher launcher) {
+			GameSessionOnServer launcher) {
 		Market ctx = launcher.getLatestContext(Market.class);
 
 		{
