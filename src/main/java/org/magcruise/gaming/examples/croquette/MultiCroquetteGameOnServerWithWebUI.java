@@ -5,7 +5,7 @@ import java.util.Arrays;
 
 import org.apache.logging.log4j.Level;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.model.sys.GameSessionOnServer;
+import org.magcruise.gaming.manager.GameSessionOnServer;
 
 import gnu.mapping.Symbol;
 import jp.go.nict.langrid.repackaged.net.arnx.jsonic.JSONException;

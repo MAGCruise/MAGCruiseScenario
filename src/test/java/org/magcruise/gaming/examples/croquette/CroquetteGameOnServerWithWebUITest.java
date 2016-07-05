@@ -8,9 +8,9 @@ import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.croquette.actor.Market;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
+import org.magcruise.gaming.manager.GameSessionOnServer;
 import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Player;
-import org.magcruise.gaming.model.sys.GameSessionOnServer;
 
 import gnu.mapping.Symbol;
 
@@ -47,8 +47,8 @@ public class CroquetteGameOnServerWithWebUITest {
 	}
 
 	public static void getLatestContextAndCheckResult(
-			GameSessionOnServer launcher) {
-		Market ctx = launcher.getLatestContext(Market.class);
+			GameSessionOnServer session) {
+		Market ctx = session.getLatestContext(Market.class);
 
 		{
 			Integer[] actual = new Integer[10];

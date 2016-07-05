@@ -1,7 +1,7 @@
 package org.magcruise.gaming.examples.ultimatum;
 
 import org.magcruise.gaming.examples.ultimatum.resource.UltimatumGameResourceLoader;
-import org.magcruise.gaming.model.sys.GameSession;
+import org.magcruise.gaming.manager.GameSession;
 
 public class UltimatumGameLauncher {
 

@@ -3,12 +3,10 @@ package org.magcruise.gaming.examples.croquette;
 import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.manager.ProcessId;
+import org.magcruise.gaming.manager.GameSessionOnServer;
 import org.magcruise.gaming.model.def.boot.DefBootstrapScript;
-import org.magcruise.gaming.model.sys.GameSession;
-import org.magcruise.gaming.model.sys.GameSessionOnServer;
 
-public class CroquetteGameOnLocalWithWebUIWithBootstrapScriptTest {
+public class CroquetteGameOnServerWithWebUIWithBootstrapScriptTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
@@ -19,15 +17,18 @@ public class CroquetteGameOnLocalWithWebUIWithBootstrapScriptTest {
 	public void testWebUIWithBootstrapScript() {
 		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
 
-			GameSession session = new GameSession(
+			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			DefBootstrapScript b = getDefBootstrapScript(brokerUrl);
-			log.info(b);
-			session.setDefBootstrapScript(b);
+			session.setBroker(brokerUrl);
+
+			DefBootstrapScript bootstrapScript = getDefBootstrapScript(
+					brokerUrl);
+			session.setDefBootstrapScript(bootstrapScript);
 
 			log.info(session.toDefBootstrap());
-			ProcessId pid = session.startAndWaitForFinish();
-			CroquetteGameTest.checkResult(pid);
+			session.startAndWaitForFinish();
+			CroquetteGameOnServerWithWebUITest
+					.getLatestContextAndCheckResult(session);
 		}
 	}
 

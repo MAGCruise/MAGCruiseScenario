@@ -2,7 +2,7 @@ package org.magcruise.gaming.examples.croquette;
 
 import org.apache.logging.log4j.Level;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.model.sys.GameSession;
+import org.magcruise.gaming.manager.GameSession;
 
 public class CroquetteGame {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager

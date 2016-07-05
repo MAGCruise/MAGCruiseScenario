@@ -1,6 +1,6 @@
 package org.magcruise.gaming.examples.ymc.incentive.resource;
 
-import org.magcruise.gaming.model.sys.ResourceLoader;
+import org.magcruise.gaming.manager.ResourceLoader;
 
 public class YmcGameResourceLoader extends ResourceLoader {
 

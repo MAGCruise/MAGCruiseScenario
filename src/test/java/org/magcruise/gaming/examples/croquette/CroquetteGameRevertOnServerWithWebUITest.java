@@ -6,9 +6,9 @@ import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.lang.SExpression.ToExpressionStyle;
+import org.magcruise.gaming.manager.GameSessionOnServer;
 import org.magcruise.gaming.manager.ProcessId;
 import org.magcruise.gaming.model.def.boot.DefGameScript;
-import org.magcruise.gaming.model.sys.GameSessionOnServer;
 
 import gnu.mapping.Symbol;
 

@@ -1,7 +1,7 @@
 package org.magcruise.gaming.examples.minority;
 
 import org.magcruise.gaming.examples.minority.resource.MinorityGameResourceLoader;
-import org.magcruise.gaming.model.sys.GameSession;
+import org.magcruise.gaming.manager.GameSession;
 
 public class MinorityGameLauncher {
 

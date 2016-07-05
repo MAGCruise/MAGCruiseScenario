@@ -3,7 +3,7 @@ package org.magcruise.gaming.examples.croquette;
 import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.model.sys.GameSessionOnServer;
+import org.magcruise.gaming.manager.GameSessionOnServer;
 
 public class CroquetteGameOnServerWithDownloadedJarTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
