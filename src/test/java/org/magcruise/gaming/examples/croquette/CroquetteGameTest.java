@@ -29,7 +29,7 @@ public class CroquetteGameTest {
 
 	public static String[] brokerUrls = {
 			"http://localhost:8080/MAGCruiseBroker",
-			"http://proxy.phoenix.toho.magcruise.org/MAGCruiseBroker" };
+			"http://toho.magcruise.org/MAGCruiseBroker" };
 
 	@Test
 	public void testRun() {

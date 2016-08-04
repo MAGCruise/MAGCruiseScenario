@@ -54,13 +54,13 @@ public class CroquetteFactory extends Player {
 
 	public void init(Market ctx) {
 		String msg = (String) ctx.applyProcedure("factory:init-msg", ctx, this);
-		syncRequestToInput(ctx, new Form(msg));
+		syncRequestToInput(new Form(msg));
 		showMessage(msg);
 	}
 
 	public void refresh(Market ctx) {
 		showMessage(ctx.createMessage("factory:refresh-msg", ctx, this));
-		syncRequestToInput(ctx, ctx.createForm("end-day-form", ctx));
+		syncRequestToInput(ctx.createForm("end-day-form", ctx));
 		showMessage(ctx.createMessage("start-day-msg", ctx));
 		refresh();
 	}
@@ -81,16 +81,15 @@ public class CroquetteFactory extends Player {
 
 	public void order(Market ctx) {
 		ctx.showMessageToAll("{}が{}日目の発注個数を入力しています．", name, ctx.getRoundnum());
-		syncRequestToInput(ctx, ctx.createForm("factory:order-form", ctx, this),
-				(param) -> {
-					this.orderOfPotato = param.getArgAsInt(0);
-					showMessage(ctx.createMessage("factory:after-order-msg",
-							ctx, this));
-					sendMessage(new PotatoOrder(name, toActorName("Farmer"),
-							this.orderOfPotato));
-					ctx.showMessageToAll("{}が{}日目の発注個数を入力しました．", name,
-							ctx.getRoundnum());
-				});
+		syncRequestToInput(ctx.createForm("factory:order-form", ctx, this), (param) -> {
+			this.orderOfPotato = param.getArgAsInt(0);
+			showMessage(ctx.createMessage("factory:after-order-msg",
+					ctx, this));
+			sendMessage(new PotatoOrder(name, toActorName("Farmer"),
+					this.orderOfPotato));
+			ctx.showMessageToAll("{}が{}日目の発注個数を入力しました．", name,
+					ctx.getRoundnum());
+		});
 	}
 
 	public void receiveOrder(Market ctx) {

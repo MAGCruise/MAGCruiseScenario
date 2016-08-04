@@ -7,7 +7,7 @@
 	<parent>
 		<groupId>org.magcruise</groupId>
 		<artifactId>magcruise-parent</artifactId>
-		<version>0.0.1</version>
+		<version>0.0.2-SNAPSHOT</version>
 	</parent>
 	<repositories>
 		<repository>
@@ -22,6 +22,10 @@
 			<scope>test</scope>
 		</dependency>
 		<dependency>
+			<groupId>net.arnx</groupId>
+			<artifactId>jsonic</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>org.magcruise</groupId>
 			<artifactId>magcruise-core</artifactId>
 		</dependency>
@@ -32,7 +36,6 @@
 		<dependency>
 			<groupId>com.orangesignal</groupId>
 			<artifactId>orangesignal-csv</artifactId>
-			<version>2.2.1</version>
 		</dependency>
 	</dependencies>
 	<build>

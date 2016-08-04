@@ -21,8 +21,7 @@ public class CroquetteGameOnServerLauncherTest {
 			session.useAutoInput();
 			log.info(session.toDefBootstrap());
 			session.startAndWaitForFinish();
-			CroquetteGameOnServerWithWebUITest
-					.getLatestContextAndCheckResult(session);
+			CroquetteGameOnServerWithWebUITest.getLatestContextAndCheckResult(session);
 		}
 	}
 

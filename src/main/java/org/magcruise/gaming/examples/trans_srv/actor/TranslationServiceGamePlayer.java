@@ -132,14 +132,14 @@ public class TranslationServiceGamePlayer extends Player {
 					Arrays.asList(new String[] { "0トークン", "100トークン" }),
 					Arrays.asList(new String[] { "0", "100" }),
 					new Required()));
-			syncRequestToInput(ctx, builder.build(), params -> {
+			syncRequestToInput(builder.build(), params -> {
 				this.investment = params.getInt("token");
 			});
 		} else if (ctx.getRoundnum() <= 25) {
 			builder.addLabel("このラウンドで寄付できトークン数は，0以上100以下の任意の整数です．");
 			builder.addInput(new NumberInput("寄付金(トークン)", "token", 100,
 					new Min(0), new Max(100), new Required()));
-			syncRequestToInput(ctx, builder.build(), params -> {
+			syncRequestToInput(builder.build(), params -> {
 				this.investment = params.getInt("token");
 			});
 		}

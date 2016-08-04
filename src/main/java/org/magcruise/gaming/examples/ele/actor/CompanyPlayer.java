@@ -53,7 +53,7 @@ public class CompanyPlayer extends Player {
 	}
 
 	public void voteByHuman(MarketContext ctx, Form form) {
-		syncRequestToInput(ctx, form, params -> {
+		syncRequestToInput(form, params -> {
 			System.out.println(params);
 		});
 

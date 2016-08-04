@@ -3,6 +3,7 @@ package org.magcruise.gaming.examples.misc;
 import org.magcruise.gaming.manager.GameSession;
 import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Context;
+import org.magcruise.gaming.model.game.SimplePlayer;
 import org.magcruise.gaming.ui.model.FormBuilder;
 import org.magcruise.gaming.ui.model.attr.Max;
 import org.magcruise.gaming.ui.model.attr.Min;
@@ -19,7 +20,7 @@ public class GameSessionSample {
 		session.setBroker(brokerUrl);
 		session.setWebUI(webUIUrl, "admin", brokerUrl);
 		ActorName playerName = ActorName.of("PlayerOne");
-		session.setTasksFor(playerName);
+		session.setTaskFor(playerName, SimplePlayer.class);
 		session.start();
 		Context ctx = session.getContext();
 		ctx.showMessage(playerName, "Test for show message.");

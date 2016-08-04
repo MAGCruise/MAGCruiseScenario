@@ -32,12 +32,11 @@ public class Talker extends Player {
 
 	public void negotiation(SimpleContext ctx, ScenarioEvent msg) {
 
-		syncRequestToInput(ctx,
-				new Form("",
-						new TextInput(
-								"roundnum=" + ctx.getRoundnum()
-										+ ". 相手に伝えたいことを入力して下さい．何も無ければENDと入力して下さい．",
-								"input-msg", "", new SimpleSubmit())),
+		syncRequestToInput(new Form("",
+				new TextInput(
+						"roundnum=" + ctx.getRoundnum()
+								+ ". 相手に伝えたいことを入力して下さい．何も無ければENDと入力して下さい．",
+						"input-msg", "", new SimpleSubmit())),
 				(param) -> {
 					if (param.getArgAsString(0) == "") {
 

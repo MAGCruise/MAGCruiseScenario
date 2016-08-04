@@ -32,8 +32,7 @@ public class SecondPlayer extends UltimatumPlayer {
 	}
 
 	public void judge(UltimatumGameContext ctx) {
-		syncRequestToInput(ctx,
-				ctx.createForm("judge-form", ctx, this, takeMessage()),
+		syncRequestToInput(ctx.createForm("judge-form", ctx, this, takeMessage()),
 				(params) -> {
 					this.yesOrNo = params.getArgAsString(0);
 				});

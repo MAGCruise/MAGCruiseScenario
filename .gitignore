@@ -1,8 +1,9 @@
 /tmp
-/bin
 *.class
 *.log
-/target/
+/.settings
+/target
+.classpath
+.project
 langrid-conf.json
-/.settings/org.eclipse.wst.validation.prefs
-/src/main/java/org/magcruise/gaming/examples/croquette/resource/settings.json
+settings.json

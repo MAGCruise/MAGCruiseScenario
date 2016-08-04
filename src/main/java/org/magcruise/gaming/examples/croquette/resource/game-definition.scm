@@ -26,10 +26,10 @@
   (builder:addDefRounds
     (def:round
       (def:stage type: 'parallel name: 'init
-        (def:filter object: 'stage-filter method: 'initBeforeFilter)
+        (def:call object: 'stage-filter method: 'initBeforeFilter)
         (def:task actor: 'Factory action: 'init)
         (def:task actor: *shop-names* action: 'init)
-        (def:filter object: 'stage-filter method: 'initAfterFilter))
+        (def:call object: 'stage-filter method: 'initAfterFilter))
       (def:stage type: 'sequential name: 'factory-receive-order
         (def:task actor: 'Factory action: 'receiveOrder))
       (def:stage type: 'parallel name: 'shop-order-and-pricing-factory-order
