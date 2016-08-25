@@ -2,7 +2,7 @@ package org.magcruise.gaming.examples.croquette;
 
 import org.apache.logging.log4j.Level;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.manager.GameSession;
+import org.magcruise.gaming.manager.session.GameSession;
 
 public class CroquetteGame {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -10,8 +10,7 @@ public class CroquetteGame {
 
 	public static void main(String[] args) {
 		log.info("test {}", 1);
-		GameSession launcher = new GameSession(
-				CroquetteGameResourceLoader.class);
+		GameSession launcher = new GameSession(CroquetteGameResourceLoader.class);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.setLogConfiguration(Level.INFO, true);

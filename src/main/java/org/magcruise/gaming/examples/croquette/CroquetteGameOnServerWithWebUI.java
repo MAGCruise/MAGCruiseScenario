@@ -2,18 +2,17 @@ package org.magcruise.gaming.examples.croquette;
 
 import org.apache.logging.log4j.Level;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.manager.GameSessionOnServer;
+import org.magcruise.gaming.manager.session.GameSessionOnServer;
 
 public class CroquetteGameOnServerWithWebUI {
 
-	private static String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/MAGCruiseBroker";
+	private static String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/magcruise-broker";
 	private static String webUI = "http://toho.magcruise.org/world/BackendAPIService";
 	private static String loginId = "admin";
 
 	public static void main(String[] args) {
-		GameSessionOnServer launcher = new GameSessionOnServer(
-				CroquetteGameResourceLoader.class);
-		launcher.setBroker(brokerUrl);
+		GameSessionOnServer launcher = new GameSessionOnServer(CroquetteGameResourceLoader.class);
+		launcher.setBrokerUrl(brokerUrl);
 		launcher.setWebUI(webUI, loginId, brokerUrl);
 
 		launcher.addGameDefinitionInResource("game-definition.scm");

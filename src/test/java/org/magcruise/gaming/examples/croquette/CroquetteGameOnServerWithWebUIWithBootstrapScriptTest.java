@@ -3,7 +3,7 @@ package org.magcruise.gaming.examples.croquette;
 import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.manager.GameSessionOnServer;
+import org.magcruise.gaming.manager.session.GameSessionOnServer;
 import org.magcruise.gaming.model.def.boot.DefBootstrapScript;
 
 public class CroquetteGameOnServerWithWebUIWithBootstrapScriptTest {
@@ -19,23 +19,21 @@ public class CroquetteGameOnServerWithWebUIWithBootstrapScriptTest {
 
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			session.setBroker(brokerUrl);
+			session.setBrokerUrl(brokerUrl);
 
-			DefBootstrapScript bootstrapScript = getDefBootstrapScript(
-					brokerUrl);
+			DefBootstrapScript bootstrapScript = getDefBootstrapScript(brokerUrl);
 			session.setDefBootstrapScript(bootstrapScript);
 
 			log.info(session.toDefBootstrap());
 			session.startAndWaitForFinish();
-			CroquetteGameOnServerWithWebUITest
-					.getLatestContextAndCheckResult(session);
+			CroquetteGameOnServerWithWebUITest.getLatestContextAndCheckResult(session);
 		}
 	}
 
 	private static DefBootstrapScript getDefBootstrapScript(String brokerUrl) {
 		GameSessionOnServer session = new GameSessionOnServer(
 				CroquetteGameResourceLoader.class);
-		session.setBroker(brokerUrl);
+		session.setBrokerUrl(brokerUrl);
 		session.setWebUI(webUIUrl, loginId, brokerUrl);
 		session.addGameDefinitionInResource("game-definition.scm");
 		session.addGameDefinitionInResource("test-definition.scm");

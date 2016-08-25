@@ -1,7 +1,7 @@
 package org.magcruise.gaming.examples.ymc.incentive;
 
 import org.magcruise.gaming.examples.ymc.incentive.resource.YmcGameResourceLoader;
-import org.magcruise.gaming.manager.GameSession;
+import org.magcruise.gaming.manager.session.GameSession;
 
 public class IncentiveGameLauncher {
 

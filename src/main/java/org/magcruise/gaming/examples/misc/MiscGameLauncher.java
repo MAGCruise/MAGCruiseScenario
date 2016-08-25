@@ -1,7 +1,7 @@
 package org.magcruise.gaming.examples.misc;
 
 import org.magcruise.gaming.examples.misc.resource.MiscGameResourceLoader;
-import org.magcruise.gaming.manager.GameSession;
+import org.magcruise.gaming.manager.session.GameSession;
 
 public class MiscGameLauncher {
 

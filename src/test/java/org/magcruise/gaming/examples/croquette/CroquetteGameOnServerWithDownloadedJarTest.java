@@ -3,7 +3,7 @@ package org.magcruise.gaming.examples.croquette;
 import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.manager.GameSessionOnServer;
+import org.magcruise.gaming.manager.session.GameSessionOnServer;
 
 public class CroquetteGameOnServerWithDownloadedJarTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
@@ -17,7 +17,7 @@ public class CroquetteGameOnServerWithDownloadedJarTest {
 
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			session.setBroker(brokerUrl);
+			session.setBrokerUrl(brokerUrl);
 			session.addClasspath(jarOnWeb);
 			session.addGameDefinitionInResource("game-definition.scm");
 			session.addGameDefinitionInResource("test-definition.scm");

@@ -8,7 +8,7 @@ import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.croquette.actor.Market;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.manager.GameSessionOnServer;
+import org.magcruise.gaming.manager.session.GameSessionOnServer;
 import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Player;
 
@@ -28,7 +28,7 @@ public class CroquetteGameOnServerWithWebUITest {
 		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			session.setBroker(brokerUrl);
+			session.setBrokerUrl(brokerUrl);
 			session.setWebUI(webUI, loginId, brokerUrl);
 			session.addGameDefinitionInResource("game-definition.scm");
 			session.addGameDefinitionInResource("exp-definition.scm");

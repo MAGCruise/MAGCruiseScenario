@@ -7,3 +7,4 @@
 .project
 langrid-conf.json
 settings.json
+/src/main/java/org/magcruise/gaming/examples/croquette/resource/settings-many.json

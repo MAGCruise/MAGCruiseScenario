@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.TestUtils;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.manager.GameSession;
-import org.magcruise.gaming.manager.ProcessId;
+import org.magcruise.gaming.manager.process.ProcessId;
+import org.magcruise.gaming.manager.session.GameSession;
 import org.magcruise.gaming.util.SystemEnvironmentUtils;
 import org.nkjmlab.util.db.H2Client;
 
@@ -28,8 +28,9 @@ public class CroquetteGameTest {
 			.getDefaultH2Client();
 
 	public static String[] brokerUrls = {
-			"http://localhost:8080/MAGCruiseBroker",
-			"http://toho.magcruise.org/MAGCruiseBroker" };
+			"http://localhost:8080/magcruise-broker",
+			//"http://toho.magcruise.org/magcruise-broker"
+	};
 
 	@Test
 	public void testRun() {

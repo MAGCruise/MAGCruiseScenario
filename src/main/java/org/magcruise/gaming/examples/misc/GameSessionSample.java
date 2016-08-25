@@ -1,6 +1,6 @@
 package org.magcruise.gaming.examples.misc;
 
-import org.magcruise.gaming.manager.GameSession;
+import org.magcruise.gaming.manager.session.GameSession;
 import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.SimplePlayer;
@@ -14,10 +14,10 @@ public class GameSessionSample {
 
 	public static void main(String[] args) throws Throwable {
 		String webUIUrl = "http://toho.magcruise.org/world/BackendAPIService";
-		String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/MAGCruiseBroker";
+		String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/magcruise-broker";
 
 		GameSession session = new GameSession();
-		session.setBroker(brokerUrl);
+		session.setBrokerUrl(brokerUrl);
 		session.setWebUI(webUIUrl, "admin", brokerUrl);
 		ActorName playerName = ActorName.of("PlayerOne");
 		session.setTaskFor(playerName, SimplePlayer.class);

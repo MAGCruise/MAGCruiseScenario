@@ -2,7 +2,7 @@ package org.magcruise.gaming.examples.discussion;
 
 import org.junit.Test;
 import org.magcruise.gaming.examples.discussion.resource.DiscussionGameResourceLoader;
-import org.magcruise.gaming.manager.GameSession;
+import org.magcruise.gaming.manager.session.GameSession;
 
 public class DiscussionGameTest {
 

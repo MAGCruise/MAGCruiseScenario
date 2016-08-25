@@ -6,8 +6,8 @@ import org.apache.logging.log4j.Level;
 import org.junit.Test;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.lang.SExpression.ToExpressionStyle;
-import org.magcruise.gaming.manager.GameSessionOnServer;
-import org.magcruise.gaming.manager.ProcessId;
+import org.magcruise.gaming.manager.process.ProcessId;
+import org.magcruise.gaming.manager.session.GameSessionOnServer;
 import org.magcruise.gaming.model.def.boot.DefGameScript;
 
 import gnu.mapping.Symbol;
@@ -28,7 +28,7 @@ public class CroquetteGameRevertOnServerWithWebUITest {
 		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			session.setBroker(brokerUrl);
+			session.setBrokerUrl(brokerUrl);
 			session.setWebUI(webUIUrl, loginId, brokerUrl);
 			session.addGameDefinitionInResource("game-definition.scm");
 			session.addGameDefinitionInResource("exp-definition.scm");
@@ -51,7 +51,7 @@ public class CroquetteGameRevertOnServerWithWebUITest {
 	private static DefGameScript getRerverScript(String brokerUrl) {
 		GameSessionOnServer launcher = new GameSessionOnServer(
 				CroquetteGameResourceLoader.class);
-		launcher.setBroker(brokerUrl);
+		launcher.setBrokerUrl(brokerUrl);
 		launcher.setWebUI(webUIUrl, loginId, brokerUrl);
 		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");

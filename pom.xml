@@ -14,7 +14,16 @@
 			<id>nkjmlab-public</id>
 			<url>http://maven.nkjmlab.org/nexus/content/groups/public</url>
 		</repository>
+		<repository>
+			<id>nkjmlab-public-mirror</id>
+			<url>http://mirror.maven.nkjmlab.org/nexus/content/groups/public</url>
+		</repository>
 	</repositories>
+	<scm>
+		<connection>scm:git:git@github.com:magcruise/magcruise-scenario.git</connection>
+		<url>https://github.com/magcruise/magcruise-scenario</url>
+		<tag>HEAD</tag>
+	</scm>
 	<dependencies>
 		<dependency>
 			<groupId>junit</groupId>
@@ -38,12 +47,4 @@
 			<artifactId>orangesignal-csv</artifactId>
 		</dependency>
 	</dependencies>
-	<build>
-		<plugins>
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-assembly-plugin</artifactId>
-			</plugin>
-		</plugins>
-	</build>
 </project>

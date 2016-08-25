@@ -1,7 +1,7 @@
 package org.magcruise.gaming.examples.fish;
 
 import org.magcruise.gaming.examples.fish.resource.FishGameResourceLoader;
-import org.magcruise.gaming.manager.GameSession;
+import org.magcruise.gaming.manager.session.GameSession;
 
 public class FishGameLauncher {
 

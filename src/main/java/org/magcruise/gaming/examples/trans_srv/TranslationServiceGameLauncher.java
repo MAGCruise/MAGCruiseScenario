@@ -1,7 +1,7 @@
 package org.magcruise.gaming.examples.trans_srv;
 
 import org.magcruise.gaming.examples.trans_srv.resource.TranslationServiceGameResourceLoader;
-import org.magcruise.gaming.manager.GameSession;
+import org.magcruise.gaming.manager.session.GameSession;
 
 public class TranslationServiceGameLauncher {
 

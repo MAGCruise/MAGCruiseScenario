@@ -1,7 +1,7 @@
 package org.magcruise.gaming.examples.ele;
 
 import org.magcruise.gaming.examples.ele.resource.EleGameResourceLoader;
-import org.magcruise.gaming.manager.GameSession;
+import org.magcruise.gaming.manager.session.GameSession;
 
 public class EleGameLauncher {
 
