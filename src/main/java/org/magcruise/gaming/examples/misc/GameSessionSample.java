@@ -13,7 +13,7 @@ import org.magcruise.gaming.ui.model.input.NumberInput;
 public class GameSessionSample {
 
 	public static void main(String[] args) throws Throwable {
-		String webUIUrl = "http://toho.magcruise.org/world/BackendAPIService";
+		String webUIUrl = "http://game.magcruise.org/world/BackendAPIService";
 		String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/magcruise-broker";
 
 		GameSession session = new GameSession();

@@ -10,7 +10,7 @@ public class CroquetteGameOnServerWithWebUIWithBootstrapScriptTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	private static String webUIUrl = "http://toho.magcruise.org/world/BackendAPIService";
+	private static String webUIUrl = "http://game.magcruise.org/world/BackendAPIService";
 	private static String loginId = "admin";
 
 	@Test

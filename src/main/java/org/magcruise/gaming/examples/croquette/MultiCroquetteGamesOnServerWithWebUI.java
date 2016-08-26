@@ -1,31 +1,33 @@
 package org.magcruise.gaming.examples.croquette;
 
-import java.io.IOException;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.Level;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
+import org.magcruise.gaming.executor.web.AwsSettingsJson;
 import org.magcruise.gaming.manager.session.GameSessionOnServer;
-import org.magcruise.gaming.manager.session.MultiGameSessionSettings;
+import org.magcruise.gaming.manager.session.GameSessionsOnServer;
+import org.magcruise.gaming.manager.session.GameSessionsSettings;
+import org.nkjmlab.util.json.JsonUtils;
 
 import gnu.mapping.Symbol;
-import jp.go.nict.langrid.repackaged.net.arnx.jsonic.JSONException;
-import net.arnx.jsonic.JSON;
 
-public class MultiCroquetteGameOnServerWithWebUI {
+public class MultiCroquetteGamesOnServerWithWebUI {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	//	private static String brokerUrl = "http://toho.magcruise.org/magcruise-broker";
+	//	private static String brokerUrl = "http://game.magcruise.org/magcruise-broker";
 	private static String brokerUrl = "http://localhost:8080/magcruise-broker";
-	private static String webUI = "http://toho.magcruise.org/world/BackendAPIService";
+	private static String webUI = "http://game.magcruise.org/world/BackendAPIService";
 	private static String loginId = "reiko";
 	private static int maxAutoResponseTime = 10;
 
-	public static void main(String[] args) throws JSONException, IOException {
+	public static void main(String[] args) {
 
-		MultiGameSessionSettings settings = JSON.decode(CroquetteGameResourceLoader.class
-				.getResourceAsStream("settings.json"), MultiGameSessionSettings.class);
+		GameSessionsSettings settings = JsonUtils.decode(CroquetteGameResourceLoader.class
+				.getResourceAsStream("settings-many.json"), GameSessionsSettings.class);
+
+		GameSessionsOnServer sessions = new GameSessionsOnServer();
 
 		settings.getSeeds().forEach(seed -> {
 			GameSessionOnServer session = new GameSessionOnServer(
@@ -43,8 +45,12 @@ public class MultiCroquetteGameOnServerWithWebUI {
 							Symbol.parse(seed.getUserIds().get(1)),
 							Symbol.parse(seed.getUserIds().get(2))));
 			session.useAutoInput(maxAutoResponseTime);
-			session.start();
+			sessions.addGameSession(session);
 		});
+		AwsSettingsJson awsSettings = JsonUtils.decode(CroquetteGameResourceLoader.class
+				.getResourceAsStream("aws-settings.json"), AwsSettingsJson.class);
+		sessions.setAwsSettings(awsSettings);
+		sessions.start();
 
 	}
 }

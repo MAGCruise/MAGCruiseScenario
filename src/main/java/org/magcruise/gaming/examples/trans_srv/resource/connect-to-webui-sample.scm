@@ -1,7 +1,7 @@
 (define (def:setup-services builder ::GameSystemPropertiesBuilder)
   (builder:addProperties
     (def:ui-service-and-register-session
-      "http://toho.magcruise.org/world/BackendAPIService"
+      "http://game.magcruise.org/world/BackendAPIService"
       "admin"
       "http://proxy.phoenix.toho.magcruise.org/magcruise-broker")
     (def:ui-service

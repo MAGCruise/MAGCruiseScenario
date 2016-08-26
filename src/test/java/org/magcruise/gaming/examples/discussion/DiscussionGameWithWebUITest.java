@@ -15,7 +15,7 @@ public class DiscussionGameWithWebUITest {
 	// "http://proxy.phoenix.toho.magcruise.org/magcruise-broker";
 	// private static String brokerUrl =
 	// "http://waseda1.magcruise.org/magcruise-broker";
-	private static String webUIUrl = "http://toho.magcruise.org/world/BackendAPIService";
+	private static String webUIUrl = "http://game.magcruise.org/world/BackendAPIService";
 	private static String loginId = "admin";
 
 	private static int maxAutoResponseTime = 1;

@@ -8,8 +8,8 @@ public class CroquetteGameOnLocalWithWebUI {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	private static String brokerUrl = "http://toho.magcruise.org/magcruise-broker";
-	private static String webUI = "http://toho.magcruise.org/world/BackendAPIService";
+	private static String brokerUrl = "http://game.magcruise.org/magcruise-broker";
+	private static String webUI = "http://game.magcruise.org/world/BackendAPIService";
 	private static String loginId = "admin";
 
 	public static void main(String[] args) {
