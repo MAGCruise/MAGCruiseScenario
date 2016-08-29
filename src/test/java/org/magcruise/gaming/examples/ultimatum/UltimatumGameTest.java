@@ -63,16 +63,14 @@ public class UltimatumGameTest {
 	@Test
 	public void testRevert() {
 		int suspendround = 4;
-		GameSession revLauncher = new GameSession(
-				UltimatumGameResourceLoader.class);
+		GameSession revLauncher = new GameSession(UltimatumGameResourceLoader.class);
 		revLauncher.addGameDefinitionInResource("game-definition.scm");
 		revLauncher.addGameDefinitionInResource("test-definition.scm");
 		revLauncher.useAutoInput();
 		revLauncher.setFinalRound(suspendround);
 		revLauncher.startAndWaitForFinish();
 		Path revertCode = revLauncher.getRevertScriptPath();
-		GameSession launcher = new GameSession(
-				UltimatumGameResourceLoader.class);
+		GameSession launcher = new GameSession(UltimatumGameResourceLoader.class);
 		launcher.setBootstrapInResource("game-definition.scm");
 		launcher.addGameDefinitionInResource("test-definition.scm");
 		launcher.addGameDefinition(revertCode);

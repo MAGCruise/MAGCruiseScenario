@@ -13,12 +13,9 @@ import org.magcruise.gaming.ui.model.input.NumberInput;
 public class GameSessionSample {
 
 	public static void main(String[] args) throws Throwable {
-		String webUIUrl = "http://game.magcruise.org/world/BackendAPIService";
-		String brokerUrl = "http://proxy.phoenix.toho.magcruise.org/magcruise-broker";
 
 		GameSession session = new GameSession();
-		session.setBrokerUrl(brokerUrl);
-		session.setWebUI(webUIUrl, "admin", brokerUrl);
+		session.useDefaultPublicWebUI("admin");
 		ActorName playerName = ActorName.of("PlayerOne");
 		session.setTaskFor(playerName, SimplePlayer.class);
 		session.start();

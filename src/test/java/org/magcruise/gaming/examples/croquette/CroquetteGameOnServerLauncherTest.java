@@ -11,14 +11,14 @@ public class CroquetteGameOnServerLauncherTest {
 
 	@Test
 	public void testRunOnServer() {
-		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
+		for (String brokerHost : CroquetteGameTest.brokerHosts) {
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			session.setBrokerUrl(brokerUrl);
-			session.addGameDefinitionInResource("game-definition.scm");
-			session.addGameDefinitionInResource("test-definition.scm");
+			session.setBrokerHost(brokerHost);
+			session.addGameDefinitionsInResource("game-definition.scm", "test-definition.scm");
 			session.setLogConfiguration(Level.INFO, true);
 			session.useAutoInput();
+			session.build();
 			log.info(session.toDefBootstrap());
 			session.startAndWaitForFinish();
 			CroquetteGameOnServerWithWebUITest.getLatestContextAndCheckResult(session);

@@ -10,19 +10,17 @@ public class CroquetteGameOnLocalWithWebUITest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	private static String webUI = "http://game.magcruise.org/world/BackendAPIService";
 	private static String loginId = "admin";
 
 	private static int maxAutoResponseTime = 1;
 
 	@Test
 	public void testGameOnLocalWithWebUI() {
-		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
+		for (String brokerHost : CroquetteGameTest.brokerHosts) {
 			GameSession session = new GameSession(CroquetteGameResourceLoader.class);
-			session.setBrokerUrl(brokerUrl);
-			session.setWebUI(webUI, loginId, brokerUrl);
-			session.addGameDefinitionInResource("game-definition.scm");
-			session.addGameDefinitionInResource("test-definition.scm");
+			session.setBrokerHost(brokerHost);
+			session.useDefaultPublicWebUI(loginId);
+			session.addGameDefinitionsInResource("game-definition.scm", "test-definition.scm");
 			session.setLogConfiguration(Level.INFO);
 			session.useAutoInput(maxAutoResponseTime);
 			ProcessId pid = session.startAndWaitForFinish();

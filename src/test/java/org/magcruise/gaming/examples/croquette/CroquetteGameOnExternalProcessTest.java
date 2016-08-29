@@ -15,10 +15,10 @@ public class CroquetteGameOnExternalProcessTest {
 
 		GameSessionOnExternalProcess session = new GameSessionOnExternalProcess(
 				CroquetteGameResourceLoader.class);
-		session.addGameDefinitionInResource("game-definition.scm");
-		session.addGameDefinitionInResource("test-definition.scm");
+		session.addGameDefinitionsInResource("game-definition.scm", "test-definition.scm");
 		session.setLogConfiguration(Level.INFO, true);
 		session.useAutoInput();
+		session.build();
 		log.info(session.toDefBootstrap());
 		ProcessId pid = session.startAndWaitForFinish();
 		log.debug(pid);

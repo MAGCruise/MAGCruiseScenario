@@ -29,6 +29,7 @@ public class CroquetteGameRevertTest {
 		session.addGameDefinition(revertCode);
 		session.setLogConfiguration(Level.INFO, true);
 		session.useAutoInput();
+		session.build();
 		log.info(session.toDefBootstrap());
 		ProcessId pid = session.startAndWaitForFinish();
 		return pid;

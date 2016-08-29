@@ -24,12 +24,11 @@ public class CroquetteGameTest {
 	public static Integer[] shop2Profits = new Integer[] { 26400, 24000, 9240,
 			12800, 5940, 5360, 7700, 9700, 10600, 5900, 0 };
 
-	protected static H2Client util = SystemEnvironmentUtils
-			.getDefaultH2Client();
+	protected static H2Client util = SystemEnvironmentUtils.getDefaultH2Client();
 
-	public static String[] brokerUrls = {
-			"http://localhost:8080/magcruise-broker",
-			//"http://game.magcruise.org/magcruise-broker"
+	public static String[] brokerHosts = {
+			"localhost:8080",
+			//"game.magcruise.org"
 	};
 
 	@Test
@@ -40,6 +39,7 @@ public class CroquetteGameTest {
 		session.addGameDefinitionInResource("test-definition.scm");
 		session.setLogConfiguration(Level.INFO, true);
 		session.useAutoInput();
+		session.build();
 		log.info(session.toDefBootstrap());
 		ProcessId pid = session.startAndWaitForFinish();
 		checkResult(pid);
@@ -73,12 +73,9 @@ public class CroquetteGameTest {
 	}
 
 	protected static void checkResult(ProcessId pid, int finalRound) {
-		checkFactoryResult(pid, factoryProfits, finalRound + 1,
-				factoryProfits.length);
-		checkShopResult(pid, shop1Profits, "Shop1", finalRound + 1,
-				shop1Profits.length);
-		checkShopResult(pid, shop2Profits, "Shop2", finalRound + 1,
-				shop2Profits.length);
+		checkFactoryResult(pid, factoryProfits, finalRound + 1, factoryProfits.length);
+		checkShopResult(pid, shop1Profits, "Shop1", finalRound + 1, shop1Profits.length);
+		checkShopResult(pid, shop2Profits, "Shop2", finalRound + 1, shop2Profits.length);
 	}
 
 }

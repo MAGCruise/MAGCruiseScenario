@@ -8,6 +8,7 @@ import org.magcruise.gaming.executor.web.AwsSettingsJson;
 import org.magcruise.gaming.manager.session.GameSessionOnServer;
 import org.magcruise.gaming.manager.session.GameSessionsOnServer;
 import org.magcruise.gaming.manager.session.GameSessionsSettings;
+import org.magcruise.gaming.model.def.GameBuilder;
 import org.nkjmlab.util.json.JsonUtils;
 
 import gnu.mapping.Symbol;
@@ -16,9 +17,6 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	//	private static String brokerUrl = "http://game.magcruise.org/magcruise-broker";
-	private static String brokerUrl = "http://localhost:8080/magcruise-broker";
-	private static String webUI = "http://game.magcruise.org/world/BackendAPIService";
 	private static String loginId = "reiko";
 	private static int maxAutoResponseTime = 10;
 
@@ -32,19 +30,18 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 		settings.getSeeds().forEach(seed -> {
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			session.setBrokerUrl(brokerUrl);
-			session.setWebUI(webUI, loginId, brokerUrl);
+			session.useDefaultPublicWebUI(loginId);
 			session.addGameDefinitionInResource("game-definition.scm");
 			session.addGameDefinitionInResource("exp-definition.scm");
 			session.setLogConfiguration(Level.INFO, true);
-			session.build();
-			session.getGameBuilder().addAssignmentRequests(
+			session.useAutoInput(maxAutoResponseTime);
+			GameBuilder gameBuilder = session.build();
+			gameBuilder.addAssignmentRequests(
 					Arrays.asList(Symbol.parse("Factory"),
 							Symbol.parse("Shop1"), Symbol.parse("Shop2")),
 					Arrays.asList(Symbol.parse(seed.getUserIds().get(0)),
 							Symbol.parse(seed.getUserIds().get(1)),
 							Symbol.parse(seed.getUserIds().get(2))));
-			session.useAutoInput(maxAutoResponseTime);
 			sessions.addGameSession(session);
 		});
 		AwsSettingsJson awsSettings = JsonUtils.decode(CroquetteGameResourceLoader.class

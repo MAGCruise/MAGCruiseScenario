@@ -16,7 +16,6 @@ public class CroquetteGameRevertOnServerWithWebUITest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	private static String webUIUrl = "http://game.magcruise.org/world/BackendAPIService";
 	private static String loginId = "admin";
 
 	private static int maxAutoResponseTime = 1;
@@ -25,42 +24,39 @@ public class CroquetteGameRevertOnServerWithWebUITest {
 
 	@Test
 	public void testGameOnServerWithWebUI() {
-		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
+		for (String brokerHost : CroquetteGameTest.brokerHosts) {
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			session.setBrokerUrl(brokerUrl);
-			session.setWebUI(webUIUrl, loginId, brokerUrl);
-			session.addGameDefinitionInResource("game-definition.scm");
-			session.addGameDefinitionInResource("exp-definition.scm");
-			session.addDefGameScript(getRerverScript(brokerUrl));
+			session.setBrokerHost(brokerHost);
+			session.useDefaultPublicWebUI(loginId);
+			session.addGameDefinitionsInResource("game-definition.scm", "test-definition.scm");
+			session.addDefGameScript(getRerverScript(brokerHost));
 			session.setLogConfiguration(Level.INFO, true);
+			session.useAutoInput(maxAutoResponseTime);
 			session.build();
 			session.getGameBuilder().addAssignmentRequests(
 					Arrays.asList(Symbol.parse("Factory"),
 							Symbol.parse("Shop1"), Symbol.parse("Shop2")),
 					Arrays.asList(Symbol.parse("user1"), Symbol.parse("user1"),
 							Symbol.parse("user1")));
-			session.useAutoInput(maxAutoResponseTime);
 			session.startAndWaitForFinish();
-			CroquetteGameOnServerWithWebUITest
-					.getLatestContextAndCheckResult(session);
+			CroquetteGameOnServerWithWebUITest.getLatestContextAndCheckResult(session);
 
 		}
 	}
 
-	private static DefGameScript getRerverScript(String brokerUrl) {
-		GameSessionOnServer launcher = new GameSessionOnServer(
-				CroquetteGameResourceLoader.class);
-		launcher.setBrokerUrl(brokerUrl);
-		launcher.setWebUI(webUIUrl, loginId, brokerUrl);
-		launcher.addGameDefinitionInResource("game-definition.scm");
-		launcher.addGameDefinitionInResource("test-definition.scm");
-		launcher.setLogConfiguration(Level.INFO);
-		launcher.useAutoInput();
-		launcher.setFinalRound(suspendRound);
-		ProcessId pid = launcher.startAndWaitForFinish();
+	private static DefGameScript getRerverScript(String brokerHost) {
+		GameSessionOnServer session = new GameSessionOnServer(CroquetteGameResourceLoader.class);
+		session.setBrokerHost(brokerHost);
+		session.useDefaultPublicWebUI(loginId);
+		session.addGameDefinitionInResource("game-definition.scm");
+		session.addGameDefinitionInResource("test-definition.scm");
+		session.setLogConfiguration(Level.INFO);
+		session.useAutoInput();
+		session.setFinalRound(suspendRound);
+		ProcessId pid = session.startAndWaitForFinish();
 		log.info(pid);
-		DefGameScript def = new DefGameScript(launcher.getLatestContext()
+		DefGameScript def = new DefGameScript(session.getLatestContext()
 				.toSExpressionForRevert(ToExpressionStyle.MULTI_LINE));
 		log.info(def);
 		return def;

@@ -9,24 +9,23 @@ public class CroquetteGameOnServerWithDownloadedJarTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	private static String jarOnWeb = "https://www.dropbox.com/s/gzyxtkqmead2f50/MAGCruiseScenario.jar?dl=1";
+	private static String jarOnWeb = "https://www.dropbox.com/s/l89k6ra1308nh4q/service-game.jar?dl=1";
 
 	@Test
 	public void testRunOnServerWithDownloadedJar() {
-		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
+		for (String brokerHost : CroquetteGameTest.brokerHosts) {
 
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			session.setBrokerUrl(brokerUrl);
 			session.addClasspath(jarOnWeb);
-			session.addGameDefinitionInResource("game-definition.scm");
-			session.addGameDefinitionInResource("test-definition.scm");
+			session.addGameDefinitionsInResource("game-definition.scm", "test-definition.scm");
 			session.setLogConfiguration(Level.INFO, true);
 			session.useAutoInput();
+			session.setBrokerHost(brokerHost);
+			session.build();
 			log.info(session.toDefBootstrap());
 			session.startAndWaitForFinish();
-			CroquetteGameOnServerWithWebUITest
-					.getLatestContextAndCheckResult(session);
+			CroquetteGameOnServerWithWebUITest.getLatestContextAndCheckResult(session);
 		}
 	}
 }

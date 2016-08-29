@@ -12,14 +12,13 @@ public class CroquetteGameOnLocalWithBrokerTest {
 
 	@Test
 	public void testRunWithServer() {
-		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
-			GameSession session = new GameSession(
-					CroquetteGameResourceLoader.class);
-			session.addGameDefinitionInResource("game-definition.scm");
-			session.addGameDefinitionInResource("test-definition.scm");
-			session.setBrokerUrl(brokerUrl);
+		for (String brokerHost : CroquetteGameTest.brokerHosts) {
+			GameSession session = new GameSession(CroquetteGameResourceLoader.class);
+			session.addGameDefinitionsInResource("game-definition.scm", "test-definition.scm");
+			session.setBrokerHost(brokerHost);
 			session.setLogConfiguration(Level.INFO, true);
 			session.useAutoInput();
+			session.build();
 			log.info(session.toDefBootstrap());
 			ProcessId pid = session.startAndWaitForFinish();
 			CroquetteGameTest.checkResult(pid);

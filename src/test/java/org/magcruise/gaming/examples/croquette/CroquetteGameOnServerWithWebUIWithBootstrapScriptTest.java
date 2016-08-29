@@ -10,35 +10,34 @@ public class CroquetteGameOnServerWithWebUIWithBootstrapScriptTest {
 	protected static org.apache.logging.log4j.Logger log = org.apache.logging.log4j.LogManager
 			.getLogger();
 
-	private static String webUIUrl = "http://game.magcruise.org/world/BackendAPIService";
 	private static String loginId = "admin";
 
 	@Test
 	public void testWebUIWithBootstrapScript() {
-		for (String brokerUrl : CroquetteGameTest.brokerUrls) {
+		for (String brokerHost : CroquetteGameTest.brokerHosts) {
 
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
-			session.setBrokerUrl(brokerUrl);
+			session.setBrokerHost(brokerHost);
 
-			DefBootstrapScript bootstrapScript = getDefBootstrapScript(brokerUrl);
+			DefBootstrapScript bootstrapScript = getDefBootstrapScript(brokerHost);
 			session.setDefBootstrapScript(bootstrapScript);
-
+			session.build();
 			log.info(session.toDefBootstrap());
 			session.startAndWaitForFinish();
 			CroquetteGameOnServerWithWebUITest.getLatestContextAndCheckResult(session);
 		}
 	}
 
-	private static DefBootstrapScript getDefBootstrapScript(String brokerUrl) {
+	private static DefBootstrapScript getDefBootstrapScript(String brokerHost) {
 		GameSessionOnServer session = new GameSessionOnServer(
 				CroquetteGameResourceLoader.class);
-		session.setBrokerUrl(brokerUrl);
-		session.setWebUI(webUIUrl, loginId, brokerUrl);
-		session.addGameDefinitionInResource("game-definition.scm");
-		session.addGameDefinitionInResource("test-definition.scm");
+		session.setBrokerHost(brokerHost);
+		session.useDefaultPublicWebUI(loginId);
+		session.addGameDefinitionsInResource("game-definition.scm", "test-definition.scm");
 		session.setLogConfiguration(Level.INFO);
 		session.useAutoInput();
+		session.build();
 		return session.toDefBootstrap();
 	}
 
