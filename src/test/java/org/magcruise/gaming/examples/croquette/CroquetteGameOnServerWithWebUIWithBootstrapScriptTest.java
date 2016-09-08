@@ -19,19 +19,15 @@ public class CroquetteGameOnServerWithWebUIWithBootstrapScriptTest {
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
 			session.setBrokerHost(brokerHost);
-
 			DefBootstrapScript bootstrapScript = getDefBootstrapScript(brokerHost);
 			session.setDefBootstrapScript(bootstrapScript);
-			session.build();
-			log.info(session.toDefBootstrap());
 			session.startAndWaitForFinish();
 			CroquetteGameOnServerWithWebUITest.getLatestContextAndCheckResult(session);
 		}
 	}
 
 	private static DefBootstrapScript getDefBootstrapScript(String brokerHost) {
-		GameSessionOnServer session = new GameSessionOnServer(
-				CroquetteGameResourceLoader.class);
+		GameSessionOnServer session = new GameSessionOnServer(CroquetteGameResourceLoader.class);
 		session.setBrokerHost(brokerHost);
 		session.useDefaultPublicWebUI(loginId);
 		session.addGameDefinitionsInResource("game-definition.scm", "test-definition.scm");

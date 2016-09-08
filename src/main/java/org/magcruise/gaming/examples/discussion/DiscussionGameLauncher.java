@@ -7,12 +7,11 @@ public class DiscussionGameLauncher {
 
 	public static void main(String[] args) {
 
-		GameSession launcher = new GameSession(
-				DiscussionGameResourceLoader.class);
-		launcher.setBootstrapInResource("bootstrap.scm");
-		// launcher.addGameDefinitionInResource("game-definition.scm");
-		launcher.useSwingGui();
-		launcher.start();
+		GameSession session = new GameSession(DiscussionGameResourceLoader.class);
+		session.addGameDefinitionInResource("game-definition.scm");
+		session.addGameDefinitionInResource("test-definition.scm");
+		session.useSwingGui();
+		session.start();
 
 	}
 

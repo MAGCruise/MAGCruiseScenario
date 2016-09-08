@@ -5,7 +5,6 @@ import org.magcruise.gaming.langrid.AccessConfigFactory;
 import org.magcruise.gaming.langrid.client.TranslationClient;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
-import org.magcruise.gaming.model.game.SimpleContext;
 import org.magcruise.gaming.model.game.message.ScenarioEvent;
 import org.magcruise.gaming.ui.model.Form;
 import org.magcruise.gaming.ui.model.attr.SimpleSubmit;
@@ -22,15 +21,15 @@ public class Talker extends Player {
 		client = new TranslationClient("KyotoUJServer");
 	}
 
-	public boolean isStartNegotiation(SimpleContext ctx, ScenarioEvent msg) {
+	public boolean isStartNegotiation(DiscussionRoom ctx, ScenarioEvent msg) {
 		return msg.isNamed(toSymbol("start-negotiation"));
 	}
 
-	public boolean isFinish(SimpleContext ctx, ScenarioEvent msg) {
+	public boolean isFinish(DiscussionRoom ctx, ScenarioEvent msg) {
 		return msg.isNamed(toSymbol("finish-negotiation"));
 	}
 
-	public void negotiation(SimpleContext ctx, ScenarioEvent msg) {
+	public void negotiation(DiscussionRoom ctx, ScenarioEvent msg) {
 
 		syncRequestToInput(new Form("",
 				new TextInput(

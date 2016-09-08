@@ -1,5 +1,7 @@
+(define-alias DiscussionRoom org.magcruise.gaming.examples.discussion.actor.DiscussionRoom)
+
 (define (def:setup-game-builder builder ::GameBuilder)
-    (builder:addDefContext (def:context org.magcruise.gaming.model.game.SimpleContext))
+    (builder:addDefContext (def:context DiscussionRoom))
 
   (setup-players builder)
 
@@ -12,12 +14,11 @@
       (def:stage
          (def:task 'show-msg)))))
 
-(define (show-msg ctx ::Context)
+(define (show-msg ctx ::DiscussionRoom)
   (ctx:showMessageToAll (to-string "roundnum. " ctx:roundnum " is finished.")))
 
-(define (start-stage ctx ::Context)
-  (ctx:sendEvent (ScenarioEvent ctx:name 'Player1 'start-negotiation))
-  (ctx:sendEvent (ScenarioEvent ctx:name 'Player2 'start-negotiation)))
+(define (start-stage ctx ::DiscussionRoom)
+  (ctx:sendStart))
 
 (define (talker-scenario)
   (def:player-scenario 'talker-scenario
@@ -26,6 +27,6 @@
       (def:behavior 'isFinish '!change-scene 'exit)
       (def:default-behavior 'negotiation 'negotiation-scene))))
 
-(define (!change-scene self ::Player ctx ::Context event ::GameEvent)
+(define (!change-scene self ::Player ctx ::DiscussionRoom event ::GameEvent)
     #t)
 

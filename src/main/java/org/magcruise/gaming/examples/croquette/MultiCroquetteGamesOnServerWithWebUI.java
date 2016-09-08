@@ -3,10 +3,10 @@ package org.magcruise.gaming.examples.croquette;
 import java.util.Arrays;
 
 import org.apache.logging.log4j.Level;
+import org.magcruise.gaming.aws.GameSessionsOnServer;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
-import org.magcruise.gaming.executor.web.AwsSettingsJson;
+import org.magcruise.gaming.executor.aws.AwsSettingsJson;
 import org.magcruise.gaming.manager.session.GameSessionOnServer;
-import org.magcruise.gaming.manager.session.GameSessionsOnServer;
 import org.magcruise.gaming.manager.session.GameSessionsSettings;
 import org.magcruise.gaming.model.def.GameBuilder;
 import org.nkjmlab.util.json.JsonUtils;
@@ -23,13 +23,14 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 	public static void main(String[] args) {
 
 		GameSessionsSettings settings = JsonUtils.decode(CroquetteGameResourceLoader.class
-				.getResourceAsStream("settings-many.json"), GameSessionsSettings.class);
+				.getResourceAsStream("settings-mid.json"), GameSessionsSettings.class);
 
 		GameSessionsOnServer sessions = new GameSessionsOnServer();
-
+		
 		settings.getSeeds().forEach(seed -> {
 			GameSessionOnServer session = new GameSessionOnServer(
 					CroquetteGameResourceLoader.class);
+			session.useDefaultLocalBroker();
 			session.useDefaultPublicWebUI(loginId);
 			session.addGameDefinitionInResource("game-definition.scm");
 			session.addGameDefinitionInResource("exp-definition.scm");
@@ -44,6 +45,7 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 							Symbol.parse(seed.getUserIds().get(2))));
 			sessions.addGameSession(session);
 		});
+
 		AwsSettingsJson awsSettings = JsonUtils.decode(CroquetteGameResourceLoader.class
 				.getResourceAsStream("aws-settings.json"), AwsSettingsJson.class);
 		sessions.setAwsSettings(awsSettings);
