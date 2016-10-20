@@ -8,9 +8,10 @@ public class MiscGameLauncher {
 	public static void main(String[] args) {
 		GameSession session = new GameSession(MiscGameResourceLoader.class);
 		// launcher.addGameDefinitionInResource("sample-workflow.scm");
+		session.useDefaultPublicBroker();
+		session.useDefaultPublicWebUI("nishino");
 		session.addGameDefinitionInResource("gui-test.scm");
-		// launcher.addGameDefinitionInResource("sample-workflow-game.scm");
-		session.start();
+		session.startAndWaitForFinish();
 
 	}
 

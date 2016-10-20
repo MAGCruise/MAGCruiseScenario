@@ -9,7 +9,7 @@
 
 (define (gui-test ctx ::Context self ::Player)
   (self:showMessage
-    (<div-class> "alert alert-info"
+    (<div>
       (to-string (<h3> "プレーヤにメッセージを送れます．メッセージにはHTMLタグが使えます．")
                  (<p> "画像の挿入も出来ます．")
                  (<img> "http://www.magcruise.org/jp/wp-content/themes/magcruise/img/logo.png"))))

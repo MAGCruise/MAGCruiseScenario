@@ -8,8 +8,8 @@
   (builder:addDefRounds
     (def:round repeat: 2
       (def:stage type: 'parallel name: 'discussion-stage
-        (def:scenario-task 'Player1 'talker-scenario)
-        (def:scenario-task 'Player2 'talker-scenario)
+        (def:scenario-task 'JapaneseDiscussant 'talker-scenario)
+        (def:scenario-task 'ChineseDiscussant 'talker-scenario)
         (def:task 'start-stage))
       (def:stage
          (def:task 'show-msg)))))

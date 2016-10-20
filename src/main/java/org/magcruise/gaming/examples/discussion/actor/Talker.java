@@ -18,7 +18,8 @@ public class Talker extends Player {
 		super(playerParameter);
 		AccessConfigFactory.setPath(
 				new FishGameResourceLoader().getResource("langrid-conf.json"));
-		client = new TranslationClient("KyotoUJServer");
+		//client = new TranslationClient("KyotoUJServer");
+		client = new TranslationClient("GoogleTranslate");
 	}
 
 	public boolean isStartNegotiation(DiscussionRoom ctx, ScenarioEvent msg) {
@@ -29,29 +30,46 @@ public class Talker extends Player {
 		return msg.isNamed(toSymbol("finish-negotiation"));
 	}
 
+	private String jpLabel = "あなたが相手に伝えたいことを入力して下さい．もし，伝えたいことが何も無ければENDと入力して下さい．";
+	private String zhLabel = null;
+
 	public void negotiation(DiscussionRoom ctx, ScenarioEvent msg) {
+		String label;
+		if (name.toString()
+				.equals(DiscussionRoom.CHINESE_DISCUSSANT.toString())) {
+			if (zhLabel == null) {
+				zhLabel = client.translate("ja", "zh", jpLabel);
+			}
+			label = zhLabel;
+		} else {
+			label = jpLabel;
+		}
 
 		syncRequestToInput(new Form("",
-				new TextInput(
-						"roundnum=" + ctx.getRoundnum()
-								+ ". 相手に伝えたいことを入力して下さい．何も無ければENDと入力して下さい．",
-						"input-msg", "", new SimpleSubmit())),
+				new TextInput(label, "input-msg", "", new SimpleSubmit())),
 				(param) -> {
 					if (param.getArgAsString(0) == "") {
-
-					} else if (name.toString().equals("Player1")) {
-						ctx.showMessageToAll(
+					} else if (name.toString()
+							.equals(DiscussionRoom.JAPANESE_DISCUSSANT.toString())) {
+						String text = param.getArgAsString(0);
+						log.info(text);
+						ctx.showMessage(DiscussionRoom.CHINESE_DISCUSSANT,
 								"<div class='alert alert-success'>" + name
-										+ ": "
-										+ client.translate("ja", "en",
-												param.getArgAsString(0))
+										+ ": " + client.translate("ja", "zh", text)
+										+ "</div>");
+						ctx.showMessage(DiscussionRoom.JAPANESE_DISCUSSANT,
+								"<div class='alert alert-success'>" + name + ": " + text
 										+ "</div>");
 					} else {
-						ctx.showMessageToAll(
-								"<div class='alert alert-info'>" + name + ": "
-										+ client.translate("ja", "en",
-												param.getArgAsString(0))
+						String text = param.getArgAsString(0);
+						log.info(text);
+						ctx.showMessage(DiscussionRoom.JAPANESE_DISCUSSANT,
+								"<div class='alert alert-info'>" + name
+										+ ": " + client.translate("zh", "ja", text)
 										+ "</div>");
+						ctx.showMessage(DiscussionRoom.CHINESE_DISCUSSANT,
+								"<div class='alert alert-info'>" + name
+										+ ": " + text + "</div>");
 
 					}
 

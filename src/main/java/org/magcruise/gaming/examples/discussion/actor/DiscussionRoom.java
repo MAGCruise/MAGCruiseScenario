@@ -7,15 +7,15 @@ import org.magcruise.gaming.model.game.message.ScenarioEvent;
 
 public class DiscussionRoom extends Context {
 
-	private static final ActorName PLAYER_1 = ActorName.of("Player1");
-	private static final ActorName PLAYER_2 = ActorName.of("Player2");
+	public static final ActorName JAPANESE_DISCUSSANT = ActorName.of("JapaneseDiscussant");
+	public static final ActorName CHINESE_DISCUSSANT = ActorName.of("ChineseDiscussant");
 
 	public DiscussionRoom(ContextParameter contextParameter) {
 		super(contextParameter);
 	}
 
 	public void sendStart() {
-		sendEvent(new ScenarioEvent(getName(), PLAYER_1, toSymbol("start-negotiation")));
-		sendEvent(new ScenarioEvent(getName(), PLAYER_2, toSymbol("start-negotiation")));
+		sendEvent(new ScenarioEvent(getName(), JAPANESE_DISCUSSANT, toSymbol("start-negotiation")));
+		sendEvent(new ScenarioEvent(getName(), CHINESE_DISCUSSANT, toSymbol("start-negotiation")));
 	}
 }
