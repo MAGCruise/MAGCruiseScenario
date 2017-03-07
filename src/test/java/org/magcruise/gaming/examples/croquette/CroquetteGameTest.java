@@ -27,7 +27,7 @@ public class CroquetteGameTest {
 	protected static H2Client util = SystemEnvironmentUtils.getDefaultH2Client();
 
 	public static String[] brokerHosts = {
-			"game.magcruise.org",
+			"broker.magcruise.org",
 			"localhost:8080"
 	};
 

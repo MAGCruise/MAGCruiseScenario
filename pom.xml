@@ -14,10 +14,6 @@
 			<id>nkjmlab-public</id>
 			<url>http://maven.nkjmlab.org/nexus/content/groups/public</url>
 		</repository>
-		<repository>
-			<id>nkjmlab-public-mirror</id>
-			<url>http://mirror.maven.nkjmlab.org/nexus/content/groups/public</url>
-		</repository>
 	</repositories>
 	<scm>
 		<connection>scm:git:git@github.com:magcruise/magcruise-scenario.git</connection>

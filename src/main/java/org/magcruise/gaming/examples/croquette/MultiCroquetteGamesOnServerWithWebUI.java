@@ -7,7 +7,7 @@ import org.magcruise.gaming.aws.GameSessionsOnServer;
 import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
 import org.magcruise.gaming.executor.aws.AwsSettingsJson;
 import org.magcruise.gaming.manager.session.GameSessionOnServer;
-import org.magcruise.gaming.manager.session.GameSessionsSettings;
+import org.magcruise.gaming.manager.session.GameSessionsSetting;
 import org.magcruise.gaming.model.def.GameBuilder;
 import org.nkjmlab.util.json.JsonUtils;
 
@@ -22,8 +22,8 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 
 	public static void main(String[] args) {
 
-		GameSessionsSettings settings = JsonUtils.decode(CroquetteGameResourceLoader.class
-				.getResourceAsStream("settings-mid.json"), GameSessionsSettings.class);
+		GameSessionsSetting settings = JsonUtils.decode(CroquetteGameResourceLoader.class
+				.getResourceAsStream("settings-mid.json"), GameSessionsSetting.class);
 
 		GameSessionsOnServer sessions = new GameSessionsOnServer();
 		
