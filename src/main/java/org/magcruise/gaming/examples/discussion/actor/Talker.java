@@ -30,13 +30,12 @@ public class Talker extends Player {
 		return msg.isNamed(toSymbol("finish-negotiation"));
 	}
 
-	private String jpLabel = "あなたが相手に伝えたいことを入力して下さい．もし，伝えたいことが何も無ければENDと入力して下さい．";
+	private String jpLabel = "あなたが相手に伝えたいことを入力して下さい．";
 	private String zhLabel = null;
 
 	public void negotiation(DiscussionRoom ctx, ScenarioEvent msg) {
 		String label;
-		if (name.toString()
-				.equals(DiscussionRoom.CHINESE_DISCUSSANT.toString())) {
+		if (name.toString().contains("Chinese")) {
 			if (zhLabel == null) {
 				zhLabel = client.translate("ja", "zh", jpLabel);
 			}
@@ -48,40 +47,43 @@ public class Talker extends Player {
 		syncRequestToInput(new Form("",
 				new TextInput(label, "input-msg", "", new SimpleSubmit())),
 				(param) -> {
-					if (param.getArgAsString(0) == "") {
-					} else if (name.toString()
-							.equals(DiscussionRoom.JAPANESE_DISCUSSANT.toString())) {
-						String text = param.getArgAsString(0);
-						log.info(text);
-						ctx.showMessage(DiscussionRoom.CHINESE_DISCUSSANT,
-								"<div class='alert alert-success'>" + name
-										+ ": " + client.translate("ja", "zh", text)
-										+ "</div>");
-						ctx.showMessage(DiscussionRoom.JAPANESE_DISCUSSANT,
-								"<div class='alert alert-success'>" + name + ": " + text
-										+ "</div>");
+					String text = param.getArgAsString(0);
+					if (text.length() == 0) {
 					} else {
-						String text = param.getArgAsString(0);
-						log.info(text);
-						ctx.showMessage(DiscussionRoom.JAPANESE_DISCUSSANT,
-								"<div class='alert alert-info'>" + name
-										+ ": " + client.translate("zh", "ja", text)
-										+ "</div>");
-						ctx.showMessage(DiscussionRoom.CHINESE_DISCUSSANT,
-								"<div class='alert alert-info'>" + name
-										+ ": " + text + "</div>");
-
+						ctx.getPlayers()
+								.forEach(player -> sendDiscussionMessage(ctx, player, text));
 					}
+					if (text.equalsIgnoreCase("END")) {
+						ctx.getPlayers()
+								.forEach(player -> sendEvent(
+										new ScenarioEvent(name, player.getName(),
+												toSymbol("finish-negotiation"))));
 
-					if (param.getArgAsString(0).equalsIgnoreCase("END")) {
-						sendEvent(new ScenarioEvent(name, msg.from,
-								toSymbol("finish-negotiation")));
-						sendEvent(new ScenarioEvent(name, msg.to,
-								toSymbol("finish-negotiation")));
 					} else {
 						sendEvent(new ScenarioEvent(name, name, toSymbol("")));
 					}
 				});
+	}
+
+	private void sendDiscussionMessage(DiscussionRoom ctx, Player to, String text) {
+		if (name.toString().contains("Japanese")) {
+			if (to.getName().toString().contains("Japanese")) {
+				ctx.showMessage(to.getName(),
+						"<div class='alert alert-success'>" + name + ": " + text + "</div>");
+			} else {
+				ctx.showMessage(to.getName(), "<div class='alert alert-success'>" + name
+						+ ": " + client.translate("ja", "zh", text) + "</div>");
+			}
+		} else {
+			if (to.getName().toString().contains("Japanese")) {
+				ctx.showMessage(to.getName(), "<div class='alert alert-success'>" + name
+						+ ": " + client.translate("zh", "ja", text) + "</div>");
+			} else {
+				ctx.showMessage(to.getName(),
+						"<div class='alert alert-success'>" + name + ": " + text + "</div>");
+			}
+
+		}
 	}
 
 }
