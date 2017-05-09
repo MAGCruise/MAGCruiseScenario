@@ -12,9 +12,10 @@ public class CroquetteGameOnLocalWithWebUI {
 
 	public static void main(String[] args) {
 		GameSession session = new GameSession(CroquetteGameResourceLoader.class);
+		session.useDefaultLocalBroker();
 		session.useDefaultPublicWebUI(loginId);
 		session.addGameDefinitionInResource("game-definition.scm");
-		session.addGameDefinitionInResource("play-definition.scm");
+		session.addGameDefinitionInResource("exp-definition.scm");
 		session.setLogConfiguration(Level.INFO, true);
 		//session.useAutoInput();
 		session.startAndWaitForFinish();

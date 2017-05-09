@@ -6,16 +6,14 @@ import org.magcruise.gaming.manager.session.GameSessionOnServer;
 
 public class CroquetteGameOnServerWithWebUI {
 
-	private static String brokerHost = "localhost:8080";
-	private static String loginId = "reiko";
+	private static String loginId = "admin";
 
 	public static void main(String[] args) {
 		GameSessionOnServer session = new GameSessionOnServer(CroquetteGameResourceLoader.class);
-		session.setBrokerHost(brokerHost);
+		session.useDefaultPublicBroker();
 		session.useDefaultPublicWebUI(loginId);
-
 		session.addGameDefinitionInResource("game-definition.scm");
-		session.addGameDefinitionInResource("test-definition.scm");
+		session.addGameDefinitionInResource("exp-definition.scm");
 		session.setLogConfiguration(Level.INFO, true);
 		session.startAndWaitForFinish();
 	}
