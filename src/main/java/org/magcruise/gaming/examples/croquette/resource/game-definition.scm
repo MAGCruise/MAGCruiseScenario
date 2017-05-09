@@ -170,7 +170,7 @@
 (define (shop:order-form ctx ::Market self ::Shop) ::Form
   (ui:form
     (to-string  (<h4> ctx:roundnum "日目の発注") self:name "さん，コロッケ工場へ発注する冷凍コロッケの個数(0個～1000個)を入力して下さい．発注したものは，翌々日の販売前に納品される予定です．")
-    (ui:number "個数(冷凍コロッケ)" 'num-of-croquette #!null (Min 0) (Max 1000))))
+    (ui:number "個数(冷凍コロッケ)" 'num-of-croquette #!null (Min 0) (Max 1000) (Required))))
 
 (define (shop:after-order-msg ctx ::Market self ::Shop) ::String
     (<div> class: "alert alert-success" (to-string "冷凍コロッケを" self:numOfOrder "個発注しました．翌々日に納品されます．")))
@@ -178,7 +178,7 @@
 (define (shop:price-form ctx ::Market self ::Shop) ::Form
   (ui:form
     (to-string (<h4> ctx:roundnum "日目の販売価格") self:name "さん，今日のコロッケの販売価格(50円～200円)を決定して下さい．")
-    (ui:number "販売価格(コロッケ)" 'price #!null (Min 50) (Max 200))))
+    (ui:number "販売価格(コロッケ)" 'price #!null (Min 50) (Max 200) (Required))))
 
 (define (shop:after-price-msg ctx ::Market self ::Shop) ::String
     (<div> class: "alert alert-success" (to-string "コロッケ1個の販売価格を" self:price "円に決めました．")))
@@ -191,7 +191,7 @@
 (define (factory:order-form ctx ::Market self ::Factory) ::Form
     (ui:form
       (to-string (<h4> ctx:roundnum "日目の発注") self:name "さん，農場へ発注するじゃがいもの個数(0個～1000個)を入力して下さい．発注したものは，翌日に納品されます．")
-      (ui:number "個数(ジャガイモ)" 'potato #!null (Min 0) (Max 1000))))
+      (ui:number "個数(ジャガイモ)" 'potato #!null (Min 0) (Max 1000)(Required))))
 
 (define (factory:after-order-msg ctx ::Market self ::Factory) ::String
   (<div> class: "alert alert-success" (to-string "じゃがいもを" self:orderOfPotato "個発注しました．翌日に納品されます．")))
