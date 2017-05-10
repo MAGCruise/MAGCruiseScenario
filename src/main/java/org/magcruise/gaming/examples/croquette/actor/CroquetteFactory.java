@@ -14,6 +14,7 @@ import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
+import org.magcruise.gaming.model.game.message.Alert;
 import org.magcruise.gaming.ui.model.Form;
 
 import gnu.mapping.Symbol;
@@ -81,7 +82,7 @@ public class CroquetteFactory extends Player {
 
 	public void order(Market ctx) {
 		ctx.showMessageToAll("{}が{}日目の発注個数を入力しています．", name, ctx.getRoundnum());
-		syncRequestToInput(ctx.createForm("factory:order-form", ctx, this), (param) -> {
+		syncRequestToInput(ctx.createForm("factory:order-form", ctx, this), param -> {
 			this.orderOfPotato = param.getArgAsInt(0);
 			showMessage(ctx.createMessage("factory:after-order-msg",
 					ctx, this));
@@ -89,11 +90,14 @@ public class CroquetteFactory extends Player {
 					this.orderOfPotato));
 			ctx.showMessageToAll("{}が{}日目の発注個数を入力しました．", name,
 					ctx.getRoundnum());
+		}, e -> {
+			showAlertMessage(Alert.DANGER, e.getMessage());
+			order(ctx);
 		});
 	}
 
 	public void receiveOrder(Market ctx) {
-		takeAllMessages(CroquetteOrder.class).forEach((msg) -> {
+		takeAllMessages(CroquetteOrder.class).forEach(msg -> {
 			this.orders.put(msg.from, new Integer(msg.num));
 		});
 		showMessage(tabulate(new String[] { "価格", "発注個数(じゃがいも)", "受注内容" },

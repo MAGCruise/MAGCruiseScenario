@@ -5,6 +5,7 @@ import org.magcruise.gaming.examples.croquette.msg.CroquetteOrder;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
+import org.magcruise.gaming.model.game.message.Alert;
 import org.magcruise.gaming.ui.model.Form;
 
 public class Shop extends Player {
@@ -64,25 +65,28 @@ public class Shop extends Player {
 
 	public void order(Market ctx) {
 		ctx.showMessageToAll("{}が{}日目の注文を入力しています．", name, ctx.getRoundnum());
-		syncRequestToInput(ctx.createForm("shop:order-form", ctx, this), (param) -> {
+		syncRequestToInput(ctx.createForm("shop:order-form", ctx, this), param -> {
 			this.numOfOrder = param.getArgAsInt(0);
-			showMessage(ctx.createMessage("shop:after-order-msg", ctx,
-					this));
-			sendMessage(new CroquetteOrder(name, toActorName("Factory"),
-					this.numOfOrder));
-			ctx.showMessageToAll("{}が{}日目の注文を入力しました．", name,
-					ctx.getRoundnum());
+			showMessage(ctx.createMessage("shop:after-order-msg", ctx, this));
+			sendMessage(new CroquetteOrder(name, toActorName("Factory"), this.numOfOrder));
+			ctx.showMessageToAll("{}が{}日目の注文を入力しました．", name, ctx.getRoundnum());
+		}, e -> {
+			showAlertMessage(Alert.DANGER, e.getMessage());
+			order(ctx);
 		});
 	}
 
 	public void price(Market ctx) {
 		ctx.showMessageToAll("{}が{}日目の販売価格を入力しています．", name, ctx.getRoundnum());
-		syncRequestToInput(ctx.createForm("shop:price-form", ctx, this), (param) -> {
+		syncRequestToInput(ctx.createForm("shop:price-form", ctx, this), param -> {
 			this.price = param.getArgAsInt(0);
 			showMessage(ctx.createMessage("shop:after-price-msg", ctx,
 					this));
 			ctx.showMessageToAll("{}が{}日目の販売価格を入力しました．", name,
 					ctx.getRoundnum());
+		}, e -> {
+			showAlertMessage(Alert.DANGER, e.getMessage());
+			price(ctx);
 		});
 
 	}
