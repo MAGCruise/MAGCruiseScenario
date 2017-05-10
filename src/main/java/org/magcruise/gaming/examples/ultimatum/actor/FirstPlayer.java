@@ -8,6 +8,7 @@ import org.magcruise.gaming.lang.SConstructor;
 import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
+import org.magcruise.gaming.model.game.message.Alert;
 
 public class FirstPlayer extends UltimatumPlayer {
 
@@ -20,17 +21,19 @@ public class FirstPlayer extends UltimatumPlayer {
 	}
 
 	@Override
-	public SConstructor<? extends Player> toConstructor(
-			ToExpressionStyle style) {
-		return SConstructor.toConstructor(style, getClass(),
-				getPlayerParameter(), defaultPropositions);
+	public SConstructor<? extends Player> toConstructor(ToExpressionStyle style) {
+		return SConstructor.toConstructor(style, getClass(), getPlayerParameter(),
+				defaultPropositions);
 	}
 
 	public void note(UltimatumGameContext ctx) {
-		syncRequestToInput(ctx.createForm("note-form", ctx, this), (params) -> {
+		syncRequestToInput(ctx.createForm("note-form", ctx, this), params -> {
 			this.proposition = params.getArgAsInt(0);
-			sendMessage(new FinalNote(name, ActorName.of("SmallBear"),
-					this.proposition));
+			sendMessage(new FinalNote(name, ActorName.of("SmallBear"), this.proposition));
+			showAlertMessage(Alert.INFO, this.proposition + "円を分けると伝えました．" + "返事を待っています．");
+		}, e -> {
+			showAlertMessage(Alert.DANGER, e.getMessage());
+			note(ctx);
 		});
 	}
 

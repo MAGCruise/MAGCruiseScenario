@@ -9,7 +9,7 @@ public class MinorityGameLauncher {
 
 		GameSession launcher = new GameSession(
 				MinorityGameResourceLoader.class);
-		launcher.addGameDefinitionInResource("minority-game.scm");
+		launcher.addGameDefinitionInResource("game-definition.scm");
 		launcher.start();
 
 	}

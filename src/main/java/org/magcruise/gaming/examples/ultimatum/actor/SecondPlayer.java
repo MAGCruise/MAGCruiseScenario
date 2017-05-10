@@ -6,6 +6,7 @@ import java.util.List;
 import org.magcruise.gaming.lang.SConstructor;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
+import org.magcruise.gaming.model.game.message.Alert;
 
 public class SecondPlayer extends UltimatumPlayer {
 
@@ -18,10 +19,12 @@ public class SecondPlayer extends UltimatumPlayer {
 	}
 
 	@Override
-	public SConstructor<? extends Player> toConstructor(
-			ToExpressionStyle style) {
-		return SConstructor.toConstructor(style, getClass(),
-				getPlayerParameter(), defaultYesOrNos);
+	public SConstructor<? extends Player> toConstructor(ToExpressionStyle style) {
+		return SConstructor.toConstructor(style, getClass(), getPlayerParameter(), defaultYesOrNos);
+	}
+
+	public void beforeNegotiation(UltimatumGameContext ctx) {
+		showAlertMessage(Alert.INFO, "相手からの通牒を待っています．");
 	}
 
 	public String getDefaultYesOrNo(int roundnum) {
@@ -33,8 +36,13 @@ public class SecondPlayer extends UltimatumPlayer {
 
 	public void judge(UltimatumGameContext ctx) {
 		syncRequestToInput(ctx.createForm("judge-form", ctx, this, takeMessage()),
-				(params) -> {
+				params -> {
 					this.yesOrNo = params.getArgAsString(0);
+					showAlertMessage(Alert.INFO, this.yesOrNo + "と答えました．");
+				}, e -> {
+					showAlertMessage(Alert.DANGER, e.getMessage());
+					judge(ctx);
 				});
+
 	}
 }

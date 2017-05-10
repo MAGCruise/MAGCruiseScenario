@@ -25,7 +25,7 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 	private static String awsSettingFile = "aws-settings.json";
 
 	public static void main(String[] args) {
-		String setting = args.length == 0 ? "settings-many-2017.json" : args[0];
+		String setting = args.length == 0 ? "settings-mid-2016.json" : args[0];
 
 		GameSessionsSetting settings = JsonUtils.decode(CroquetteGameResourceLoader.class
 				.getResourceAsStream(setting), GameSessionsSetting.class);

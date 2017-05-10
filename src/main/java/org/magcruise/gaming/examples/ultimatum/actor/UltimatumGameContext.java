@@ -12,10 +12,8 @@ public class UltimatumGameContext extends Context {
 	}
 
 	public void paid() {
-		UltimatumPlayer bigBear = (UltimatumPlayer) getPlayer(
-				toActorName("BigBear"));
-		UltimatumPlayer smallBear = (UltimatumPlayer) getPlayer(
-				toActorName("SmallBear"));
+		UltimatumPlayer bigBear = (UltimatumPlayer) getPlayer(toActorName("BigBear"));
+		UltimatumPlayer smallBear = (UltimatumPlayer) getPlayer(toActorName("SmallBear"));
 
 		smallBear.proposition = bigBear.proposition;
 		bigBear.yesOrNo = smallBear.yesOrNo;
@@ -27,8 +25,9 @@ public class UltimatumGameContext extends Context {
 			bigBear.paid(0);
 			smallBear.paid(0);
 		}
-		showMessageToAll(applyProcedure("makeResultMessage",
-				bigBear.acquisition, smallBear.acquisition).toString());
+		showMessageToAll(
+				applyProcedure("makeResultMessage", bigBear.acquisition, smallBear.acquisition)
+						.toString());
 	}
 
 }

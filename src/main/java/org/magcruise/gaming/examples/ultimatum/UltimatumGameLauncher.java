@@ -6,12 +6,10 @@ import org.magcruise.gaming.manager.session.GameSession;
 public class UltimatumGameLauncher {
 
 	public static void main(String[] args) {
-		GameSession session = new GameSession(
-				UltimatumGameResourceLoader.class);
+		GameSession session = new GameSession(UltimatumGameResourceLoader.class);
 		// launcher.setBootstrapInResource("bootstrap.scm");
 		session.addGameDefinitionInResource("game-definition.scm");
 		session.addGameDefinitionInResource("test-definition.scm");
-
 		session.useSwingGui();
 		// launcher.useAutoInput();
 		session.start();
