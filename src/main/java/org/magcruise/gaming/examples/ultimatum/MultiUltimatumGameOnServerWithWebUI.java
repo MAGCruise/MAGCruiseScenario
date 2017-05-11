@@ -1,4 +1,4 @@
-package org.magcruise.gaming.examples.croquette;
+package org.magcruise.gaming.examples.ultimatum;
 
 import java.io.File;
 import java.util.Arrays;
@@ -9,7 +9,7 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.magcruise.gaming.aws.GameSessionsOnServer;
 import org.magcruise.gaming.examples.aws.AwsResourceLoader;
-import org.magcruise.gaming.examples.croquette.resource.CroquetteGameResourceLoader;
+import org.magcruise.gaming.examples.ultimatum.resource.UltimatumGameResourceLoader;
 import org.magcruise.gaming.executor.aws.AwsSettingsJson;
 import org.magcruise.gaming.manager.session.GameSessionOnServer;
 import org.magcruise.gaming.manager.session.GameSessionsSetting;
@@ -20,11 +20,10 @@ import org.nkjmlab.util.time.DateTimeUtils;
 
 import gnu.mapping.Symbol;
 
-public class MultiCroquetteGamesOnServerWithWebUI {
+public class MultiUltimatumGameOnServerWithWebUI {
 	protected static Logger log = LogManager.getLogger();
 
 	private static String loginId = "admin";
-	private static int maxAutoResponseTime = 30;
 
 	private static String awsSettingFile = "aws-settings.json";
 
@@ -32,7 +31,7 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 		GameSessionsSetting settings;
 		if (args.length == 0) {
 			String setting = "settings-mid-2016.json";
-			settings = JsonUtils.decode(CroquetteGameResourceLoader.class
+			settings = JsonUtils.decode(UltimatumGameResourceLoader.class
 					.getResourceAsStream(setting), GameSessionsSetting.class);
 		} else {
 			log.info("Arg file is {}", args[0]);
@@ -45,22 +44,20 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 
 		settings.getSeeds().forEach(seed -> {
 			GameSessionOnServer session = new GameSessionOnServer(
-					CroquetteGameResourceLoader.class);
+					UltimatumGameResourceLoader.class);
 			session.useDefaultLocalBroker();
 			session.useDefaultPublicWebUI(loginId);
 			session.addGameDefinitionInResource("game-definition.scm");
 			session.addGameDefinitionInResource("exp-definition.scm");
 			session.setLogConfiguration(Level.INFO, true);
-			//session.useAutoInput(maxAutoResponseTime);
 			List<Symbol> users = Arrays.asList(Symbol.parse(seed.getUserIds().get(0)),
-					Symbol.parse(seed.getUserIds().get(1)),
-					Symbol.parse(seed.getUserIds().get(2)));
+					Symbol.parse(seed.getUserIds().get(1)));
 			log.info("users={}", users);
-			session.addAssignmentRequests(Arrays.asList(Symbol.parse("Factory"),
-					Symbol.parse("Shop1"), Symbol.parse("Shop2")),
-					users);
+			session.addAssignmentRequests(
+					Arrays.asList(Symbol.parse("BigBear"), Symbol.parse("SmallBear")), users);
 			session.setSessionName(seed.getGroup() + " ("
 					+ DateTimeUtils.toTimestamp(new Date(System.currentTimeMillis())) + ")");
+
 			session.build();
 			sessions.addGameSession(session);
 		});
