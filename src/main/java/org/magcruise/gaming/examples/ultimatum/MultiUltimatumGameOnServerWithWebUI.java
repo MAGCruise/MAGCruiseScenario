@@ -24,15 +24,17 @@ public class MultiUltimatumGameOnServerWithWebUI {
 	protected static Logger log = LogManager.getLogger();
 
 	private static String loginId = "admin";
+	private static int maxAutoResponseTime = 30;
 
 	private static String awsSettingFile = "aws-settings.json";
+
+	private static String defaultSettingFile = "settings-many-2016.json";
 
 	public static void main(String[] args) {
 		GameSessionsSetting settings;
 		if (args.length == 0) {
-			String setting = "settings-mid-2016.json";
 			settings = JsonUtils.decode(UltimatumGameResourceLoader.class
-					.getResourceAsStream(setting), GameSessionsSetting.class);
+					.getResourceAsStream(defaultSettingFile), GameSessionsSetting.class);
 		} else {
 			log.info("Arg file is {}", args[0]);
 			File file = new File(args[0]);
@@ -50,6 +52,8 @@ public class MultiUltimatumGameOnServerWithWebUI {
 			session.addGameDefinitionInResource("game-definition.scm");
 			session.addGameDefinitionInResource("exp-definition.scm");
 			session.setLogConfiguration(Level.INFO, true);
+			//session.useAutoInput(maxAutoResponseTime);
+
 			List<Symbol> users = Arrays.asList(Symbol.parse(seed.getUserIds().get(0)),
 					Symbol.parse(seed.getUserIds().get(1)));
 			log.info("users={}", users);

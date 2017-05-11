@@ -28,12 +28,13 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 
 	private static String awsSettingFile = "aws-settings.json";
 
+	private static String defaultSettingFile = "settings-mid-2016.json";
+
 	public static void main(String[] args) {
 		GameSessionsSetting settings;
 		if (args.length == 0) {
-			String setting = "settings-mid-2016.json";
 			settings = JsonUtils.decode(CroquetteGameResourceLoader.class
-					.getResourceAsStream(setting), GameSessionsSetting.class);
+					.getResourceAsStream(defaultSettingFile), GameSessionsSetting.class);
 		} else {
 			log.info("Arg file is {}", args[0]);
 			File file = new File(args[0]);
