@@ -9,7 +9,7 @@ public class UltimatumGameLauncher {
 		GameSession session = new GameSession(UltimatumGameResourceLoader.class);
 		// launcher.setBootstrapInResource("bootstrap.scm");
 		session.addGameDefinitionInResource("game-definition.scm");
-		session.addGameDefinitionInResource("test-definition.scm");
+		session.addGameDefinitionInResource("exp-definition.scm");
 		session.useSwingGui();
 		// launcher.useAutoInput();
 		session.start();

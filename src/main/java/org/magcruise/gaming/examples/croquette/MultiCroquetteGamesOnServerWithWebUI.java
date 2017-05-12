@@ -2,7 +2,6 @@ package org.magcruise.gaming.examples.croquette;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Level;
@@ -16,7 +15,6 @@ import org.magcruise.gaming.manager.session.GameSessionsSetting;
 import org.nkjmlab.util.io.FileUtils;
 import org.nkjmlab.util.json.JsonUtils;
 import org.nkjmlab.util.log4j.LogManager;
-import org.nkjmlab.util.time.DateTimeUtils;
 
 import gnu.mapping.Symbol;
 
@@ -60,8 +58,7 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 			session.addAssignmentRequests(Arrays.asList(Symbol.parse("Factory"),
 					Symbol.parse("Shop1"), Symbol.parse("Shop2")),
 					users);
-			session.setSessionName(seed.getGroup() + " ("
-					+ DateTimeUtils.toTimestamp(new Date(System.currentTimeMillis())) + ")");
+			session.setSessionName(seed.getGroup());
 			session.build();
 			sessions.addGameSession(session);
 		});

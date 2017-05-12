@@ -2,13 +2,13 @@ package org.magcruise.gaming.examples.ultimatum;
 
 import java.io.File;
 import java.util.Arrays;
-import java.util.Date;
 import java.util.List;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.magcruise.gaming.aws.GameSessionsOnServer;
 import org.magcruise.gaming.examples.aws.AwsResourceLoader;
+import org.magcruise.gaming.examples.ultimatum.actor.UltimatumGameContext;
 import org.magcruise.gaming.examples.ultimatum.resource.UltimatumGameResourceLoader;
 import org.magcruise.gaming.executor.aws.AwsSettingsJson;
 import org.magcruise.gaming.manager.session.GameSessionOnServer;
@@ -16,7 +16,6 @@ import org.magcruise.gaming.manager.session.GameSessionsSetting;
 import org.nkjmlab.util.io.FileUtils;
 import org.nkjmlab.util.json.JsonUtils;
 import org.nkjmlab.util.log4j.LogManager;
-import org.nkjmlab.util.time.DateTimeUtils;
 
 import gnu.mapping.Symbol;
 
@@ -58,9 +57,10 @@ public class MultiUltimatumGameOnServerWithWebUI {
 					Symbol.parse(seed.getUserIds().get(1)));
 			log.info("users={}", users);
 			session.addAssignmentRequests(
-					Arrays.asList(Symbol.parse("BigBear"), Symbol.parse("SmallBear")), users);
-			session.setSessionName(seed.getGroup() + " ("
-					+ DateTimeUtils.toTimestamp(new Date(System.currentTimeMillis())) + ")");
+					Arrays.asList(UltimatumGameContext.FIRST_PLAYER.toSymbol(),
+							UltimatumGameContext.SECOND_PLAYER.toSymbol()),
+					users);
+			session.setSessionName(seed.getGroup());
 
 			session.build();
 			sessions.addGameSession(session);
