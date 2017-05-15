@@ -1,7 +1,9 @@
 package org.magcruise.gaming.examples.ultimatum.actor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.jsoup.nodes.Element;
 import org.magcruise.gaming.examples.ultimatum.msg.FinalNote;
@@ -18,6 +20,11 @@ import org.nkjmlab.util.html.Tags;
 public class SecondPlayer extends UltimatumPlayer {
 
 	public List<Boolean> defaultYesOrNos;
+
+	public SecondPlayer(PlayerParameter playerParameter) {
+		this(playerParameter,
+				Arrays.asList(true, true, true, true, true, true, true, true, true, true));
+	}
 
 	public SecondPlayer(PlayerParameter playerParameter, List<Boolean> yesOrNos) {
 		super(playerParameter);
@@ -41,9 +48,14 @@ public class SecondPlayer extends UltimatumPlayer {
 	}
 
 	public void judge(UltimatumGameContext ctx) {
+		if (isAgent()) {
+			judgeOfAgent(ctx);
+			return;
+		}
+
 		FinalNote msg = takeMessage(FinalNote.class);
-		Element label = Tags.append(Tags.create("p"), Tags.ruby("第", "だい"), "ラウンドです",
-				"こぐま君，<br>おおぐま君は", UltimatumGameContext.providedVal, "円を",
+		Element label = Tags.append(Tags.create("p"), Tags.ruby("第", "だい"), ctx.getRoundnum(),
+				"ラウンドです．<br>", "おおぐま君は", UltimatumGameContext.providedVal, "円を",
 				Tags.ruby("受", "う"), "けとり，あなたに", msg.proposition, "円を", Tags.ruby("分", "わ"),
 				"けると言いました．", "受けとりますか？",
 				Tags.create("div").attr("class", "pull-right").append(Tags.create("img")
@@ -61,5 +73,9 @@ public class SecondPlayer extends UltimatumPlayer {
 					showAlertMessage(Alert.DANGER, e.getMessage());
 					judge(ctx);
 				});
+	}
+
+	private void judgeOfAgent(UltimatumGameContext ctx) {
+		this.yesOrNo = new Random().nextInt(2) % 2 == 0 ? "yes" : "no";
 	}
 }

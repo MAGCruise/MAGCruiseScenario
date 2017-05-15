@@ -8,7 +8,8 @@
 (define (def:setup-game-builder game-builder ::GameBuilder)
   (game-builder:addDefContext (def:context org.magcruise.gaming.examples.ultimatum.actor.UltimatumGameContext))
 
-  (setup-players game-builder)
+  (when (environment-bound? (interaction-environment) 'setup-players)
+    (setup-players game-builder))
 
   (game-builder:addDefRounds
     (def:round

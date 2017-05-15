@@ -8,11 +8,15 @@ import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.magcruise.gaming.aws.GameSessionsOnServer;
 import org.magcruise.gaming.examples.aws.AwsResourceLoader;
+import org.magcruise.gaming.examples.ultimatum.actor.FirstPlayer;
+import org.magcruise.gaming.examples.ultimatum.actor.SecondPlayer;
 import org.magcruise.gaming.examples.ultimatum.actor.UltimatumGameContext;
 import org.magcruise.gaming.examples.ultimatum.resource.UltimatumGameResourceLoader;
 import org.magcruise.gaming.executor.aws.AwsSettingsJson;
 import org.magcruise.gaming.manager.session.GameSessionOnServer;
 import org.magcruise.gaming.manager.session.GameSessionsSetting;
+import org.magcruise.gaming.model.def.actor.DefPlayer;
+import org.magcruise.gaming.model.game.Player.PlayerType;
 import org.nkjmlab.util.io.FileUtils;
 import org.nkjmlab.util.json.JsonUtils;
 import org.nkjmlab.util.log4j.LogManager;
@@ -27,7 +31,7 @@ public class MultiUltimatumGameOnServerWithWebUI {
 
 	private static String awsSettingFile = "aws-settings.json";
 
-	private static String defaultSettingFile = "settings-many-2016.json";
+	private static String defaultSettingFile = "settings-all-2017.json";
 
 	public static void main(String[] args) {
 		GameSessionsSetting settings;
@@ -49,12 +53,22 @@ public class MultiUltimatumGameOnServerWithWebUI {
 			session.useDefaultLocalBroker();
 			session.useDefaultPublicWebUI(loginId);
 			session.addGameDefinitionInResource("game-definition.scm");
-			session.addGameDefinitionInResource("exp-definition.scm");
+
 			session.setLogConfiguration(Level.INFO, true);
 			//session.useAutoInput(maxAutoResponseTime);
 
-			List<Symbol> users = Arrays.asList(Symbol.parse(seed.getUserIds().get(0)),
-					Symbol.parse(seed.getUserIds().get(1)));
+			String firstPlayerUserId = seed.getUserIds().get(0);
+			String secondPlayerUserId = seed.getUserIds().get(1);
+
+			session.addDefPlayer(new DefPlayer(UltimatumGameContext.FIRST_PLAYER,
+					getPlayerType(firstPlayerUserId), FirstPlayer.class));
+
+			session.addDefPlayer(new DefPlayer(UltimatumGameContext.SECOND_PLAYER,
+					getPlayerType(secondPlayerUserId), SecondPlayer.class));
+
+			List<Symbol> users = Arrays.asList(Symbol.parse(removeAgentString(firstPlayerUserId)),
+					Symbol.parse(removeAgentString(secondPlayerUserId)));
+
 			log.info("users={}", users);
 			session.addAssignmentRequests(
 					Arrays.asList(UltimatumGameContext.FIRST_PLAYER.toSymbol(),
@@ -67,9 +81,18 @@ public class MultiUltimatumGameOnServerWithWebUI {
 		});
 
 		AwsSettingsJson awsSettings = JsonUtils.decode(AwsResourceLoader.class
-				.getResourceAsStream(awsSettingFile), AwsSettingsJson.class);
+				.getResourceAsStream(awsSettingFile),
+				AwsSettingsJson.class);
 		sessions.setAwsSettings(awsSettings);
 		sessions.start();
 
+	}
+
+	private static PlayerType getPlayerType(String userId) {
+		return userId.startsWith("AGENT") ? PlayerType.AGENT : PlayerType.HUMAN;
+	}
+
+	private static String removeAgentString(String userId) {
+		return userId.startsWith("AGENT") ? userId.replaceFirst("AGENT", "") : userId;
 	}
 }

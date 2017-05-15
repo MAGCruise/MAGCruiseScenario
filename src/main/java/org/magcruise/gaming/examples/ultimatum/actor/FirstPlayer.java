@@ -1,7 +1,9 @@
 package org.magcruise.gaming.examples.ultimatum.actor;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Random;
 
 import org.jsoup.nodes.Element;
 import org.magcruise.gaming.examples.ultimatum.msg.FinalNote;
@@ -20,8 +22,12 @@ public class FirstPlayer extends UltimatumPlayer {
 
 	public List<Integer> defaultPropositions;
 
-	public FirstPlayer(PlayerParameter playerParameter,
-			List<Integer> propositions) {
+	public FirstPlayer(PlayerParameter playerParameter) {
+		this(playerParameter,
+				Arrays.asList(null, null, null, null, null, null, null, null, null, null));
+	}
+
+	public FirstPlayer(PlayerParameter playerParameter, List<Integer> propositions) {
 		super(playerParameter);
 		this.defaultPropositions = new ArrayList<>(propositions);
 	}
@@ -33,8 +39,14 @@ public class FirstPlayer extends UltimatumPlayer {
 	}
 
 	public void note(UltimatumGameContext ctx) {
-		Element label = Tags.append(Tags.create("p"), Tags.ruby("第", "だい"), "ラウンドです",
-				"おおぐま君，<br>あなたは", UltimatumGameContext.providedVal, "円を",
+		if (isAgent()) {
+			noteOfAgent(ctx);
+			return;
+		}
+
+		Element label = Tags.append(Tags.create("p"), Tags.ruby("第", "だい"), ctx.getRoundnum(),
+				"ラウンドです．<br>",
+				"あなたは", UltimatumGameContext.providedVal, "円を",
 				Tags.ruby("受", "う"), "けとりました．こぐま君にいくらを", Tags.ruby("分", "わ"),
 				"けますか？",
 				Tags.create("div").attr("class", "pull-right").append(Tags.create("img")
@@ -55,9 +67,9 @@ public class FirstPlayer extends UltimatumPlayer {
 		});
 	}
 
-	private void build() {
-		// TODO 自動生成されたメソッド・スタブ
-
+	private void noteOfAgent(UltimatumGameContext ctx) {
+		this.proposition = new Random().nextInt(10) * (UltimatumGameContext.providedVal) / 10;
+		sendMessage(new FinalNote(name, UltimatumGameContext.SECOND_PLAYER, this.proposition));
 	}
 
 }
