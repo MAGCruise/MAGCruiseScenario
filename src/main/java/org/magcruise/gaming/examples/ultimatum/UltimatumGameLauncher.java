@@ -14,9 +14,9 @@ public class UltimatumGameLauncher {
 		GameSession session = new GameSession(UltimatumGameResourceLoader.class);
 		// launcher.setBootstrapInResource("bootstrap.scm");
 		session.addGameDefinitionInResource("game-definition.scm");
-		session.addDefPlayer(new DefPlayer(ActorName.of("FirstPlayer"), PlayerType.AGENT,
+		session.addDefPlayer(new DefPlayer(ActorName.of("FirstPlayer"), PlayerType.HUMAN,
 				FirstPlayer.class));
-		session.addDefPlayer(new DefPlayer(ActorName.of("SecondPlayer"), PlayerType.AGENT,
+		session.addDefPlayer(new DefPlayer(ActorName.of("SecondPlayer"), PlayerType.HUMAN,
 				SecondPlayer.class));
 
 		session.useSwingGui();

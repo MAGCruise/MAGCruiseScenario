@@ -8,6 +8,7 @@ import java.util.Random;
 import org.jsoup.nodes.Element;
 import org.magcruise.gaming.examples.ultimatum.msg.FinalNote;
 import org.magcruise.gaming.lang.SConstructor;
+import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.message.Alert;
@@ -21,6 +22,7 @@ import org.nkjmlab.util.html.Tags;
 public class FirstPlayer extends UltimatumPlayer {
 
 	public List<Integer> defaultPropositions;
+	public static final ActorName FIRST_PLAYER = ActorName.of("FirstPlayer");
 
 	public FirstPlayer(PlayerParameter playerParameter) {
 		this(playerParameter,
@@ -59,7 +61,7 @@ public class FirstPlayer extends UltimatumPlayer {
 
 		syncRequestToInput(new Form(label.toString(), input), params -> {
 			this.proposition = params.getArgAsInt(0);
-			sendMessage(new FinalNote(name, UltimatumGameContext.SECOND_PLAYER, this.proposition));
+			sendMessage(new FinalNote(name, SecondPlayer.SECOND_PLAYER, this.proposition));
 			showAlertMessage(Alert.INFO, this.proposition + "円を分けると伝えました．" + "返事を待っています．");
 		}, e -> {
 			showAlertMessage(Alert.DANGER, e.getMessage());
@@ -69,7 +71,7 @@ public class FirstPlayer extends UltimatumPlayer {
 
 	private void noteOfAgent(UltimatumGameContext ctx) {
 		this.proposition = new Random().nextInt(10) * (UltimatumGameContext.providedVal) / 10;
-		sendMessage(new FinalNote(name, UltimatumGameContext.SECOND_PLAYER, this.proposition));
+		sendMessage(new FinalNote(name, SecondPlayer.SECOND_PLAYER, this.proposition));
 	}
 
 }

@@ -10,7 +10,6 @@ import org.magcruise.gaming.aws.GameSessionsOnServer;
 import org.magcruise.gaming.examples.aws.AwsResourceLoader;
 import org.magcruise.gaming.examples.ultimatum.actor.FirstPlayer;
 import org.magcruise.gaming.examples.ultimatum.actor.SecondPlayer;
-import org.magcruise.gaming.examples.ultimatum.actor.UltimatumGameContext;
 import org.magcruise.gaming.examples.ultimatum.resource.UltimatumGameResourceLoader;
 import org.magcruise.gaming.executor.aws.AwsSettingsJson;
 import org.magcruise.gaming.manager.session.GameSessionOnServer;
@@ -60,10 +59,10 @@ public class MultiUltimatumGameOnServerWithWebUI {
 			String firstPlayerUserId = seed.getUserIds().get(0);
 			String secondPlayerUserId = seed.getUserIds().get(1);
 
-			session.addDefPlayer(new DefPlayer(UltimatumGameContext.FIRST_PLAYER,
+			session.addDefPlayer(new DefPlayer(FirstPlayer.FIRST_PLAYER,
 					getPlayerType(firstPlayerUserId), FirstPlayer.class));
 
-			session.addDefPlayer(new DefPlayer(UltimatumGameContext.SECOND_PLAYER,
+			session.addDefPlayer(new DefPlayer(SecondPlayer.SECOND_PLAYER,
 					getPlayerType(secondPlayerUserId), SecondPlayer.class));
 
 			List<Symbol> users = Arrays.asList(Symbol.parse(removeAgentString(firstPlayerUserId)),
@@ -71,8 +70,8 @@ public class MultiUltimatumGameOnServerWithWebUI {
 
 			log.info("users={}", users);
 			session.addAssignmentRequests(
-					Arrays.asList(UltimatumGameContext.FIRST_PLAYER.toSymbol(),
-							UltimatumGameContext.SECOND_PLAYER.toSymbol()),
+					Arrays.asList(FirstPlayer.FIRST_PLAYER.toSymbol(),
+							SecondPlayer.SECOND_PLAYER.toSymbol()),
 					users);
 			session.setSessionName(seed.getGroup());
 

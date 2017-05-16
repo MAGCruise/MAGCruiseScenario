@@ -13,7 +13,7 @@ public abstract class UltimatumPlayer extends Player {
 	public volatile int proposition;
 
 	@HistoricalField(name = "<ruby><rb>返事</rb><rp>(</rp><rt>へんじ</rt><rp>)</rp>")
-	public volatile String yesOrNo;
+	public volatile Response yesOrNo;
 
 	@HistoricalField(name = "<ruby><rb>今回</rb><rp>(</rp><rt>こんかい</rt><rp>)</rp>手に入れたお金")
 	public volatile int acquisition;
@@ -25,7 +25,7 @@ public abstract class UltimatumPlayer extends Player {
 	public void status(UltimatumGameContext ctx) {
 		showMessage(tabulateHistory());
 		proposition = 0;
-		yesOrNo = "";
+		yesOrNo = null;
 		acquisition = 0;
 	}
 

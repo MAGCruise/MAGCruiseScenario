@@ -8,6 +8,7 @@ import java.util.Random;
 import org.jsoup.nodes.Element;
 import org.magcruise.gaming.examples.ultimatum.msg.FinalNote;
 import org.magcruise.gaming.lang.SConstructor;
+import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.message.Alert;
@@ -19,14 +20,16 @@ import org.nkjmlab.util.html.Tags;
 
 public class SecondPlayer extends UltimatumPlayer {
 
-	public List<Boolean> defaultYesOrNos;
+	public List<Response> defaultYesOrNos;
+	public static final ActorName SECOND_PLAYER = ActorName.of("SecondPlayer");
 
 	public SecondPlayer(PlayerParameter playerParameter) {
 		this(playerParameter,
-				Arrays.asList(true, true, true, true, true, true, true, true, true, true));
+				Arrays.asList(Response.YES, Response.YES, Response.YES, Response.YES, Response.YES,
+						Response.YES, Response.YES, Response.YES, Response.YES, Response.YES));
 	}
 
-	public SecondPlayer(PlayerParameter playerParameter, List<Boolean> yesOrNos) {
+	public SecondPlayer(PlayerParameter playerParameter, List<Response> yesOrNos) {
 		super(playerParameter);
 		this.defaultYesOrNos = new ArrayList<>(yesOrNos);
 	}
@@ -40,11 +43,8 @@ public class SecondPlayer extends UltimatumPlayer {
 		showAlertMessage(Alert.INFO, "相手からの通牒を待っています．");
 	}
 
-	public String getDefaultYesOrNo(int roundnum) {
-		if (defaultYesOrNos.get(roundnum)) {
-			return "yes";
-		}
-		return "no";
+	public Response getDefaultYesOrNo(int roundnum) {
+		return defaultYesOrNos.get(roundnum);
 	}
 
 	public void judge(UltimatumGameContext ctx) {
@@ -62,12 +62,13 @@ public class SecondPlayer extends UltimatumPlayer {
 						.attr("src", "https://i.gyazo.com/d4cf1336d68f315fc9a88ba446f69488.jpg")
 						.toString()));
 		Input input = new RadioInput(Tags.ruby("受", "う").append("けとる？").toString(), "yes-or-no",
-				getDefaultYesOrNo(ctx.getRoundnum()), new String[] { "yes", "no" },
-				new String[] { "yes", "no" }, new Required());
+				getDefaultYesOrNo(ctx.getRoundnum()).toString(),
+				new String[] { Response.YES.toString(), Response.NO.toString() },
+				new String[] { Response.YES.toString(), Response.NO.toString() }, new Required());
 
 		syncRequestToInput(new Form(label.toString(), input),
 				params -> {
-					this.yesOrNo = params.getArgAsString(0);
+					this.yesOrNo = Response.valueOf(params.getArgAsString(0).toUpperCase());
 					showAlertMessage(Alert.INFO, this.yesOrNo + "と答えました．");
 				}, e -> {
 					showAlertMessage(Alert.DANGER, e.getMessage());
@@ -76,6 +77,6 @@ public class SecondPlayer extends UltimatumPlayer {
 	}
 
 	private void judgeOfAgent(UltimatumGameContext ctx) {
-		this.yesOrNo = new Random().nextInt(2) % 2 == 0 ? "yes" : "no";
+		this.yesOrNo = new Random().nextInt(2) % 2 == 0 ? Response.YES : Response.NO;
 	}
 }
