@@ -30,7 +30,8 @@ public class MultiUltimatumGameOnServerWithWebUI {
 
 	private static String awsSettingFile = "aws-settings.json";
 
-	private static String defaultSettingFile = "settings-all-2017.json";
+	//private static String defaultSettingFile = "settings-all-anonymous-2017.json";
+	private static String defaultSettingFile = "settings-all-anonymous-2017-2nd.json";
 
 	public static void main(String[] args) {
 		GameSessionsSetting settings;
@@ -43,6 +44,11 @@ public class MultiUltimatumGameOnServerWithWebUI {
 			settings = JsonUtils.decode(FileUtils.getFileReader(file),
 					GameSessionsSetting.class);
 		}
+		execGames(settings);
+
+	}
+
+	public static void execGames(GameSessionsSetting settings) {
 
 		GameSessionsOnServer sessions = new GameSessionsOnServer();
 
@@ -73,7 +79,7 @@ public class MultiUltimatumGameOnServerWithWebUI {
 					Arrays.asList(FirstPlayer.FIRST_PLAYER.toSymbol(),
 							SecondPlayer.SECOND_PLAYER.toSymbol()),
 					users);
-			session.setSessionName(seed.getGroup());
+			session.setSessionName(seed.getSessionName());
 
 			session.build();
 			sessions.addGameSession(session);
@@ -84,7 +90,6 @@ public class MultiUltimatumGameOnServerWithWebUI {
 				AwsSettingsJson.class);
 		sessions.setAwsSettings(awsSettings);
 		sessions.start();
-
 	}
 
 	private static PlayerType getPlayerType(String userId) {

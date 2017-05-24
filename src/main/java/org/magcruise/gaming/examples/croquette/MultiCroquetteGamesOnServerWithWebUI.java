@@ -58,7 +58,7 @@ public class MultiCroquetteGamesOnServerWithWebUI {
 			session.addAssignmentRequests(Arrays.asList(Symbol.parse("Factory"),
 					Symbol.parse("Shop1"), Symbol.parse("Shop2")),
 					users);
-			session.setSessionName(seed.getGroup());
+			session.setSessionName(seed.getSessionName());
 			session.build();
 			sessions.addGameSession(session);
 		});
