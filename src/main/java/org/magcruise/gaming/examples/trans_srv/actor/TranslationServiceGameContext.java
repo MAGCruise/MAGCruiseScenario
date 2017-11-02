@@ -18,13 +18,11 @@ public class TranslationServiceGameContext extends Context {
 	}
 
 	public void clearing() {
-		getPlayers().forEach(p -> {
-			TranslationServiceGamePlayer player = (TranslationServiceGamePlayer) p;
-			funds += player.investment;
+		getPlayers(TranslationServiceGamePlayer.class).forEach(p -> {
+			funds += p.investment;
 		});
 
-		getPlayers().getPlayers(TranslationServiceGamePlayer.class).forEach(player -> {
-
+		getPlayers(TranslationServiceGamePlayer.class).forEach(player -> {
 			double rightOfUse;
 			if (getRoundnum() <= 10) {
 				rightOfUse = 200;
@@ -56,7 +54,6 @@ public class TranslationServiceGameContext extends Context {
 					player.score = 4;
 				}
 			}
-
 		});
 	}
 

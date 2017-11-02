@@ -6,9 +6,9 @@ import java.util.List;
 import org.magcruise.gaming.examples.trans_srv.resource.TranslationServiceGameResourceLoader;
 import org.magcruise.gaming.langrid.AccessConfigFactory;
 import org.magcruise.gaming.langrid.client.TranslationClient;
-import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
+import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.ui.model.FormBuilder;
 import org.magcruise.gaming.ui.model.attr.Max;
 import org.magcruise.gaming.ui.model.attr.Min;
@@ -17,15 +17,6 @@ import org.magcruise.gaming.ui.model.input.NumberInput;
 import org.magcruise.gaming.ui.model.input.RadioInput;
 
 public class TranslationServiceGamePlayer extends Player {
-
-	public static void main(String[] args) {
-		AccessConfigFactory.setPath(new TranslationServiceGameResourceLoader()
-				.getResource("langrid-conf.json"));
-		TranslationClient client = new TranslationClient("KyotoUJServer");
-
-		log.debug(client.translate("ja", "ko", "こんにちは"));
-
-	}
 
 	@HistoricalField(name = "口座(トークン)")
 	public volatile int account = 0;
@@ -42,8 +33,13 @@ public class TranslationServiceGamePlayer extends Player {
 	@HistoricalField(name = "スコア(合計点)", visible = false)
 	public volatile int sumOfScore = 0;
 
+	private TranslationClient client;
+
 	public TranslationServiceGamePlayer(PlayerParameter playerParameter) {
 		super(playerParameter);
+		AccessConfigFactory.setPath(new TranslationServiceGameResourceLoader()
+				.getResource("langrid-conf.json"));
+		client = new TranslationClient("KyotoUJServer");
 	}
 
 	public void beforeRound(TranslationServiceGameContext ctx) {
@@ -59,38 +55,28 @@ public class TranslationServiceGamePlayer extends Player {
 	}
 
 	public void afterRound(TranslationServiceGameContext ctx) {
-		AccessConfigFactory.setPath(new TranslationServiceGameResourceLoader()
-				.getResource("langrid-conf.json"));
-		TranslationClient client = new TranslationClient("KyotoUJServer");
 
 		String sentence;
 		if (ctx.getRoundnum() <= 15) {
-			sentence = client.translate("ja", "ko",
-					getScentence(ctx.getRoundnum()));
+			sentence = client.translate("ja", "ko", getScentence(ctx.getRoundnum()));
 		} else if (ctx.getRoundnum() <= 20) {
 			if (ctx.funds < 200) {
-				sentence = client.translate("ja", "zh",
-						getScentence(ctx.getRoundnum()));
+				sentence = client.translate("ja", "zh", getScentence(ctx.getRoundnum()));
 			} else if (ctx.funds < 300) {
-				sentence = client.translate("ja", "en",
-						getScentence(ctx.getRoundnum()));
+				sentence = client.translate("ja", "en", getScentence(ctx.getRoundnum()));
 			} else {
-				sentence = client.translate("ja", "ko",
-						getScentence(ctx.getRoundnum()));
+				sentence = client.translate("ja", "ko", getScentence(ctx.getRoundnum()));
 
 			}
 		} else {
 			if (ctx.funds == 0) {
 				sentence = getScentence(ctx.getRoundnum());
 			} else if (ctx.funds < 200) {
-				sentence = client.translate("ja", "zh",
-						getScentence(ctx.getRoundnum()));
+				sentence = client.translate("ja", "zh", getScentence(ctx.getRoundnum()));
 			} else if (ctx.funds < 300) {
-				sentence = client.translate("ja", "en",
-						getScentence(ctx.getRoundnum()));
+				sentence = client.translate("ja", "en", getScentence(ctx.getRoundnum()));
 			} else {
-				sentence = client.translate("ja", "ko",
-						getScentence(ctx.getRoundnum()));
+				sentence = client.translate("ja", "ko", getScentence(ctx.getRoundnum()));
 			}
 		}
 
@@ -158,7 +144,7 @@ public class TranslationServiceGamePlayer extends Player {
 		showMessage("今回のラウンドで受けとった翻訳文 : <br>「" + sentence + "」");
 	}
 
-	private List<String> sentences = Arrays.asList(new String[] {
+	private List<String> sentences = Arrays.asList(
 			"菌には、いろいろな種類があります。稲に被害を及ぼす菌としては、いもち病菌や紋枯病菌などがあります。菌は、カビであり、簡単に増殖するので、適切な防除をしないと被害が大きくなります。",
 			"玄米につやがあり、全体が白く濁っているのなら、モチ米ではないでしょうか。あるいは、玄米の中は透明で外側だけ白く濁っているのなら、乳白米と言うものであり、あまり品質は良くありません。",
 			"コブノメイガは、葉が白くなりますが、暫くすると稲が回復します。コブノメイガの幼虫を見つけたら、すぐに農薬を散布することです。コブノメイガの幼虫が小さい時に農薬をまくのが効果的です。",
@@ -169,6 +155,6 @@ public class TranslationServiceGamePlayer extends Player {
 			"収穫後の稲を乾燥させる期間は、その場所の状況によって異なります。ゆっくり、無理なく乾燥させるなら2週間ほどかかりましょうか。籾の水分15％が理想的です。刈り取った稲は、棒などにかけ2週間、天日と風で乾燥させます。",
 			"稲の病気は小さな苗の時から、生育に従っていろいろな病気が出ます。穂が出る頃、また実る頃出る病気もあります。例えばイモチ病は風通しが悪く湿度が高いと出やすいです．",
 			"縞はがれ病は6月下旬から9月下旬にかけて発生します。",
-			"今、ベトナムで市販されている殺虫剤の種類は分かりませんが、害虫の種類によって使う殺虫剤は異なります。殺虫剤の種類には、殺虫剤を虫に直接かけるもの、植物に直接かけるもの、土にまくもの、そして虫が好きな餌に混ぜるものがあります。" });
+			"今、ベトナムで市販されている殺虫剤の種類は分かりませんが、害虫の種類によって使う殺虫剤は異なります。殺虫剤の種類には、殺虫剤を虫に直接かけるもの、植物に直接かけるもの、土にまくもの、そして虫が好きな餌に混ぜるものがあります。");
 
 }

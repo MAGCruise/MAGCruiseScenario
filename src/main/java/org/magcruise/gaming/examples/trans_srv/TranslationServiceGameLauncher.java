@@ -9,9 +9,8 @@ public class TranslationServiceGameLauncher {
 		GameSession session = new GameSession(
 				TranslationServiceGameResourceLoader.class);
 		session.addGameDefinitionInResource("game-definition.scm");
-		session.addGameDefinitionInResource("connect-to-webui-sample.scm");
-		// launcher.useSwingGui();
-		// launcher.useAutoInput();
+		session.useSwingGui();
+		// session.useAutoInput();
 		session.start();
 
 	}
