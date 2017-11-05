@@ -10,7 +10,7 @@ public class TranslationServiceGameLauncher {
 				TranslationServiceGameResourceLoader.class);
 		session.addGameDefinitionInResource("game-definition.scm");
 		session.useSwingGui();
-		// session.useAutoInput();
+		session.useAutoInput();
 		session.start();
 
 	}

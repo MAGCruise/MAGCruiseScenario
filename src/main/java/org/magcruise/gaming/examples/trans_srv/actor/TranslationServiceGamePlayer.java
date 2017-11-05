@@ -42,20 +42,30 @@ public class TranslationServiceGamePlayer extends Player {
 		client = new TranslationClient("KyotoUJServer");
 	}
 
+	public void initialize(TranslationServiceGameContext ctx) {
+		showMessage("ゲームを開始します.");
+	}
+
 	public void beforeRound(TranslationServiceGameContext ctx) {
 		account += 100;
 		investment = 0;
 		rightOfUse = 0;
-		showMessage("rd. " + ctx.getRoundnum() + " の開始です．");
+		showMessage("rd. {} の開始です．", ctx.getRoundnum());
 		if (ctx.getRoundnum() != 0) {
-			showMessage("前回までのラウンドのまとめです．" + tabulateHistory());
+			showMessage("前回までのラウンドのまとめです． {}", tabulateHistory());
 		}
-		showMessage(
-				"次の文章を翻訳します: <br>「" + getScentence(ctx.getRoundnum()) + "」");
+		showMessage("次の文章を翻訳します: <br>「 {} 」", getScentence(ctx.getRoundnum()));
 	}
 
 	public void afterRound(TranslationServiceGameContext ctx) {
+		showMessagesOfRound(ctx);
+		account += rightOfUse;
+		account -= investment;
+		sumOfScore += score;
 
+	}
+
+	private void showMessagesOfRound(TranslationServiceGameContext ctx) {
 		String sentence;
 		if (ctx.getRoundnum() <= 15) {
 			sentence = client.translate("ja", "ko", getScentence(ctx.getRoundnum()));
@@ -80,20 +90,13 @@ public class TranslationServiceGamePlayer extends Player {
 			}
 		}
 
-		showMessagesOfRound(ctx.getRoundnum(), sentence);
-
-		account += rightOfUse;
-		account -= investment;
-		sumOfScore += score;
-
-	}
-
-	public void initialize(TranslationServiceGameContext ctx) {
-		showMessage("ゲームを開始します.");
+		showMessage("今回のラウンドで寄付金として， {} トークンを寄付しました．", investment);
+		showMessage("今回のラウンドで利用権として，{} トークンを獲得しました．", rightOfUse);
+		showMessage("今回のラウンドで受けとった翻訳文 : <br>「{}」", sentence);
 	}
 
 	// 最終的な結果を出力する
-	public void end(TranslationServiceGameContext ctx) {
+	public void finishGame(TranslationServiceGameContext ctx) {
 		if (sumOfScore <= 5) {
 			account += 0;
 		} else if (sumOfScore <= 10) {
@@ -103,32 +106,27 @@ public class TranslationServiceGamePlayer extends Player {
 		} else if (sumOfScore <= 30) {
 			account += 10000;
 		}
-		showMessage("最終的な結果．" + tabulateHistory());
-		showMessage("スコア :" + sumOfScore);
+		showMessage("最終的な結果：{}", tabulateHistory());
+		showMessage("スコア :{}", sumOfScore);
 	}
 
 	public void decide(TranslationServiceGameContext ctx) {
 
-		FormBuilder builder = new FormBuilder(
-				"ラウンド" + ctx.getRoundnum() + ": 寄付金をいくらにしますか？<br>");
+		FormBuilder builder = new FormBuilder("ラウンド" + ctx.getRoundnum() + ": 寄付金をいくらにしますか？<br>");
 
 		if (ctx.getRoundnum() <= 5) {
 			builder.addLabel("このラウンドで寄付できるのは0トークンか，100トークンです．");
 			builder.addInput(new RadioInput("寄付金(トークン)", "token", "0",
-					Arrays.asList(new String[] { "0トークン", "100トークン" }),
-					Arrays.asList(new String[] { "0", "100" }),
+					Arrays.asList("0トークン", "100トークン"), Arrays.asList("0", "100"),
 					new Required()));
-			syncRequestToInput(builder.build(), params -> {
-				this.investment = params.getInt("token");
-			});
-		} else if (ctx.getRoundnum() <= 25) {
+		} else {
 			builder.addLabel("このラウンドで寄付できトークン数は，0以上100以下の任意の整数です．");
 			builder.addInput(new NumberInput("寄付金(トークン)", "token", 100,
 					new Min(0), new Max(100), new Required()));
-			syncRequestToInput(builder.build(), params -> {
-				this.investment = params.getInt("token");
-			});
 		}
+		syncRequestToInput(builder.build(), params -> {
+			this.investment = params.getInt("token");
+		});
 	}
 
 	private String getScentence(int roundnum) {
@@ -138,13 +136,7 @@ public class TranslationServiceGamePlayer extends Player {
 		return sentences.get((roundnum - 1) % 10);
 	}
 
-	private void showMessagesOfRound(int roundnum, String sentence) {
-		showMessage("今回のラウンドで寄付金として，" + investment + "トークンを寄付しました．");
-		showMessage("今回のラウンドで利用権として，" + rightOfUse + "トークンを獲得しました．");
-		showMessage("今回のラウンドで受けとった翻訳文 : <br>「" + sentence + "」");
-	}
-
-	private List<String> sentences = Arrays.asList(
+	private static List<String> sentences = Arrays.asList(
 			"菌には、いろいろな種類があります。稲に被害を及ぼす菌としては、いもち病菌や紋枯病菌などがあります。菌は、カビであり、簡単に増殖するので、適切な防除をしないと被害が大きくなります。",
 			"玄米につやがあり、全体が白く濁っているのなら、モチ米ではないでしょうか。あるいは、玄米の中は透明で外側だけ白く濁っているのなら、乳白米と言うものであり、あまり品質は良くありません。",
 			"コブノメイガは、葉が白くなりますが、暫くすると稲が回復します。コブノメイガの幼虫を見つけたら、すぐに農薬を散布することです。コブノメイガの幼虫が小さい時に農薬をまくのが効果的です。",

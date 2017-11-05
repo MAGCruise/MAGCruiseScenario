@@ -18,43 +18,47 @@ public class TranslationServiceGameContext extends Context {
 	}
 
 	public void clearing() {
-		getPlayers(TranslationServiceGamePlayer.class).forEach(p -> {
-			funds += p.investment;
-		});
+		funds += getPlayers(TranslationServiceGamePlayer.class).values().stream()
+				.mapToInt(p -> p.investment).sum();
 
 		getPlayers(TranslationServiceGamePlayer.class).forEach(player -> {
-			double rightOfUse;
-			if (getRoundnum() <= 10) {
-				rightOfUse = 200;
-			} else {
-				rightOfUse = funds * 2 / players.size();
-			}
-			player.rightOfUse = (int) rightOfUse;
-
-			if (15 <= getRoundnum() && getRoundnum() <= 19) {
-				if (funds < 200) {
-					player.score = 1;
-				} else if (funds < 300) {
-					player.score = 2;
-				} else if (funds < 400) {
-					player.score = 3;
-				} else {
-					player.score = 4;
-				}
-			} else if (20 <= getRoundnum()) {
-				if (funds == 0) {
-					player.score = 0;
-				} else if (funds < 200) {
-					player.score = 1;
-				} else if (funds < 300) {
-					player.score = 2;
-				} else if (funds < 400) {
-					player.score = 3;
-				} else {
-					player.score = 4;
-				}
-			}
+			calcRightOfUse(player);
+			calcScore(player);
 		});
+	}
+
+	private void calcScore(TranslationServiceGamePlayer player) {
+		if (15 <= getRoundnum() && getRoundnum() <= 19) {
+			if (funds < 200) {
+				player.score = 1;
+			} else if (funds < 300) {
+				player.score = 2;
+			} else if (funds < 400) {
+				player.score = 3;
+			} else {
+				player.score = 4;
+			}
+		} else if (20 <= getRoundnum()) {
+			if (funds == 0) {
+				player.score = 0;
+			} else if (funds < 200) {
+				player.score = 1;
+			} else if (funds < 300) {
+				player.score = 2;
+			} else if (funds < 400) {
+				player.score = 3;
+			} else {
+				player.score = 4;
+			}
+		}
+	}
+
+	private void calcRightOfUse(TranslationServiceGamePlayer player) {
+		if (getRoundnum() <= 10) {
+			player.rightOfUse = 200;
+			return;
+		}
+		player.rightOfUse = (int) (funds * 2 / players.size());
 	}
 
 }

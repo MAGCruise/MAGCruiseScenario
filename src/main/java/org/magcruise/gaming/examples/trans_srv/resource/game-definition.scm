@@ -30,5 +30,5 @@
         (def:players-task *players* 'afterRound)))
     (def:round
       (def:stage
-        (def:players-task *players* 'end)))))
+        (def:players-task *players* 'finishGame)))))
 
