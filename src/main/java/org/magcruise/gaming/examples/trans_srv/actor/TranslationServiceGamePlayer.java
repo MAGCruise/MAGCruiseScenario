@@ -1,11 +1,14 @@
 package org.magcruise.gaming.examples.trans_srv.actor;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.magcruise.gaming.examples.trans_srv.resource.TranslationServiceGameResourceLoader;
 import org.magcruise.gaming.langrid.AccessConfigFactory;
 import org.magcruise.gaming.langrid.client.TranslationClient;
+import org.magcruise.gaming.langrid.client.TranslationServiceId;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
@@ -15,6 +18,8 @@ import org.magcruise.gaming.ui.model.attr.Min;
 import org.magcruise.gaming.ui.model.attr.Required;
 import org.magcruise.gaming.ui.model.input.NumberInput;
 import org.magcruise.gaming.ui.model.input.RadioInput;
+import org.nkjmlab.util.lang.MessageUtils;
+import org.nkjmlab.util.lang.ResourceUtils;
 
 public class TranslationServiceGamePlayer extends Player {
 
@@ -39,11 +44,16 @@ public class TranslationServiceGamePlayer extends Player {
 		super(playerParameter);
 		AccessConfigFactory.setPath(new TranslationServiceGameResourceLoader()
 				.getResource("langrid-conf.json"));
-		client = new TranslationClient("KyotoUJServer");
+		client = new TranslationClient(TranslationServiceId.KyotoUJServer);
 	}
 
 	public void initialize(TranslationServiceGameContext ctx) {
 		showMessage("ゲームを開始します.");
+		String css = String.join("", ResourceUtils.readAllLines(getClass(), "trans-srv.css"));
+		sendStyleTag(css);
+		String header = String.join("", ResourceUtils.readAllLines(getClass(), "header.html"));
+		appendHtml("#row-top", header);
+		showAlert("test", "test", "info");
 	}
 
 	public void beforeRound(TranslationServiceGameContext ctx) {
@@ -52,9 +62,38 @@ public class TranslationServiceGamePlayer extends Player {
 		rightOfUse = 0;
 		showMessage("rd. {} の開始です．", ctx.getRoundnum());
 		if (ctx.getRoundnum() != 0) {
-			showMessage("前回までのラウンドのまとめです． {}", tabulateHistory());
+			sendJavaScriptTag("$('#div-history').html(\"{}\")", tabulateHistory());
+			sendJavaScriptTag("$('#div-ranking').html(\"{}\")", ctx.getRankingStr());
+			sendJavaScriptTag("$('#div-status').html(\"{}\")", getStatus());
+			sendJavaScriptTag("$('#div-badges').html(\"<p>{}</p>\")", getBadges());
 		}
 		showMessage("次の文章を翻訳します: <br>「 {} 」", getScentence(ctx.getRoundnum()));
+	}
+
+	private String getStatus() {
+		return MessageUtils.format("<h3>Level: {}</h3>"
+				+ "<div class='progress'>"
+				+ "<div class='progress-bar' style='width: {}%;'></div></div>", account / 500,
+				(account % 500) / 500.0 * 100);
+	}
+
+	private String getBadges() {
+		List<String> result = new ArrayList<>();
+		if (account >= 1000) {
+			result.add("Over 1000");
+		}
+		if (account >= 1500) {
+			result.add("Over 1500");
+		}
+		if (account >= 2000) {
+			result.add("Over 2000");
+		}
+		if (account >= 5000) {
+			result.add("Over 5000");
+		}
+		return String.join(",",
+				result.stream().map(s -> "<div class='alert alert-info'>" + s + "</div>")
+						.collect(Collectors.toList()));
 	}
 
 	public void afterRound(TranslationServiceGameContext ctx) {
@@ -148,5 +187,9 @@ public class TranslationServiceGamePlayer extends Player {
 			"稲の病気は小さな苗の時から、生育に従っていろいろな病気が出ます。穂が出る頃、また実る頃出る病気もあります。例えばイモチ病は風通しが悪く湿度が高いと出やすいです．",
 			"縞はがれ病は6月下旬から9月下旬にかけて発生します。",
 			"今、ベトナムで市販されている殺虫剤の種類は分かりませんが、害虫の種類によって使う殺虫剤は異なります。殺虫剤の種類には、殺虫剤を虫に直接かけるもの、植物に直接かけるもの、土にまくもの、そして虫が好きな餌に混ぜるものがあります。");
+
+	public int getAccount() {
+		return account;
+	}
 
 }
