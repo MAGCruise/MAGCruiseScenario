@@ -15,6 +15,7 @@ import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.message.Alert;
+import org.magcruise.gaming.ui.HtmlUtils;
 import org.magcruise.gaming.ui.model.Form;
 
 import gnu.mapping.Symbol;
@@ -100,7 +101,7 @@ public class CroquetteFactory extends Player {
 		takeAllMessages(CroquetteOrder.class).forEach(msg -> {
 			this.orders.put(msg.from, new Integer(msg.num));
 		});
-		showMessage(tabulate(new String[] { "価格", "発注個数(じゃがいも)", "受注内容" },
+		showMessage(HtmlUtils.tabulate(new String[] { "価格", "発注個数(じゃがいも)", "受注内容" },
 				PRICE, orderOfPotato, orders));
 	}
 

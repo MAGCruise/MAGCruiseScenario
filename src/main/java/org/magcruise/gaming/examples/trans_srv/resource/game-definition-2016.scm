@@ -1,8 +1,8 @@
 (define (def:setup-game-builder builder ::GameBuilder)
   (define *players* (list 'Player1 'Player2 'Player3 'Player4))
 
-  (define-alias TranslationGameContext org.magcruise.gaming.examples.trans_srv.actor2017.TranslationServiceGameContext)
-  (define-alias TranslationGamePlayer org.magcruise.gaming.examples.trans_srv.actor2017.TranslationServiceGamePlayer)
+  (define-alias TranslationGameContext org.magcruise.gaming.examples.trans_srv.actor2016.TranslationServiceGameContext)
+  (define-alias TranslationGamePlayer org.magcruise.gaming.examples.trans_srv.actor2016.TranslationServiceGamePlayer)
 
   (builder:addDefContext
     (def:context TranslationGameContext))
@@ -17,7 +17,7 @@
     (def:round
       (def:stage
         (def:players-task *players* 'initialize)))
-    (def:rounds 10
+    (def:rounds 25
       (def:stage
         (def:task 'beforeRound))
       (def:parallel-stage

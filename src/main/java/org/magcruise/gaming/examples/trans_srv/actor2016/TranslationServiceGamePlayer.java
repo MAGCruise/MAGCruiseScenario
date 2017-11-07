@@ -1,9 +1,7 @@
-package org.magcruise.gaming.examples.trans_srv.actor;
+package org.magcruise.gaming.examples.trans_srv.actor2016;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.magcruise.gaming.examples.trans_srv.resource.TranslationServiceGameResourceLoader;
 import org.magcruise.gaming.langrid.AccessConfigFactory;
@@ -18,15 +16,13 @@ import org.magcruise.gaming.ui.model.attr.Min;
 import org.magcruise.gaming.ui.model.attr.Required;
 import org.magcruise.gaming.ui.model.input.NumberInput;
 import org.magcruise.gaming.ui.model.input.RadioInput;
-import org.nkjmlab.util.lang.MessageUtils;
-import org.nkjmlab.util.lang.ResourceUtils;
 
 public class TranslationServiceGamePlayer extends Player {
 
-	@HistoricalField(name = "口座(トークン)")
+	@HistoricalField(name = "口座残高(トークン)")
 	public volatile int account = 0;
 
-	@HistoricalField(name = "寄付金(トークン)")
+	@HistoricalField(name = "寄付/投資額(トークン)")
 	public volatile int investment = 0;
 
 	@HistoricalField(name = "利用権(トークン)")
@@ -37,6 +33,9 @@ public class TranslationServiceGamePlayer extends Player {
 
 	@HistoricalField(name = "スコア(合計点)", visible = false)
 	public volatile int sumOfScore = 0;
+
+	@HistoricalField(name = "寄付合計(トークン)", visible = false)
+	public int sumOfInvestment = 0;
 
 	private TranslationClient client;
 
@@ -49,11 +48,6 @@ public class TranslationServiceGamePlayer extends Player {
 
 	public void initialize(TranslationServiceGameContext ctx) {
 		showMessage("ゲームを開始します.");
-		String css = String.join("", ResourceUtils.readAllLines(getClass(), "trans-srv.css"));
-		sendStyleTag(css);
-		String header = String.join("", ResourceUtils.readAllLines(getClass(), "header.html"));
-		appendHtml("#row-top", header);
-		showAlert("test", "test", "info");
 	}
 
 	public void beforeRound(TranslationServiceGameContext ctx) {
@@ -62,38 +56,9 @@ public class TranslationServiceGamePlayer extends Player {
 		rightOfUse = 0;
 		showMessage("rd. {} の開始です．", ctx.getRoundnum());
 		if (ctx.getRoundnum() != 0) {
-			sendJavaScriptTag("$('#div-history').html(\"{}\")", tabulateHistory());
-			sendJavaScriptTag("$('#div-ranking').html(\"{}\")", ctx.getRankingStr());
-			sendJavaScriptTag("$('#div-status').html(\"{}\")", getStatus());
-			sendJavaScriptTag("$('#div-badges').html(\"<p>{}</p>\")", getBadges());
+			showMessage(tabulateHistory());
 		}
 		showMessage("次の文章を翻訳します: <br>「 {} 」", getScentence(ctx.getRoundnum()));
-	}
-
-	private String getStatus() {
-		return MessageUtils.format("<h3>Level: {}</h3>"
-				+ "<div class='progress'>"
-				+ "<div class='progress-bar' style='width: {}%;'></div></div>", account / 500,
-				(account % 500) / 500.0 * 100);
-	}
-
-	private String getBadges() {
-		List<String> result = new ArrayList<>();
-		if (account >= 1000) {
-			result.add("Over 1000");
-		}
-		if (account >= 1500) {
-			result.add("Over 1500");
-		}
-		if (account >= 2000) {
-			result.add("Over 2000");
-		}
-		if (account >= 5000) {
-			result.add("Over 5000");
-		}
-		return String.join(",",
-				result.stream().map(s -> "<div class='alert alert-info'>" + s + "</div>")
-						.collect(Collectors.toList()));
 	}
 
 	public void afterRound(TranslationServiceGameContext ctx) {
@@ -101,6 +66,7 @@ public class TranslationServiceGamePlayer extends Player {
 		account += rightOfUse;
 		account -= investment;
 		sumOfScore += score;
+		sumOfInvestment += investment;
 
 	}
 
@@ -154,12 +120,12 @@ public class TranslationServiceGamePlayer extends Player {
 		FormBuilder builder = new FormBuilder("ラウンド" + ctx.getRoundnum() + ": 寄付金をいくらにしますか？<br>");
 
 		if (ctx.getRoundnum() <= 5) {
-			builder.addLabel("このラウンドで寄付できるのは0トークンか，100トークンです．");
+			builder.addLabel("このラウンドで寄付/投資できるのは0トークンか，100トークンです．");
 			builder.addInput(new RadioInput("寄付金(トークン)", "token", "0",
 					Arrays.asList("0トークン", "100トークン"), Arrays.asList("0", "100"),
 					new Required()));
 		} else {
-			builder.addLabel("このラウンドで寄付できトークン数は，0以上100以下の任意の整数です．");
+			builder.addLabel("このラウンドで寄付/投資できるトークン数は，0以上100以下の任意の整数です．");
 			builder.addInput(new NumberInput("寄付金(トークン)", "token", 100,
 					new Min(0), new Max(100), new Required()));
 		}
@@ -175,7 +141,7 @@ public class TranslationServiceGamePlayer extends Player {
 		return sentences.get((roundnum - 1) % 10);
 	}
 
-	private static List<String> sentences = Arrays.asList(
+	private List<String> sentences = Arrays.asList(
 			"菌には、いろいろな種類があります。稲に被害を及ぼす菌としては、いもち病菌や紋枯病菌などがあります。菌は、カビであり、簡単に増殖するので、適切な防除をしないと被害が大きくなります。",
 			"玄米につやがあり、全体が白く濁っているのなら、モチ米ではないでしょうか。あるいは、玄米の中は透明で外側だけ白く濁っているのなら、乳白米と言うものであり、あまり品質は良くありません。",
 			"コブノメイガは、葉が白くなりますが、暫くすると稲が回復します。コブノメイガの幼虫を見つけたら、すぐに農薬を散布することです。コブノメイガの幼虫が小さい時に農薬をまくのが効果的です。",

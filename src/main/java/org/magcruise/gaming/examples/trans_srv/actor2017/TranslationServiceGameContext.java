@@ -1,4 +1,4 @@
-package org.magcruise.gaming.examples.trans_srv.actor;
+package org.magcruise.gaming.examples.trans_srv.actor2017;
 
 import java.util.Comparator;
 import java.util.List;
@@ -11,7 +11,7 @@ import org.nkjmlab.util.lang.MessageUtils;
 
 public class TranslationServiceGameContext extends Context {
 
-	@HistoricalField(name = "寄付金(トークン)")
+	@HistoricalField(name = "寄付/投資総額")
 	public volatile int funds = 0;
 
 	public TranslationServiceGameContext(ContextParameter contextParameter) {
@@ -28,34 +28,7 @@ public class TranslationServiceGameContext extends Context {
 
 		getPlayers(TranslationServiceGamePlayer.class).forEach(player -> {
 			calcRightOfUse(player);
-			calcScore(player);
 		});
-	}
-
-	private void calcScore(TranslationServiceGamePlayer player) {
-		if (15 <= getRoundnum() && getRoundnum() <= 19) {
-			if (funds < 200) {
-				player.score = 1;
-			} else if (funds < 300) {
-				player.score = 2;
-			} else if (funds < 400) {
-				player.score = 3;
-			} else {
-				player.score = 4;
-			}
-		} else if (20 <= getRoundnum()) {
-			if (funds == 0) {
-				player.score = 0;
-			} else if (funds < 200) {
-				player.score = 1;
-			} else if (funds < 300) {
-				player.score = 2;
-			} else if (funds < 400) {
-				player.score = 3;
-			} else {
-				player.score = 4;
-			}
-		}
 	}
 
 	private void calcRightOfUse(TranslationServiceGamePlayer player) {
@@ -68,19 +41,19 @@ public class TranslationServiceGameContext extends Context {
 
 	public synchronized List<TranslationServiceGamePlayer> getRanking() {
 		return getPlayers(TranslationServiceGamePlayer.class).values().stream()
-				.sorted(Comparator.comparingInt(TranslationServiceGamePlayer::getAccount)
+				.sorted(Comparator.comparingInt(TranslationServiceGamePlayer::getLevel)
 						.reversed())
 				.collect(Collectors.toList());
 	}
 
-	public synchronized String getRankingStr() {
+	public synchronized String getRankingHtml() {
 		List<TranslationServiceGamePlayer> players = getRanking();
 		String table = "<div class='table-responsive'><table class='table table-bordered table-striped table-condensed'>";
-		table += "<tr><th>Rank</th><th>Name</th><th>Account</th></tr>";
+		table += "<tr><th>Rank</th><th>Name</th><th>Level</th></tr>";
 		for (int i = 0; i < players.size(); i++) {
 			TranslationServiceGamePlayer p = players.get(i);
 			table += MessageUtils.format("<tr><td>{}</td><td>{}</td><td>{}</td><tr>", i + 1,
-					p.getName().toString(), p.getAccount());
+					p.getName().toString(), p.getLevel());
 		}
 		table += "</table></div>";
 		return table;

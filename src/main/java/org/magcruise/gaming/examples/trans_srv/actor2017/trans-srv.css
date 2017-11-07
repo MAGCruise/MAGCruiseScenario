@@ -1,0 +1,18 @@
+.exp-badge {
+  width: 24%;
+}
+
+#div-history {
+  max-height: 300px;
+  height: 300px;
+  overflow-y: auto;
+  font-size: 90%;
+}
+
+#message_list, #inputs_area {
+  max-height: 400px !important;
+}
+
+#inputting {
+  display: none;
+}
