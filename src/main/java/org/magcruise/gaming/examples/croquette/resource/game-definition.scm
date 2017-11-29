@@ -85,29 +85,30 @@
       (def:restage 'refresh))))
 
 
+(define (shop:sale-msg self ::Shop other ::Shop)
+  (to-string (html:img width: 48 src: "https://i.gyazo.com/066c0903bb551da48a2d284af3cc61b1.png") "<br>"
+   "コロッケを1個" self:price "円で販売しました．" "お店にはお客さんが" self:demand "人来て，"
+             self:sales "個のコロッケが売れました．" "売り上げは" self:earnings "円です．" "<br>"
+             "競合店はコロッケを1個" other:price "円で販売し，"  other:demand "人が来店したそうです．"))
+(define (shop:order-msg self ::Shop)
+  (to-string (html:img width: 64 src: "https://i.gyazo.com/ced22de43fcabec52f836c3ec614bb4a.png") "<br>"
+   "冷凍コロッケを" self:numOfOrder "個発注しました．この冷凍コロッケは翌々日に納品予定です．"))
 
 (define (shop:refresh-msg ctx ::Market self ::Shop other ::Shop)
-  (define sale-msg (to-string "コロッケを1個" self:price "円で販売しました．" "お店にはお客さんが" self:demand "人来ました．"
-                              self:sales "個が売れました．" "売り上げは" self:earnings "円です．"))
-  (<div> class: "alert alert-info"
+  (<div> class: "alert"
       (to-string
-        (<h4> (- ctx:roundnum 1) "日目が終わりました．")
+        (<h3> (- ctx:roundnum 1) "日目のまとめ")
         (<br>)
-        (<h4> "概要")
-        (<p> sale-msg)
-        (<br>)
-        (<h4> "詳細")
         (<ul>
+          (<li> "発注：" (shop:order-msg self))
+          (<li> "販売：" (shop:sale-msg self other))
           (<li> "在庫：" self:delivery "個の冷凍コロッケが納品されました．"
                          self:sales "個のコロッケを売りました．"
-                         "在庫は" self:stock "個です．"
-                         "また，" self:numOfOrder "個の冷凍コロッケを発注しました．この冷凍コロッケは翌々日に納品予定です．")
-          (<li> "販売：" sale-msg)
+                         "在庫は" self:stock "個です．")
           (<li> "収支：" "仕入費は" self:materialCost "円，"
                          "在庫費は" self:inventoryCost "円，"
                          "売上高は" self:earnings "円，"
-                         "利益は" self:profit "円です．")
-          (<li> "競合店：" "競合店は" other:price "円でコロッケを販売し，"  other:demand "人が来店したそうです．"))
+                         "利益は" self:profit "円です．"))
         (<br>)
         (<h4> "在庫表")
         (self:tabulateHistory 'delivery 'sales 'stock 'order )
@@ -116,23 +117,37 @@
         (<h4> "収支表")
         (self:tabulateHistory 'materialCost 'inventoryCost 'earnings 'profit))))
 
+
+
+(define (factory:order-msg self ::Factory)
+  (<div> class: "alert alert-success"
+  (to-string (html:img width: 64 src: "https://i.gyazo.com/c0ef8fe2bfd1a453d3a473fddb9c0519.png") "<br>"
+             self:orderOfPotato "個のじゃがいもを発注しました．翌日に納品されます．")))
+
+(define (factory:ordered-msg self ::Factory)
+  (<div> class: "alert alert-info"
+   (to-string (html:img width: 64 src: "https://i.gyazo.com/1311a2a61ad40b976662bcf186c21c58.png") "<br>"
+"各ショップから" self:orders "の注文を受けました．翌々日開始時点に納品する必要があります．")))
+
+(define (factory:production-msg self ::Factory)
+  (<div> class: "alert alert-info"
+  (to-string (html:img width: 180 src: "https://i.gyazo.com/71045141e00ede32b2d9aced1c36545e.png") "<br>"
+             self:deliveredPotato "個のじゃがいもが納品されました．支払額は" self:materialCost "円です．"
+                         self:production "個の冷凍コロッケを作成しました．" self:machiningCost "円の生産費がかかりました．")))
+
 (define (factory:refresh-msg ctx ::Market self ::Factory) ::String
-    (<div> class: "alert alert-info"
+    (<div> class: "alert"
       (to-string
-        (<h4> (- ctx:roundnum 1) "日目が終わりました．")
-        (<br>)
-        (<h4> "概要")
-        (<p>  self:deliveredPotato "個のじゃがいもが納品され，" self:production "個の冷凍コロッケを作成しました．"
-             "また，各ショップから" self:orders "の注文を受けました．翌々日開始時点に納品する必要があります．")
-        (<br>)
-        (<h4> "詳細")
+       (<h3> (- ctx:roundnum 1) "日目のまとめ")
         (<ul>
-          (<li> "販売：" self:demand "個の冷凍コロッケの納品が必要でした．" "冷凍コロッケを1個" self:PRICE "円で"
-                         self:sales "個納品しました．" "売り上げは" self:earnings "円です．")
-          (<li> "発注：" self:orderOfPotato "個のじゃがいもを発注しました．翌日に納品されます．")
-          (<li> "受注：" "各ショップから" self:orders "の注文を受けました．")
-          (<li> "生産：" self:deliveredPotato "個のじゃがいもが納品されました．支払額は" self:materialCost "円です．"
-                         self:production "個の冷凍コロッケを作成しました．" self:machiningCost "円の生産費がかかりました．")
+         (<li> "発注：" (factory:order-msg self))
+         (<li> "受注：" (factory:ordered-msg self))
+         (<li> "生産：" (factory:production-msg self))
+         (<li> "販売："
+          (<div> class: "alert alert-info"
+          (html:img width: 64 src: "https://i.gyazo.com/ced22de43fcabec52f836c3ec614bb4a.png") "<br>"
+          self:demand "個の冷凍コロッケの納品が必要でした．" "冷凍コロッケを1個" self:PRICE "円で"
+           self:sales "個納品しました．" "売り上げは" self:earnings "円です．"))
           (<li> "在庫：" "冷凍コロッケの在庫は" self:stock "個になりました．")
           (<li> "収支：" "仕入費は" self:materialCost "円，"
                          "在庫費は" self:inventoryCost "円，"
@@ -147,11 +162,11 @@
         (self:tabulateHistory 'inventoryCost 'materialCost 'machiningCost 'earnings 'profit))))
 
 
-(define (end-day-form ctx ::Market) ::Form
-  (ui:form (to-string  (<h3> (- ctx:roundnum 1) "日目終了") (<p> "次の日に進みます．"))))
+(define (end-day-msg ctx ::Market) ::String
+  (to-string  (<p> (- ctx:roundnum 1) "日目が終了しました．次の日に進みます．")))
 
 (define (start-day-msg ctx ::Market) ::String
-  (<div> class: "alert alert-warning" (to-string (<h4> ctx:roundnum "日目のはじまりです．"))))
+  (<div> class: "alert alert-warning" (to-string ctx:roundnum "日目のはじまりです．")))
 
 (define (shop:init-msg ctx ::Market self ::Shop) ::String
     (<div> class: "alert alert-warning"
@@ -169,15 +184,19 @@
 
 (define (shop:order-form ctx ::Market self ::Shop) ::Form
   (ui:form
-    (to-string  (<h4> ctx:roundnum "日目の発注") self:name "さん，コロッケ工場へ発注する冷凍コロッケの個数(0個～1000個)を入力して下さい．発注したものは，翌々日の販売前に納品される予定です．")
+    (to-string  (<h4> ctx:roundnum "日目の発注")
+                self:name "さん，コロッケ工場へ発注する冷凍コロッケの個数(0個～1000個)を入力して下さい．発注したものは，翌々日の販売前に納品される予定です．" "<br>"
+                (html:img width: 100 src: "https://i.gyazo.com/ced22de43fcabec52f836c3ec614bb4a.png"))
     (ui:number "個数(冷凍コロッケ)" 'num-of-croquette #!null (Min 0) (Max 1000) (Required))))
 
 (define (shop:after-order-msg ctx ::Market self ::Shop) ::String
-    (<div> class: "alert alert-success" (to-string "冷凍コロッケを" self:numOfOrder "個発注しました．翌々日に納品されます．")))
+    (<div> class: "alert alert-success" (to-string "冷凍コロッケを" self:numOfOrder "個発注しました．翌々日に納品予定です．")))
 
 (define (shop:price-form ctx ::Market self ::Shop) ::Form
   (ui:form
-    (to-string (<h4> ctx:roundnum "日目の販売価格") self:name "さん，今日のコロッケの販売価格(50円～200円)を決定して下さい．")
+    (to-string (<h4> ctx:roundnum "日目の販売価格") self:name
+               "さん，今日のコロッケの販売価格(50円～200円)を決定して下さい．" "<br>"
+               (html:img width: 100 src: "https://i.gyazo.com/066c0903bb551da48a2d284af3cc61b1.png"))
     (ui:number "販売価格(コロッケ)" 'price #!null (Min 50) (Max 200) (Required))))
 
 (define (shop:after-price-msg ctx ::Market self ::Shop) ::String
@@ -185,25 +204,32 @@
 
 (define (shop:receive-delivery-msg ctx ::Market self ::Shop) ::String
   (<div> class: "alert alert-info"
-    (to-string "冷凍コロッケが" self:delivery "個納品されました．在庫数は" self:stock "個になりました．")))
+   (to-string (html:img width: 64 src: "https://i.gyazo.com/ced22de43fcabec52f836c3ec614bb4a.png")
+              "<br>" "冷凍コロッケが" self:delivery "個納品されました．在庫数は" self:stock "個になりました．")))
 
 
 (define (factory:order-form ctx ::Market self ::Factory) ::Form
     (ui:form
-      (to-string (<h4> ctx:roundnum "日目の発注") self:name "さん，農場へ発注するじゃがいもの個数(0個～1000個)を入力して下さい．発注したものは，翌日に納品されます．")
+      (to-string (<h4> ctx:roundnum "日目の発注") self:name
+                 "さん，農場へ発注するじゃがいもの個数(0個～1000個)を入力して下さい．発注したものは，翌日に納品されます．" "<br>"
+                 (html:img width: 100 src: "https://i.gyazo.com/c0ef8fe2bfd1a453d3a473fddb9c0519.png"))
       (ui:number "個数(ジャガイモ)" 'potato #!null (Min 0) (Max 1000)(Required))))
 
-(define (factory:after-order-msg ctx ::Market self ::Factory) ::String
-  (<div> class: "alert alert-success" (to-string "じゃがいもを" self:orderOfPotato "個発注しました．翌日に納品されます．")))
+;;(define (factory:after-order-msg ctx ::Market self ::Factory) ::String
+;;  (<div> class: "alert alert-success" (to-string "じゃがいもを" self:orderOfPotato "個発注しました．翌日に納品されます．")))
 
 (define (factory:delivery-msg shop-name delivery) ::String
   (to-string shop-name "に冷凍コロッケ" delivery "個を納品しました．"))
 
 (define (factory:after-delivery-msg msg self ::Factory) ::String
-  (<div> class: "alert alert-info" msg "在庫は" self:stock "個になりました．"))
+  (<div> class: "alert alert-info"
+   (html:img width: 64 src: "https://i.gyazo.com/ced22de43fcabec52f836c3ec614bb4a.png") "<br>"
+   msg "在庫は" self:stock "個になりました．"))
 
 
 (define (factory:receive-delivery-msg num production stock) ::String
   (<div> class: "alert alert-info"
-    (to-string "じゃがいも" num "個が納品され，" production "個の冷凍コロッケを生産しました．在庫は" stock "個になりました．")))
+    (to-string
+     (html:img width: 180 src: "https://i.gyazo.com/71045141e00ede32b2d9aced1c36545e.png")
+     "<br>" "じゃがいも" num "個が納品され，" production "個の冷凍コロッケを生産しました．在庫は" stock "個になりました．")))
 

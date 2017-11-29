@@ -1,7 +1,13 @@
 package org.magcruise.gaming.examples.croquette.actor;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.magcruise.gaming.model.game.ActorName;
 import org.magcruise.gaming.model.game.Context;
 import org.magcruise.gaming.model.game.ContextParameter;
+import org.magcruise.gaming.model.game.Player;
 
 public class Market extends Context {
 
@@ -10,7 +16,7 @@ public class Market extends Context {
 	}
 
 	public int distributeDemand(Shop shop) {
-		Shop other = getOther(shop);
+		Shop other = getOtherShop(shop);
 
 		int demand = 0;
 
@@ -40,11 +46,19 @@ public class Market extends Context {
 		return demand;
 	}
 
-	public Shop getOther(Shop shop) {
+	public Shop getOtherShop(Shop shop) {
 		if (shop.getName().compareToString("Shop1")) {
 			return (Shop) getPlayer(toActorName("Shop2"));
 		} else {
 			return (Shop) getPlayer(toActorName("Shop1"));
 		}
+	}
+
+	public List<ActorName> getOthersNames(Player player) {
+		List<ActorName> r = new ArrayList<>(
+				Arrays.asList(toActorName("Shop1"), toActorName("Shop2"),
+						toActorName("Factory")));
+		r.remove(player.getName());
+		return r;
 	}
 }

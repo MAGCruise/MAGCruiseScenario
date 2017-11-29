@@ -6,7 +6,7 @@ import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.message.Alert;
-import org.magcruise.gaming.ui.model.Form;
+import org.nkjmlab.util.lang.ResourceUtils;
 
 public class Shop extends Player {
 
@@ -38,15 +38,19 @@ public class Shop extends Player {
 	}
 
 	public void init(Market ctx) {
+		appendHtml("#row-bottom",
+				String.join(" ", ResourceUtils.readAllLines(getClass(), "header.html")));
 		String msg = (String) ctx.applyProcedure("shop:init-msg", ctx, this);
-		syncRequestToInput(new Form(msg));
+		syncRequestToConfirm(msg);
 		showMessage(msg);
 	}
 
 	public void refresh(Market ctx) {
-		showMessage(ctx.createMessage("shop:refresh-msg", ctx, this,
-				ctx.getOther(this)));
-		syncRequestToInput(ctx.createForm("end-day-form", ctx));
+		String msg = (ctx.createMessage("shop:sale-msg", this, ctx.getOtherShop(this)) + "<br>"
+				+ ctx.createMessage("shop:order-msg", this));
+		setHtml("#div-history", ctx.createMessage("shop:refresh-msg", ctx, this,
+				ctx.getOtherShop(this)).replace("\"", "'"));
+		syncRequestToConfirm(msg + "<br>" + ctx.createMessage("end-day-msg", ctx));
 		showMessage(ctx.createMessage("start-day-msg", ctx));
 		refresh();
 	}
@@ -64,12 +68,13 @@ public class Shop extends Player {
 	}
 
 	public void order(Market ctx) {
-		ctx.showMessageToAll("{}が{}日目の注文を入力しています．", name, ctx.getRoundnum());
+		//ctx.showMessageToAll("{}が{}日目の注文を入力しています．", name, ctx.getRoundnum());
 		syncRequestToInput(ctx.createForm("shop:order-form", ctx, this), param -> {
 			this.numOfOrder = param.getArgAsInt(0);
 			showMessage(ctx.createMessage("shop:after-order-msg", ctx, this));
 			sendMessage(new CroquetteOrder(name, toActorName("Factory"), this.numOfOrder));
-			ctx.showMessageToAll("{}が{}日目の注文を入力しました．", name, ctx.getRoundnum());
+			ctx.showMessage(ctx.getOthersNames(this), "{}が{}日目の注文を入力しました．", name,
+					ctx.getRoundnum());
 		}, e -> {
 			showAlertMessage(Alert.DANGER, e.getMessage());
 			order(ctx);
@@ -77,12 +82,12 @@ public class Shop extends Player {
 	}
 
 	public void price(Market ctx) {
-		ctx.showMessageToAll("{}が{}日目の販売価格を入力しています．", name, ctx.getRoundnum());
+		//ctx.showMessageToAll("{}が{}日目の販売価格を入力しています．", name, ctx.getRoundnum());
 		syncRequestToInput(ctx.createForm("shop:price-form", ctx, this), param -> {
 			this.price = param.getArgAsInt(0);
 			showMessage(ctx.createMessage("shop:after-price-msg", ctx,
 					this));
-			ctx.showMessageToAll("{}が{}日目の販売価格を入力しました．", name,
+			ctx.showMessage(ctx.getOthersNames(this), "{}が{}日目の販売価格を入力しました．", name,
 					ctx.getRoundnum());
 		}, e -> {
 			showAlertMessage(Alert.DANGER, e.getMessage());
@@ -94,7 +99,10 @@ public class Shop extends Player {
 	public void receiveDelivery(Market ctx) {
 		this.delivery = takeMessage(CroquetteDelivery.class).num;
 		this.stock += delivery;
-		showMessage(ctx.createMessage("shop:receive-delivery-msg", ctx, this));
+		String msg = ctx.createMessage("shop:receive-delivery-msg", ctx, this).replaceAll("\"",
+				"'");
+		syncRequestToConfirm(msg);
+		showMessage(msg);
 	}
 
 	public void closing(Market ctx) {

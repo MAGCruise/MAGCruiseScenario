@@ -15,8 +15,7 @@ import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.message.Alert;
-import org.magcruise.gaming.ui.HtmlUtils;
-import org.magcruise.gaming.ui.model.Form;
+import org.nkjmlab.util.lang.ResourceUtils;
 
 import gnu.mapping.Symbol;
 
@@ -55,14 +54,20 @@ public class CroquetteFactory extends Player {
 	}
 
 	public void init(Market ctx) {
+		appendHtml("#row-bottom",
+				String.join(" ", ResourceUtils.readAllLines(getClass(), "header.html")));
 		String msg = (String) ctx.applyProcedure("factory:init-msg", ctx, this);
-		syncRequestToInput(new Form(msg));
+		syncRequestToConfirm(msg);
 		showMessage(msg);
 	}
 
 	public void refresh(Market ctx) {
-		showMessage(ctx.createMessage("factory:refresh-msg", ctx, this));
-		syncRequestToInput(ctx.createForm("end-day-form", ctx));
+		setHtml("#div-history",
+				ctx.createMessage("factory:refresh-msg", ctx, this).replaceAll("\"", "'"));
+		String msg = ctx.createMessage("factory:order-msg", this) + "<br>"
+				+ ctx.createMessage("factory:ordered-msg", this) + "<br>"
+				+ ctx.createMessage("end-day-msg", ctx);
+		syncRequestToConfirm(msg.replaceAll("\"", "'"));
 		showMessage(ctx.createMessage("start-day-msg", ctx));
 		refresh();
 	}
@@ -82,14 +87,13 @@ public class CroquetteFactory extends Player {
 	}
 
 	public void order(Market ctx) {
-		ctx.showMessageToAll("{}が{}日目の発注個数を入力しています．", name, ctx.getRoundnum());
+		//ctx.showMessageToAll("{}が{}日目の発注個数を入力しています．", name, ctx.getRoundnum());
 		syncRequestToInput(ctx.createForm("factory:order-form", ctx, this), param -> {
 			this.orderOfPotato = param.getArgAsInt(0);
-			showMessage(ctx.createMessage("factory:after-order-msg",
-					ctx, this));
+			showMessage(ctx.createMessage("factory:order-msg", this).replaceAll("\"", "'"));
 			sendMessage(new PotatoOrder(name, toActorName("Farmer"),
 					this.orderOfPotato));
-			ctx.showMessageToAll("{}が{}日目の発注個数を入力しました．", name,
+			ctx.showMessage(ctx.getOthersNames(this), "{}が{}日目の発注個数を入力しました．", name,
 					ctx.getRoundnum());
 		}, e -> {
 			showAlertMessage(Alert.DANGER, e.getMessage());
@@ -101,8 +105,13 @@ public class CroquetteFactory extends Player {
 		takeAllMessages(CroquetteOrder.class).forEach(msg -> {
 			this.orders.put(msg.from, new Integer(msg.num));
 		});
-		showMessage(HtmlUtils.tabulate(new String[] { "価格", "発注個数(じゃがいも)", "受注内容" },
-				PRICE, orderOfPotato, orders));
+		if (orders.size() == 0) {
+			return;
+		}
+		//showMessage(HtmlUtils.tabulate(new String[] { "前日の受注内容" }, orders));
+		String msg = ctx.createMessage("factory:ordered-msg", this);
+		syncRequestToConfirm(msg);
+		showMessage(msg);
 	}
 
 	public int getTotalOrder(Context ctx) {
@@ -128,8 +137,10 @@ public class CroquetteFactory extends Player {
 			msgs.add(ctx.createMessage("factory:delivery-msg", p.name, d));
 			sendMessage(new CroquetteDelivery(name, p.name, d));
 		});
-		showMessage(ctx.createMessage("factory:after-delivery-msg",
-				String.join(",", msgs), this));
+		String msg = ctx.createMessage("factory:after-delivery-msg",
+				String.join(" ", msgs), this);
+		showMessage(msg);
+		syncRequestToConfirm(msg);
 	}
 
 	public int delivery(Context ctx, Shop shop, int stockBeforeDelivery) {
@@ -157,8 +168,10 @@ public class CroquetteFactory extends Player {
 	public void receiveDelivery(Market ctx) {
 		takeAllMessages(PotatoDelivery.class).forEach((msg) -> {
 			receiveDeliveryAndProduce(msg.num);
-			showMessage(ctx.createMessage("factory:receive-delivery-msg",
-					msg.num, production, stock));
+			String msg1 = ctx.createMessage("factory:receive-delivery-msg",
+					msg.num, production, stock);
+			showMessage(msg1);
+			syncRequestToConfirm(msg1);
 		});
 	}
 

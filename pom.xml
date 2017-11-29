@@ -12,7 +12,7 @@
 	<repositories>
 		<repository>
 			<id>nkjmlab-public</id>
-			<url>http://maven.nkjmlab.org/nexus/content/groups/public</url>
+			<url>https://maven.nkjmlab.org/nexus/content/groups/public</url>
 		</repository>
 	</repositories>
 	<scm>
