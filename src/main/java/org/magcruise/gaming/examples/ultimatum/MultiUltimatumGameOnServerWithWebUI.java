@@ -1,22 +1,20 @@
 package org.magcruise.gaming.examples.ultimatum;
 
-import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
-import org.magcruise.gaming.aws.GameSessionsOnServer;
+import org.magcruise.gaming.aws.GameSessionsOnAwsServer;
 import org.magcruise.gaming.examples.aws.AwsResourceLoader;
 import org.magcruise.gaming.examples.ultimatum.actor.FirstPlayer;
 import org.magcruise.gaming.examples.ultimatum.actor.SecondPlayer;
 import org.magcruise.gaming.examples.ultimatum.resource.UltimatumGameResourceLoader;
-import org.magcruise.gaming.executor.aws.AwsSettingsJson;
+import org.magcruise.gaming.executor.aws.AwsServersSetting;
 import org.magcruise.gaming.manager.session.GameSessionOnServer;
 import org.magcruise.gaming.manager.session.GameSessionsSetting;
 import org.magcruise.gaming.model.def.actor.DefPlayer;
 import org.magcruise.gaming.model.game.Player.PlayerType;
-import org.nkjmlab.util.io.FileUtils;
 import org.nkjmlab.util.json.JsonUtils;
 import org.nkjmlab.util.log4j.LogManager;
 
@@ -31,7 +29,7 @@ public class MultiUltimatumGameOnServerWithWebUI {
 	private static String awsSettingFile = "aws-settings.json";
 
 	//private static String defaultSettingFile = "settings-all-anonymous-2017.json";
-	private static String defaultSettingFile = "settings-all-anonymous-2017-2nd.json";
+	private static String defaultSettingFile = "settings-all-anonymous-2017-3rd.json";
 
 	public static void main(String[] args) {
 		GameSessionsSetting settings;
@@ -39,10 +37,8 @@ public class MultiUltimatumGameOnServerWithWebUI {
 			settings = JsonUtils.decode(UltimatumGameResourceLoader.class
 					.getResourceAsStream(defaultSettingFile), GameSessionsSetting.class);
 		} else {
-			log.info("Arg file is {}", args[0]);
-			File file = new File(args[0]);
-			settings = JsonUtils.decode(FileUtils.getFileReader(file),
-					GameSessionsSetting.class);
+			log.info("Arg is {}", args[0]);
+			settings = JsonUtils.decode(args[0], GameSessionsSetting.class);
 		}
 		execGames(settings);
 
@@ -50,7 +46,7 @@ public class MultiUltimatumGameOnServerWithWebUI {
 
 	public static void execGames(GameSessionsSetting settings) {
 
-		GameSessionsOnServer sessions = new GameSessionsOnServer();
+		GameSessionsOnAwsServer sessions = new GameSessionsOnAwsServer();
 
 		settings.getSeeds().forEach(seed -> {
 			GameSessionOnServer session = new GameSessionOnServer(
@@ -85,9 +81,9 @@ public class MultiUltimatumGameOnServerWithWebUI {
 			sessions.addGameSession(session);
 		});
 
-		AwsSettingsJson awsSettings = JsonUtils.decode(AwsResourceLoader.class
+		AwsServersSetting awsSettings = JsonUtils.decode(AwsResourceLoader.class
 				.getResourceAsStream(awsSettingFile),
-				AwsSettingsJson.class);
+				AwsServersSetting.class);
 		sessions.setAwsSettings(awsSettings);
 		sessions.start();
 	}

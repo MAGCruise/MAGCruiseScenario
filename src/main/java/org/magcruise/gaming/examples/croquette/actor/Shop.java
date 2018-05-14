@@ -6,6 +6,7 @@ import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.message.Alert;
+import org.nkjmlab.util.lang.CallOnceTask;
 import org.nkjmlab.util.lang.ResourceUtils;
 
 public class Shop extends Player {
@@ -38,14 +39,19 @@ public class Shop extends Player {
 	}
 
 	public void init(Market ctx) {
-		appendHtml("#row-bottom",
-				String.join(" ", ResourceUtils.readAllLines(getClass(), "header.html")));
 		String msg = (String) ctx.applyProcedure("shop:init-msg", ctx, this);
 		syncRequestToConfirm(msg);
 		showMessage(msg);
 	}
 
+	private CallOnceTask appendHeader = new CallOnceTask(() -> {
+		appendHtml("#row-bottom",
+				String.join(" ", ResourceUtils.readAllLines(getClass(), "header.html")));
+	});
+
 	public void refresh(Market ctx) {
+		appendHeader.run();
+
 		String msg = (ctx.createMessage("shop:sale-msg", this, ctx.getOtherShop(this)) + "<br>"
 				+ ctx.createMessage("shop:order-msg", this));
 		setHtml("#div-history", ctx.createMessage("shop:refresh-msg", ctx, this,

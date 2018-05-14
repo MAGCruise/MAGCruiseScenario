@@ -13,9 +13,14 @@ public class TranslationServiceGameContext extends Context {
 
 	@HistoricalField(name = "寄付/投資総額")
 	public volatile int funds = 0;
+	private int lastRoundNumberOfDonationGame = 5;
 
 	public TranslationServiceGameContext(ContextParameter contextParameter) {
 		super(contextParameter);
+	}
+
+	private boolean isDonationGameRound() {
+		return getRoundnum() <= lastRoundNumberOfDonationGame;
 	}
 
 	public void beforeRound() {
@@ -26,17 +31,15 @@ public class TranslationServiceGameContext extends Context {
 		funds += getPlayers(TranslationServiceGamePlayer.class).values().stream()
 				.mapToInt(p -> p.investment).sum();
 
-		getPlayers(TranslationServiceGamePlayer.class).forEach(player -> {
-			calcRightOfUse(player);
-		});
+		getPlayers(TranslationServiceGamePlayer.class).forEach(player -> calcRightOfUse(player));
 	}
 
 	private void calcRightOfUse(TranslationServiceGamePlayer player) {
-		if (getRoundnum() <= 10) {
-			player.rightOfUse = 200;
-			return;
+		if (isDonationGameRound()) {
+			player.setRightOfUse(200);
+		} else {
+			player.setRightOfUse((int) (funds * 2 / players.size()));
 		}
-		player.rightOfUse = (int) (funds * 2 / players.size());
 	}
 
 	public synchronized List<TranslationServiceGamePlayer> getRanking() {

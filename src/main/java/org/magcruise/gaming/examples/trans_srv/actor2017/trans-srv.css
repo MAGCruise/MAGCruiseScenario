@@ -13,6 +13,10 @@
   max-height: 400px !important;
 }
 
+.bq-sentence {
+  font-size: inherit;
+}
+
 #inputting {
-  display: none;
+  height: 3em;
 }

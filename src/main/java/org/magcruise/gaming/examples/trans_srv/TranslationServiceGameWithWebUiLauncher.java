@@ -1,6 +1,5 @@
 package org.magcruise.gaming.examples.trans_srv;
 
-import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.magcruise.gaming.examples.trans_srv.resource.TranslationServiceGameResourceLoader;
 import org.magcruise.gaming.manager.session.GameSession;
@@ -16,11 +15,13 @@ public class TranslationServiceGameWithWebUiLauncher {
 
 	public static void main(String[] args) {
 		GameSession session = new GameSession(TranslationServiceGameResourceLoader.class);
-		session.useDefaultPublicBroker();
-		session.useDefaultPublicWebUI(loginId);
+
+		session.useDefaultPublicBrokerAndWebUI(loginId);
 		session.addGameDefinitionInResource("game-definition.scm");
-		session.setLogConfiguration(Level.INFO);
+		//session.addGameDefinitionInResource("test-definition.scm");
+		//session.setLogConfiguration(Level.INFO);
 		session.useAutoInput(maxAutoResponseTime);
+		//session.useRoundValidation();
 		session.startAndWaitForFinish();
 	}
 

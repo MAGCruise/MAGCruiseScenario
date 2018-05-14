@@ -56,9 +56,9 @@ public class TranslationServiceGameContext extends Context {
 	private void calcRightOfUse(TranslationServiceGamePlayer player) {
 		if (getRoundnum() <= 10) {
 			player.rightOfUse = 200;
-			return;
+		} else {
+			player.rightOfUse = (int) (funds * 2 / players.size());
 		}
-		player.rightOfUse = (int) (funds * 2 / players.size());
 	}
 
 }

@@ -15,6 +15,7 @@ import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.message.Alert;
+import org.nkjmlab.util.lang.CallOnceTask;
 import org.nkjmlab.util.lang.ResourceUtils;
 
 import gnu.mapping.Symbol;
@@ -53,15 +54,20 @@ public class CroquetteFactory extends Player {
 		super(playerParameter);
 	}
 
-	public void init(Market ctx) {
+	private CallOnceTask appendHeader = new CallOnceTask(() -> {
 		appendHtml("#row-bottom",
 				String.join(" ", ResourceUtils.readAllLines(getClass(), "header.html")));
+	});
+
+	public void init(Market ctx) {
 		String msg = (String) ctx.applyProcedure("factory:init-msg", ctx, this);
 		syncRequestToConfirm(msg);
 		showMessage(msg);
 	}
 
 	public void refresh(Market ctx) {
+		appendHeader.run();
+
 		setHtml("#div-history",
 				ctx.createMessage("factory:refresh-msg", ctx, this).replaceAll("\"", "'"));
 		String msg = ctx.createMessage("factory:order-msg", this) + "<br>"

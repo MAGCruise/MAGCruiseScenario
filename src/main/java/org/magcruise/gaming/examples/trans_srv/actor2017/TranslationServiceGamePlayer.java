@@ -15,14 +15,18 @@ import org.magcruise.gaming.ui.model.FormBuilder;
 import org.magcruise.gaming.ui.model.attr.Max;
 import org.magcruise.gaming.ui.model.attr.Min;
 import org.magcruise.gaming.ui.model.attr.Required;
+import org.magcruise.gaming.ui.model.input.Input;
 import org.magcruise.gaming.ui.model.input.NumberInput;
 import org.nkjmlab.util.lang.MessageUtils;
 import org.nkjmlab.util.lang.ResourceUtils;
 
 public class TranslationServiceGamePlayer extends Player {
 
+	private static final String feedbackForDecrease = "https://i.gyazo.com/b4deeb652991533680240c5d560079f0.png";
+	private static final String feedbackBeforeFinalDecision = "https://i.gyazo.com/85e172d78546d96f1c09773ed9148c95.png";
+
 	@HistoricalField(name = "寄付/投資額")
-	public volatile int investment = 0;
+	public volatile Integer investment = 0;
 
 	@HistoricalField(name = "利用権")
 	public volatile int rightOfUse = 0;
@@ -40,7 +44,7 @@ public class TranslationServiceGamePlayer extends Player {
 	private Set<Badge> badges = ConcurrentHashMap.newKeySet();
 
 	private int income = 100;
-	private double levelThreshold = 19.0;
+	private double levelThreshold = 20.0;
 
 	public TranslationServiceGamePlayer(PlayerParameter playerParameter) {
 		super(playerParameter);
@@ -55,13 +59,13 @@ public class TranslationServiceGamePlayer extends Player {
 	}
 
 	public void beforeRound(TranslationServiceGameContext ctx) {
-		showMessage("ラウンド{}の開始です．", ctx.getRoundnum());
-
+		showMessage(
+				"ラウンド{}の開始です．<br>このラウンドでは，次の文章を翻訳します． <blockquote class='bq-sentence'>{}</blockquote>",
+				ctx.getRoundnum(),
+				getScentence(ctx.getRoundnum()));
 		if (ctx.getRoundnum() != 0) {
 			updateHtml(ctx);
 		}
-		showMessage("ラウンド{}では，次の文章を翻訳します: <br>{}", ctx.getRoundnum(),
-				getScentence(ctx.getRoundnum()));
 	}
 
 	private void updateHtml(TranslationServiceGameContext ctx) {
@@ -151,13 +155,25 @@ public class TranslationServiceGamePlayer extends Player {
 		}
 
 		tmp.removeAll(badges);
+		String msg = "";
 		if (tmp.size() != 0) {
-			showAlert("バッジを獲得しました",
-					String.join(" ",
-							tmp.stream().map(b -> b.getHtml()).collect(Collectors.toList())),
-					"");
+			msg += "<h3>バッジを獲得しました</h3>" +
+					String.join(" ", tmp.stream().map(b -> b.getHtml())
+							.collect(Collectors.toList()));
 			badges.addAll(tmp);
 		}
+		if (isDecreaseInvestment()) {
+			msg += "<img src='" + feedbackForDecrease + "'>";
+		}
+
+		if (msg.length() != 0) {
+			showAlert("", msg, "");
+		}
+	}
+
+	private boolean isDecreaseInvestment() {
+		return investment < Integer
+				.valueOf(history.getLastValue(toSymbol("investment")).toString());
 	}
 
 	private Badge getKeywordBadge(int roundnum) {
@@ -177,21 +193,42 @@ public class TranslationServiceGamePlayer extends Player {
 	}
 
 	private void showMessagesOfRound(TranslationServiceGameContext ctx) {
-		showMessage("ラウンド{}で受けとった翻訳文 : <br>{}", ctx.getRoundnum(),
+		showMessage(
+				"ラウンド{}では，機械翻訳の結果として次の翻訳文を受けとりました．<blockquote class='bq-sentence'>{}</blockquote>",
+				ctx.getRoundnum(),
 				getTranslatedScentence(ctx.getRoundnum()));
 		showMessage("ラウンド{}では，{}トークンを寄付/投資し，{}トークンの利用権を得ました．このラウンドの利益は{}トークンです．", ctx.getRoundnum(),
 				investment, rightOfUse, profit);
 	}
 
 	public void decide(TranslationServiceGameContext ctx) {
-		FormBuilder builder = new FormBuilder(
-				"ラウンド" + ctx.getRoundnum() + ": 寄付/投資額をいくらにしますか？<br>");
-		builder.addLabel("このラウンドで寄付/投資できるトークン数は，0以上" + income + "以下の任意の整数です．");
-		builder.addInput(new NumberInput("寄付/投資額(トークン)", "token", income,
-				new Min(0), new Max(income), new Required()));
-		syncRequestToInput(builder.build(), params -> {
-			this.investment = params.getInt("token");
-		});
+		this.investment = null;
+		String label = "ラウンド" + ctx.getRoundnum() + ": 寄付/投資額をいくらにしますか？<br>"
+				+ "このラウンドで寄付/投資できるトークン数は，0以上" + income + "以下の任意の整数です．";
+		{
+			FormBuilder builder = new FormBuilder(label);
+			builder.addInput(createInput());
+			syncRequestToInput(builder.build(), params -> {
+				this.investment = params.getInt("token");
+				showMessage("入力を送信しました．他のプレイヤの入力を待っています．", investment);
+			});
+		}
+		{
+			if (isDecreaseInvestment()) {
+				showAlert("", "<img src='" + feedbackBeforeFinalDecision + "'>", "");
+				FormBuilder builder = new FormBuilder("<h3>再入力をお願いします</h3>" + label);
+				builder.addInput(createInput());
+				syncRequestToInput(builder.build(), params -> {
+					this.investment = params.getInt("token");
+					showMessage("入力を送信しました．他のプレイヤの入力を待っています．", investment);
+				});
+			}
+		}
+	}
+
+	private Input createInput() {
+		return new NumberInput("寄付/投資額(トークン)", "token", investment, new Min(0), new Max(income),
+				new Required());
 	}
 
 	private String getScentence(int roundnum) {
@@ -211,6 +248,10 @@ public class TranslationServiceGamePlayer extends Player {
 
 	public synchronized int getAccount() {
 		return account;
+	}
+
+	public synchronized void setRightOfUse(int rightOfUse) {
+		this.rightOfUse = rightOfUse;
 	}
 
 	private List<String> sentences = Arrays.asList(
@@ -265,12 +306,9 @@ public class TranslationServiceGamePlayer extends Player {
 		}
 
 		public String getHtml() {
-			return "<img class='exp-badge' src='" + getHref() + "'>";
+			return "<img class='exp-badge' src='" + href + "'>";
 		}
 
-		String getHref() {
-			return href;
-		}
 	}
 
 }
