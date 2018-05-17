@@ -31,38 +31,41 @@ public class MultiCroquetteGamesOnAwsServerWithWebUI {
 				log.info("Arg is {}", args[0]);
 				settings = JsonUtils.decode(args[0], GameSessionsSetting.class);
 			}
-
 			log.info(settings);
 
-			GameSessionsOnAwsServer sessions = new GameSessionsOnAwsServer();
-			sessions.setAwsSettings(settings.getAwsServersSetting());
-
-			settings.getSeeds().forEach(seed -> {
-				GameSessionOnServer session = new GameSessionOnServer(
-						CroquetteGameResourceLoader.class);
-				session.useDefaultLocalBroker();
-				session.useDefaultPublicWebUI(settings.getOwnerId());
-				session.addGameDefinitionInResource("game-definition.scm");
-				session.addGameDefinitionInResource("exp-definition.scm");
-				session.setLogConfiguration(Level.INFO, true);
-				session.useAutoInput(maxAutoResponseTime);
-				List<Symbol> users = Arrays.asList(Symbol.parse(seed.getUserIds().get(0)),
-						Symbol.parse(seed.getUserIds().get(1)),
-						Symbol.parse(seed.getUserIds().get(2)));
-				log.info("users={}", users);
-				session.addAssignmentRequests(Arrays.asList(Symbol.parse("Factory"),
-						Symbol.parse("Shop1"), Symbol.parse("Shop2")),
-						users);
-				session.setSessionName(seed.getSessionName());
-				session.build();
-				sessions.addGameSession(session);
-			});
-
-			log.info("Sessions are created. {}", sessions);
-			sessions.start();
+			execGame(settings);
 		} catch (Exception e) {
 			log.error(e, e);
 		}
 
+	}
+
+	private static void execGame(GameSessionsSetting settings) {
+		GameSessionsOnAwsServer sessions = new GameSessionsOnAwsServer();
+		sessions.setAwsSettings(settings.getAwsServersSetting());
+
+		settings.getSeeds().forEach(seed -> {
+			GameSessionOnServer session = new GameSessionOnServer(
+					CroquetteGameResourceLoader.class);
+			session.useDefaultLocalBroker();
+			session.useDefaultPublicWebUI(settings.getOwnerId());
+			session.addGameDefinitionInResource("game-definition.scm");
+			session.addGameDefinitionInResource("exp-definition.scm");
+			session.setLogConfiguration(Level.INFO, true);
+			//session.useAutoInput(maxAutoResponseTime);
+			List<Symbol> users = Arrays.asList(Symbol.parse(seed.getUserIds().get(0)),
+					Symbol.parse(seed.getUserIds().get(1)),
+					Symbol.parse(seed.getUserIds().get(2)));
+			log.info("users={}", users);
+			session.addAssignmentRequests(Arrays.asList(Symbol.parse("Factory"),
+					Symbol.parse("Shop1"), Symbol.parse("Shop2")),
+					users);
+			session.setSessionName(seed.getSessionName());
+			session.build();
+			sessions.addGameSession(session);
+		});
+
+		log.info("Sessions are created. {}", sessions);
+		sessions.start();
 	}
 }

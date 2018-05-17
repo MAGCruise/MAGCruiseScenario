@@ -12,9 +12,8 @@ public class CroquetteGameOnLocalWithWebUI {
 
 	public static void main(String[] args) {
 		GameSession session = new GameSession(CroquetteGameResourceLoader.class);
-		//session.useDefaultLocalBroker();
-		//session.useDefaultLocalWebUI(loginId);
-		session.useDefaultPublicBrokerAndWebUI(loginId);
+		//session.useDefaultPublicBrokerAndWebUI(loginId);
+		session.useDefaultLocalBrokerAndWebUI(loginId);
 		session.addGameDefinitionInResource("game-definition.scm");
 		session.addGameDefinitionInResource("play-definition.scm");
 		//session.addGameDefinitionInResource("play-definition.scm");

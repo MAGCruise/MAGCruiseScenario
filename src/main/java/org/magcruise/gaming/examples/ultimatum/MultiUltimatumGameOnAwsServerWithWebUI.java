@@ -6,11 +6,9 @@ import java.util.List;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.Logger;
 import org.magcruise.gaming.aws.GameSessionsOnAwsServer;
-import org.magcruise.gaming.examples.aws.AwsResourceLoader;
 import org.magcruise.gaming.examples.ultimatum.actor.FirstPlayer;
 import org.magcruise.gaming.examples.ultimatum.actor.SecondPlayer;
 import org.magcruise.gaming.examples.ultimatum.resource.UltimatumGameResourceLoader;
-import org.magcruise.gaming.executor.aws.AwsServersSetting;
 import org.magcruise.gaming.manager.session.GameSessionOnServer;
 import org.magcruise.gaming.manager.session.GameSessionsSetting;
 import org.magcruise.gaming.model.def.actor.DefPlayer;
@@ -20,39 +18,40 @@ import org.nkjmlab.util.log4j.LogManager;
 
 import gnu.mapping.Symbol;
 
-public class MultiUltimatumGameOnServerWithWebUI {
+public class MultiUltimatumGameOnAwsServerWithWebUI {
 	protected static Logger log = LogManager.getLogger();
 
-	private static String loginId = "admin";
 	private static int maxAutoResponseTime = 30;
 
-	private static String awsSettingFile = "aws-settings.json";
-
-	//private static String defaultSettingFile = "settings-all-anonymous-2017.json";
-	private static String defaultSettingFile = "settings-all-anonymous-2017-3rd.json";
+	private static String defaultSettingFile = "settings-all-2018.json";
 
 	public static void main(String[] args) {
-		GameSessionsSetting settings;
-		if (args.length == 0) {
-			settings = JsonUtils.decode(UltimatumGameResourceLoader.class
-					.getResourceAsStream(defaultSettingFile), GameSessionsSetting.class);
-		} else {
-			log.info("Arg is {}", args[0]);
-			settings = JsonUtils.decode(args[0], GameSessionsSetting.class);
+		try {
+			GameSessionsSetting settings;
+			if (args.length == 0 || args[0].length() == 0) {
+				settings = JsonUtils.decode(UltimatumGameResourceLoader.class
+						.getResourceAsStream(defaultSettingFile), GameSessionsSetting.class);
+			} else {
+				log.info("Arg is {}", args[0]);
+				settings = JsonUtils.decode(args[0], GameSessionsSetting.class);
+			}
+			execGames(settings);
+		} catch (Exception e) {
+			log.error(e, e);
 		}
-		execGames(settings);
 
 	}
 
 	public static void execGames(GameSessionsSetting settings) {
 
 		GameSessionsOnAwsServer sessions = new GameSessionsOnAwsServer();
+		sessions.setAwsSettings(settings.getAwsServersSetting());
 
 		settings.getSeeds().forEach(seed -> {
 			GameSessionOnServer session = new GameSessionOnServer(
 					UltimatumGameResourceLoader.class);
 			session.useDefaultLocalBroker();
-			session.useDefaultPublicWebUI(loginId);
+			session.useDefaultPublicWebUI(settings.getOwnerId());
 			session.addGameDefinitionInResource("game-definition.scm");
 
 			session.setLogConfiguration(Level.INFO, true);
@@ -76,15 +75,9 @@ public class MultiUltimatumGameOnServerWithWebUI {
 							SecondPlayer.SECOND_PLAYER.toSymbol()),
 					users);
 			session.setSessionName(seed.getSessionName());
-
 			session.build();
 			sessions.addGameSession(session);
 		});
-
-		AwsServersSetting awsSettings = JsonUtils.decode(AwsResourceLoader.class
-				.getResourceAsStream(awsSettingFile),
-				AwsServersSetting.class);
-		sessions.setAwsSettings(awsSettings);
 		sessions.start();
 	}
 

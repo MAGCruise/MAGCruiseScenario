@@ -13,7 +13,8 @@ public class MultiUltimatumGameOnLocalWithWebUI {
 
 	public static void main(String[] args) {
 		GameSession session = new GameSession(UltimatumGameResourceLoader.class);
-		session.useDefaultPublicBrokerAndWebUI(loginId);
+		//session.useDefaultPublicBrokerAndWebUI(loginId);
+		session.useDefaultLocalBrokerAndWebUI(loginId);
 		session.addGameDefinitionInResource("game-definition.scm");
 		session.addGameDefinitionInResource("exp-definition.scm");
 		session.startAndWaitForFinish();
