@@ -17,7 +17,7 @@ import gnu.mapping.Symbol;
 public class MultiCroquetteGamesOnAwsServerWithWebUI {
 	protected static Logger log = LogManager.getLogger();
 
-	private static int maxAutoResponseTime = 30;
+	private static int maxAutoResponseTime = 120;
 
 	private static String defaultSettingFile = "croquette-settings-many-2018.json";
 
@@ -52,7 +52,7 @@ public class MultiCroquetteGamesOnAwsServerWithWebUI {
 			session.addGameDefinitionInResource("game-definition.scm");
 			session.addGameDefinitionInResource("exp-definition.scm");
 			session.setLogConfiguration(Level.INFO, true);
-			//session.useAutoInput(maxAutoResponseTime);
+			session.useAutoInput(maxAutoResponseTime);
 			List<Symbol> users = Arrays.asList(Symbol.parse(seed.getUserIds().get(0)),
 					Symbol.parse(seed.getUserIds().get(1)),
 					Symbol.parse(seed.getUserIds().get(2)));

@@ -23,7 +23,8 @@ public class MultiUltimatumGameOnAwsServerWithWebUI {
 
 	private static int maxAutoResponseTime = 30;
 
-	private static String defaultSettingFile = "settings-all-2018.json";
+	//	private static String defaultSettingFile = "settings-all-2018.json";
+	private static String defaultSettingFile = "settings-all-anonymous-2018.json";
 
 	public static void main(String[] args) {
 		try {
