@@ -159,7 +159,7 @@ public class CroquetteFactory extends Player {
 			Map<Symbol, Number> tmp = (Map<Symbol, Number>) getValueBefore(
 					toSymbol("orders"), 2);
 
-			order = tmp.get(shop.name).intValue();
+			order = tmp.get(shop.name.toSymbol()).intValue();
 		}
 		int totalOrder = getTotalOrder(ctx);
 		int delivery = totalOrder <= stockBeforeDelivery ? order

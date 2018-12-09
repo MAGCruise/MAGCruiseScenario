@@ -13,7 +13,8 @@ public class YMCContext extends Context {
 
 	public void initialize() {
 		AccessConfigFactory
-				.setPath(new TranslationServiceGameResourceLoader().getResource("langrid-conf.json"));
+				.setPath(new TranslationServiceGameResourceLoader()
+						.getResource("langrid-conf.json"));
 	}
 
 }

@@ -1,14 +1,14 @@
 package org.magcruise.gaming.examples.fish.actor;
 
 import org.magcruise.gaming.examples.fish.resource.FishGameResourceLoader;
-import org.magcruise.gaming.langrid.AccessConfigFactory;
-import org.magcruise.gaming.langrid.client.TranslationClient;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.SimpleContext;
 import org.magcruise.gaming.ui.model.Form;
 import org.magcruise.gaming.ui.model.attr.SimpleSubmit;
 import org.magcruise.gaming.ui.model.input.TextInput;
+import org.nkjmlab.util.langrid.AccessConfig;
+import org.nkjmlab.util.langrid.client.TranslationClient;
 
 public class FishGamePlayer extends Player {
 
@@ -19,9 +19,9 @@ public class FishGamePlayer extends Player {
 	}
 
 	public void negotiation(SimpleContext ctx) {
-		AccessConfigFactory.setPath(
-				new FishGameResourceLoader().getResource("langrid-conf.json"));
-		TranslationClient client = new TranslationClient("KyotoUJServer");
+		AccessConfig conf = AccessConfig.from(
+				new FishGameResourceLoader().getResourceAsStream("langrid-conf.json"));
+		TranslationClient client = new TranslationClient(conf, "KyotoUJServer");
 
 		syncRequestToInput(new Form("相手に伝えたいことを入力して下さい．何も無ければENDと入力して下さい．", new TextInput(
 				"", "input-text", "", new SimpleSubmit())),

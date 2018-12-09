@@ -34,7 +34,6 @@
 		<dependency>
 			<groupId>org.magcruise</groupId>
 			<artifactId>magcruise-aws</artifactId>
-			<version>0.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.magcruise</groupId>

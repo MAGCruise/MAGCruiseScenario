@@ -4,9 +4,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.magcruise.gaming.examples.trans_srv.resource.TranslationServiceGameResourceLoader;
-import org.magcruise.gaming.langrid.AccessConfigFactory;
-import org.magcruise.gaming.langrid.client.TranslationClient;
-import org.magcruise.gaming.langrid.client.TranslationServiceId;
 import org.magcruise.gaming.model.game.HistoricalField;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
@@ -16,6 +13,9 @@ import org.magcruise.gaming.ui.model.attr.Min;
 import org.magcruise.gaming.ui.model.attr.Required;
 import org.magcruise.gaming.ui.model.input.NumberInput;
 import org.magcruise.gaming.ui.model.input.RadioInput;
+import org.nkjmlab.util.langrid.AccessConfig;
+import org.nkjmlab.util.langrid.client.TranslationClient;
+import org.nkjmlab.util.langrid.client.TranslationServiceId;
 
 public class TranslationServiceGamePlayer extends Player {
 
@@ -41,9 +41,10 @@ public class TranslationServiceGamePlayer extends Player {
 
 	public TranslationServiceGamePlayer(PlayerParameter playerParameter) {
 		super(playerParameter);
-		AccessConfigFactory.setPath(new TranslationServiceGameResourceLoader()
-				.getResource("langrid-conf.json"));
-		client = new TranslationClient(TranslationServiceId.KyotoUJServer);
+		AccessConfig conf = AccessConfig.from(
+				new TranslationServiceGameResourceLoader()
+						.getResourceAsStream("langrid-conf.json"));
+		client = new TranslationClient(conf, TranslationServiceId.KyotoUJServer);
 	}
 
 	public void initialize(TranslationServiceGameContext ctx) {

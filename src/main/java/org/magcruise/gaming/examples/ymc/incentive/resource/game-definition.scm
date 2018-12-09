@@ -1,4 +1,4 @@
-(org.magcruise.gaming.langrid.LangridSchemePlugin:load)
+(org.nkjmlab.util.langrid.LangridSchemePlugin:load)
 
 (define-alias YMCContext org.magcruise.gaming.examples.ymc.incentive.actor.YMCContext)
 (define-alias JPExpert org.magcruise.gaming.examples.ymc.incentive.actor.JPExpert)

@@ -1,14 +1,14 @@
 package org.magcruise.gaming.examples.discussion.actor;
 
 import org.magcruise.gaming.examples.fish.resource.FishGameResourceLoader;
-import org.magcruise.gaming.langrid.AccessConfigFactory;
-import org.magcruise.gaming.langrid.client.TranslationClient;
 import org.magcruise.gaming.model.game.Player;
 import org.magcruise.gaming.model.game.PlayerParameter;
 import org.magcruise.gaming.model.game.message.ScenarioEvent;
 import org.magcruise.gaming.ui.model.Form;
 import org.magcruise.gaming.ui.model.attr.SimpleSubmit;
 import org.magcruise.gaming.ui.model.input.TextInput;
+import org.nkjmlab.util.langrid.AccessConfig;
+import org.nkjmlab.util.langrid.client.TranslationClient;
 
 public class Talker extends Player {
 
@@ -16,10 +16,10 @@ public class Talker extends Player {
 
 	public Talker(PlayerParameter playerParameter) {
 		super(playerParameter);
-		AccessConfigFactory.setPath(
-				new FishGameResourceLoader().getResource("langrid-conf.json"));
+		AccessConfig conf = AccessConfig.from(
+				new FishGameResourceLoader().getResourceAsStream("langrid-conf.json"));
 		//client = new TranslationClient("KyotoUJServer");
-		client = new TranslationClient("GoogleTranslate");
+		client = new TranslationClient(conf, "GoogleTranslate");
 	}
 
 	public boolean isStartNegotiation(DiscussionRoom ctx, ScenarioEvent msg) {
