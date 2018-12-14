@@ -31,13 +31,5 @@
 			<groupId>org.magcruise</groupId>
 			<artifactId>magcruise-core</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.magcruise</groupId>
-			<artifactId>magcruise-aws</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.magcruise</groupId>
-			<artifactId>magcruise-langrid</artifactId>
-		</dependency>
 	</dependencies>
 </project>
